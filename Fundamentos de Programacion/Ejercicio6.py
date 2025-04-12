@@ -3,8 +3,6 @@ numeros = input("Ingrese dos números separados por un espacio: ").split()
 numeros = [int(num) for num in numeros] # Convertir los números a enteros
 mayor = max(numeros)
 
-#print(f"El mayor de los números ingresados es: {mayor}")
-
 #2) Ahora, tomá el ejercicio anterior y considerá que el usuario podría ingresar dos veces el mismo número.
 if numeros[0] == numeros[1]:
     print("Los números ingresados son iguales.")
