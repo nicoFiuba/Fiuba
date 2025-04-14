@@ -1,4 +1,4 @@
-""" #1) Escribir un programa que solicite el ingreso de un número y luego calcule e informe el factorial del número ingresado.
+#1) Escribir un programa que solicite el ingreso de un número y luego calcule e informe el factorial del número ingresado.
 
 num = int(input("Ingrese un número: "))
 factorial = 1
@@ -17,12 +17,12 @@ else:
         if num % i == 0:
             esPrimo = False
 print(f"El número {num} {'es' if esPrimo else 'no es'} primo.")
- """
+
 # 3) Tomá la solución del ejercicio anterior y preguntate sí elegiste el cliclo adecuado, y si estás evitando realizar ciclos innecesarios. Por ejemplo, algunas preguntas que nos podríamos hacer son: a) Si con sólo encontrar un divisor del número a evaluar, ya puedo afirmar que el número no es primo, tiene sentido seguir evaluando divisores? b) Teniendo en cuenta que todo número par a excepción del 2, no es primo, tiene sentido seguir en un ciclo si al calcular el resto de la división del número a evaluar por 2, el resultado es cero?  c) Puedo encontrar un divisor del número a evaluar que sea mayor al número a evaluar dividido 2? Seguramente, si tengo en cuenta estás cuestiones en mi programa, podré lograr que el  mismo sea más eficiente.
 
 # 4) Solicitar el ingreso de dos valores enteros, y calcular e informar el máximo común divisor entre ambos números.  Recordemos que se define el máximo común divisor (MCD) de dos o más números enteros al mayor número entero que los divide sin dejar resto alguno. Te sugerimos que antes de programar la solución te hagas preguntas del tipo a las planteadas en en el ejercicio 3
 
-""" def recibirNumeros():
+def recibirNumeros():
     numeros = input("Ingrese dos números enteros separados por un espacio: ").split()
     numeros = [int(num) for num in numeros] # Convertir los números a enteros
     return numeros
@@ -46,7 +46,7 @@ def main():
     print(f"El MCM de los dos primeros números es: {mcm_resultado} y el MCD es: {mcd_resultado}.")
 
 main()
- """
+
 # 5) Hacer el ejercicio 4 pero usando el metodo de Euclides
 def recibirNumeros():
     numeros = input("Ingrese dos números enteros separados por un espacio: ").split()
