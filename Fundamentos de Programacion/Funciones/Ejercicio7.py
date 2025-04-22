@@ -4,7 +4,7 @@ Para la solución de los siguientes ejercicios, no debes imprimir resultados den
 """
 
 # 1) Escribir una función que reciba a través de un parámetro, el radio de una circunferencia y retorne su longitud.
-""" 
+
 def calcular_longitud(radio):
     pi=3.141
     longitud = 2*pi*radio
@@ -76,14 +76,14 @@ main()
 
 # 6) Escribir una función que reciba como primer parámetro, la velocidad de desplazamiento de un objeto; y como segundo parámetro, el tiempo durante el cual se desplazó. La función debe devolver la distancia recorrida. Tener en cuenta que: velocidad = distancia / tiempo.
 
-def calcular_distancia_recorridad(velocidad,tiemplo):
+def calcular_distancia_recorrida(velocidad,tiemplo):
     distancia = velocidad * tiemplo
     return distancia
 
 def main():
     velocidad = float(input("Ingrese la velocidad de desplazamiento en metros sobre segundo (m/s): "))
     tiempo = float(input("Ingrese el tiempo de desplazamiento en segundos (s): "))
-    distancia = calcular_distancia_recorridad(velocidad, tiempo)
+    distancia = calcular_distancia_recorrida(velocidad, tiempo)
     print(f"La distancia recorrida es: {distancia} m")
 
 main()
@@ -125,7 +125,7 @@ def main():
     resultado = es_mayor(num1, num2)
     print(f"La siguiente afirmacion: {num1} es mayor que {num2} es {resultado}")
 
-main() """
+main()
 
 # 9) Escribir una función que reciba por parámetro, un valor entero, y devuelva True si el valor recibido es impar; de lo contrario debe devolver False. Dale a la función el nombre es_impar.
 
@@ -140,19 +140,88 @@ def main():
 
 main()
 
-
-
-
-
-
-
-
-
-
 # 10) Escribir una función que reciba a través de sus parámetros, dos valores enteros, y devuelva True, si el primer parámetro es múltiplo del segundo, de lo contrario debe devolver False. No te preocupes por el caso que uno ó ambos valores recibidos sea igual a cero. Dale a la función el es_multiplo_de.
+
+def es_multiplo(num1,num2):
+    multiplo = num1 % num2 == 0
+    return multiplo
+
+def main():
+    numeros = input("Ingrese dos números separados por un espacio: ").split()
+    num1 = int(numeros[0])
+    num2 = int(numeros[1])
+    resultado = es_multiplo(num1, num2)
+    print(f"La siguiente afirmacion: {num1} es multiplo de {num2} es {resultado}")
+
+main()
+
 # 11) Sabiendo que el peso de un mol de agua es igual a 18 g, escriba una función que reciba el valor en gramos de agua, y devuelva el valor en moles.
+
+def convertir_a_moles(gramos):
+    peso_mol = 18
+    moles = gramos / peso_mol
+    return moles
+
+def main():
+    gramos = float(input("Ingrese la cantidad de gramos de agua: "))
+    moles = convertir_a_moles(gramos)
+    print(f"{gramos} gramos de agua equivalen a {moles} moles")
+
+main()
+
 # 12) Un mol de una sustancia es igual a 6,022 × 10²³ unidades (moléculas) de esa sustancia, el valor resultante se conoce como Número de Avogadro. Escribir una función que dado el valor en moles del agua, retorne la cantidad de moléculas que la componen.
+
+def calcular_moleculas(moles):
+    avogadro = 6.022 * (10 ** 23)
+    moleculas = moles * avogadro
+    return moleculas
+
+def main():
+    moles = float(input("Ingrese la cantidad de moles de agua: "))
+    moleculas = calcular_moleculas(moles)
+    print(f"{moles} moles de agua equivalen a {moleculas} moléculas")
+
+main()
+
 # 13) Por cada molécula de agua, hay 2 átomos de hidrógeno y 1 de oxígeno. Escribir una función que reciba la cantidad de moléculas de agua y devuelva; la cantidad de átomos de hidrógeno y la cantidad de átomos de oxígeno, que componen la cantidad de moléculas de agua recibida.
+
+def calcular_atomos(moleculas):
+    atomos_hidrogeno = moleculas * 2
+    atomos_oxigeno = moleculas
+    atomos = (atomos_hidrogeno, atomos_oxigeno)
+    return atomos
+
+def main():
+    moleculas = float(input("Ingrese la cantidad de moléculas de agua: "))
+    atomos_hidrogeno, atomos_oxigeno = calcular_atomos(moleculas)
+    print(f"{moleculas} moléculas de agua contienen {atomos_hidrogeno} átomos de hidrógeno y {atomos_oxigeno} átomos de oxígeno")
+
+main()
+
 # 14) Ahora toma las funciones escritas en los ejercicios 8, 9 y 10, y utilizalas en una nueva función, que reciba la cantidad de gramos de agua, y retorne la cantidad de átomos de hidrógeno y de átomos de oxígeno, que hay en la cantidad de gramos de agua recibida.
+"""
+Se equivocaaron, no son los ejercicios 8, 9 y 10, son los ejercicios 11, 12 y 13
+    # 11) Sabiendo que el peso de un mol de agua es igual a 18 g, escriba una función que reciba el valor en gramos de agua, y devuelva el valor en moles.
+    # 12) Un mol de una sustancia es igual a 6,022 × 10²³ unidades (moléculas) de esa sustancia, el valor resultante se conoce como Número de Avogadro. Escribir una función que dado el valor en moles del agua, retorne la cantidad de moléculas que la componen.
+    # 13) Por cada molécula de agua, hay 2 átomos de hidrógeno y 1 de oxígeno. Escribir una función que reciba la cantidad de moléculas de agua y devuelva; la cantidad de átomos de hidrógeno y la cantidad de átomos de oxígeno, que componen la cantidad de moléculas de agua recibida.
+"""
 
+def reutilizar_funciones(gramos):
+    # Convertir gramos a moles
+    moles = convertir_a_moles(gramos) # Esta funcion esta definida en el ejercicio 11 (linea 160)
+    
+    # Calcular moléculas a partir de moles
+    moleculas = calcular_moleculas(moles) # Esta funcion esta definida en el ejercicio 12 (linea 174)
+    
+    # Calcular átomos a partir de moléculas
+    atomos_hidrogeno, atomos_oxigeno = calcular_atomos(moleculas) # Esta funcion esta definida en el ejercicio 13 (linea 188)
+    return
 
+def main():
+    gramos = float(input("Ingrese la cantidad de gramos de agua: "))
+    moles =convertir_a_moles(gramos)
+    moleculas = calcular_moleculas(moles)
+    atomos_hidrogeno, atomos_oxigeno = calcular_atomos(moleculas)
+    print(f"{gramos} gramos de agua contienen {atomos_hidrogeno} átomos de hidrógeno y {atomos_oxigeno} átomos de oxígeno")
+
+main()
