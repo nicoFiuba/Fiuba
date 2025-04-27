@@ -4,7 +4,7 @@ Para la solución de los siguientes ejercicios, no debes imprimir resultados den
 """
 
 # 1) Escribir una función que reciba el número de un mes, y devuelva el nombre del mes. Por ejemplo, si la función recibe un "1", deberá devolver: "Enero" En caso que el mes recibido no sea válido, deberá devolver "Mes Inválido". No debe imprimir el nombre, sólo devolver la cadena correspondiente.
-""" 
+
 def obtener_nombre_mes(mes):
     meses = {
         1: "Enero",
@@ -27,7 +27,7 @@ def main():
     nombre_mes = obtener_nombre_mes(mes)
     print({nombre_mes})
 
-main() """
+main()
 
 # 2) Escribir una función que reciba un mes y un año; y devuelva la cantidad de días del mes, considerando los años bisiestos. Tenga en cuenta que un año bisiesto es aquel divisible por 4, salvo que sea divisible por 100, en cuyo caso también debe ser divisible por 400.
 
@@ -56,53 +56,120 @@ def main():
     print(f"El mes {mes} del año {año} tiene {dias} días.")
 main()
 
+# 3) Escribir una función que reciba un valor y calcule el factorial del mismo. Si no se puede calcular el factorial del valor recibido, la función deberá devolver 0, de lo contrario deberá devolver el valor calculado.
 
+def calcular_factorial(num):
+    if num<0:
+        factorial = 0
+    elif num == 0 or num == 1:
+        factorial = 1
+    else:
+        factorial = 1
+        for i in range(1, num + 1):
+            factorial *= i
+    return factorial
 
+def main():
+    num = int(input("Ingrese un número: "))
+    resultado = calcular_factorial(num)
+    print(resultado)
 
+main()
 
+# 4) Escribir una función que reciba un valor n, entero, y devuelva la suma de los valores entre 0 y n.
+def sumar_hasta_n(n):
+    suma = 0
+    for i in range(n + 1):
+        suma += i
+    return suma
 
+def main():
+    n = int(input("Ingrese un número entero: "))
+    resultado = sumar_hasta_n(n)
+    print(f"La suma de los valores entre 0 y {n} es: {resultado}")
+main()
 
+# 5) Escribir una función que reciba las coordenadas de dos puntos en una recta, y devuelva la pendiente de la misma. Tener en cuenta que: la pendiente ó m = (y2 – y1)/(x2 - x1), donde (x1, y1) y (x2, y2), serán las coordenadas del primer y segundo punto, respectivamente.
+
+def calcular_pendiente(x1, y1, x2, y2):
+    if x2 - x1 == 0:
+        print("No se puede dividir por cero")
+    
+    pendiente= (y2 - y1) / (x2 - x1)
+    return pendiente
+
+def main():
+    x1, y1, x2, y2 = input("Ingrese los valores de x1, y1, x2 y y2 (separados por espacios): ").split()
+    x1, y1, x2, y2 = float(x1), float(y1), float(x2), float(y2)
+    resultado = calcular_pendiente(x1, y1, x2, y2)
+    print(f"La pendiente de la recta es: {resultado}")
+main()
+
+# 6) Escribir una función que reciba un número y devuelva un valor booleano indicando si el número recibido es ó no primo.
+
+def es_primo(num):
+    num_primo = True
+    if num < 2:
+        num_primo = False
+    else:
+        for i in range(2, int(num ** 0.5) + 1):
+            if num % i == 0:
+                num_primo = False
+    return num_primo
+
+def main():
+    num = int(input("Ingrese un número: "))
+    resultado = es_primo(num)
+    print(f"El numero {num} {"es" if resultado else "no es"} primo.")
+
+main()
 
 """
-3. Escribir una función que reciba un valor y calcule el factorial del mismo. Si no se
-puede calcular el factorial del valor recibido, la función deberá devolver 0, de lo
-contrario deberá devolver el valor calculado.
-4. Escribir una función que reciba un valor n, entero, y devuelva la suma de los
-valores entre 0 y n.
-5. Escribir una función que reciba las coordenadas de dos puntos en una recta, y
-devuelva la pendiente de la misma. Tener en cuenta que: la pendiente ó m =
-(y2 – y1)/(x2 - x1), donde (x1, y1) y (x2, y2), serán las coordenadas del primer
-y segundo punto, respectivamente.
-6. Escribir una función que reciba un número y devuelva un valor booleano
-indicando si el número recibido es ó no primo.
-7. Tomá la solución del ejercicio anterior y analizá si elegiste el cliclo adecuado, y si
-estás evitando realizar ciclos innecesarios.
-Por ejemplo, algunas preguntas que te podrías hacer son:
-a) Con sólo encontrar un divisor del número a evaluar distinto a uno y a sí
-mismo, ya puedo afirmar que el número no es primo, tiene sentido seguir
-evaluando más divisores?
-b) Teniendo en cuenta que todo número par a excepción del 2, no es primo,
-tiene sentido seguir en un ciclo, si al calcular el resto de la división del número a
-evaluar por 2, el resultado es cero?
-c) Puedo encontrar un divisor del número a evaluar que sea mayor al número a
-evaluar dividido 2?
-Modificá la función escrita en el punto anterior, para que tenga en cuenta las
-situaciones planteadas.
-______________________________________________________________________________________
-Lic. Gustavo Bianchi Página 1
-Ejercicios Prácticos - Versión Preliminar Introducción a la Programación - FIUBA
-______________________________________________________________________________________
-8. Escribir una función que reciba dos valores enteros, y devuelva el máximo
-común divisor entre ambos números.
-Recordemos que se define el máximo común divisor (MCD) de dos o más
-números enteros al mayor número entero que los divide sin dejar resto alguno.
-Te sugerimos que antes de programar la solución te hagas preguntas del tipo a
-las planteadas en en el ejercicio anterior
-9. Ahora toma el ejercicio anterior, pero intenta resolverlo aplicando el método de
-Euclides.
-Para poder escribir el algoritmo, quizás te ayude ver el siguiente video:
-https://www.youtube.com/watch?v=x6qFMSRpgpM ó consultar en el siguiente
-link: https://es.wikipedia.org/wiki/Algoritmo_de_Euclides
+7) Tomá la solución del ejercicio anterior y analizá si elegiste el cliclo adecuado, y si estás evitando realizar ciclos innecesarios. Por ejemplo, algunas preguntas que te podrías hacer son:
+    a) Con sólo encontrar un divisor del número a evaluar distinto a uno y a sí mismo, ya puedo afirmar que el número no es primo, tiene sentido seguir evaluando más divisores?
+    Rta: No tiene sentido seguir evaluando más divisores una vez que se encuentra un divisor distinto de 1 y del propio número, ya que esto confirma que el número no es primo.
+
+    b) Teniendo en cuenta que todo número par a excepción del 2, no es primo, tiene sentido seguir en un ciclo, si al calcular el resto de la división del número a evaluar por 2, el resultado es cero?
+    Rta: No tiene sentido continuar el ciclo si el número es par y distinto de 2, ya que esto indica que no es primo.
+
+    c) Puedo encontrar un divisor del número a evaluar que sea mayor al número a evaluar dividido 2?
+    Rta: No es necesario buscar divisores mayores que la raíz cuadrada del número, ya que si un número tiene un divisor mayor que su raíz cuadrada, necesariamente tendrá un divisor menor que esta.
+
+Modificá la función escrita en el punto anterior, para que tenga en cuenta las situaciones planteadas.
+
+Rta: No es necesario cambiar nada en la función, ya que actualmente utiliza un ciclo que evalúa divisores hasta la raíz cuadrada del número, lo cual es eficiente y evita ciclos innecesarios. Además, la función ya considera que los números menores a 2 no son primos y que un divisor encontrado confirma que el número no es primo.
+"""
+
+
+# 8) Escribir una función que reciba dos valores enteros, y devuelva el máximo común divisor entre ambos números. Recordemos que se define el máximo común divisor (MCD) de dos o más números enteros al mayor número entero que los divide sin dejar resto alguno. Te sugerimos que antes de programar la solución te hagas preguntas del tipo a las planteadas en en el ejercicio anterior
+
+def mcd (x,y):
+    resultado = max(x,y)
+    while x % resultado != 0 or y % resultado != 0:
+        resultado -= 1
+    return resultado
+
+def main():
+    x,y = map(int, input("Ingrese dos números enteros separados por un espacio: ").split())
+    mcd_resultado = mcd(x, y)
+    print(f"El MCD es: {mcd_resultado}.")
+
+main()
+
+# 9) Ahora toma el ejercicio anterior, pero intenta resolverlo aplicando el método de Euclides. Para poder escribir el algoritmo, quizás te ayude ver el siguiente video: https://www.youtube.com/watch?v=x6qFMSRpgpM ó consultar en el siguiente link: https://es.wikipedia.org/wiki/Algoritmo_de_Euclides
+
+def mcd(x, y):
+    while y != 0:
+        x, y = y, x % y
+    return x
+
+def main():
+    x,y = map(int, input("Ingrese dos números enteros separados por un espacio: ").split())
+    resultado = mcd(x, y)
+    print(f"El MCD de {x} y {y} es: {resultado}")
+main()
+
+"""
 10. El producto de Wallis es una expresión matemática, utilizada para representar el
 valor del número Pi, que fue descubierta por John Wallis en 1655 y que
 establece que:

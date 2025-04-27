@@ -1,4 +1,4 @@
-""" # 1) Escribir un programa que solicite el ingreso de números, y a medida que se ingresan, calcule e informe el factorial de cada número. Para saber si el programa debe seguir solicitando ingresos, se le debe preguntar al usuario si desea ingresar otro número. En caso que no se pueda calcular el factorial del número ingresado, se debe informar que no es posible calcular el factorial para dicho número.
+# 1) Escribir un programa que solicite el ingreso de números, y a medida que se ingresan, calcule e informe el factorial de cada número. Para saber si el programa debe seguir solicitando ingresos, se le debe preguntar al usuario si desea ingresar otro número. En caso que no se pueda calcular el factorial del número ingresado, se debe informar que no es posible calcular el factorial para dicho número.
 
 num = int(input("Ingrese un número entero positivo para calcular su factorial o 0 para terminar: "))
 
@@ -27,7 +27,6 @@ for num in range (num2):
         resultadoSum += f"{num1}"
 
 print(f"{num1} por {num2} = {resultadoSum} = {resultado}")
- """
 
 """
 3) Escribir un programa que simule el proceso de control de peso y cantidad de personas que puede transportar un ascensor. Vamos a suponer que nuestro ascensor puede soportar un máximo de 400 kg y hasta 6 personas. Nuestra simulación debe proceder del siguiente modo:
@@ -68,8 +67,3 @@ while valido and ascensor["peso"] <= pesoMax and ascensor["personas"] <= cantPer
     else:
         print("No ingreso ninguna persona")
         valido = False
-
-
-
-
-
