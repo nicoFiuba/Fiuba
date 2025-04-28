@@ -140,7 +140,6 @@ Modificá la función escrita en el punto anterior, para que tenga en cuenta las
 Rta: No es necesario cambiar nada en la función, ya que actualmente utiliza un ciclo que evalúa divisores hasta la raíz cuadrada del número, lo cual es eficiente y evita ciclos innecesarios. Además, la función ya considera que los números menores a 2 no son primos y que un divisor encontrado confirma que el número no es primo.
 """
 
-
 # 8) Escribir una función que reciba dos valores enteros, y devuelva el máximo común divisor entre ambos números. Recordemos que se define el máximo común divisor (MCD) de dos o más números enteros al mayor número entero que los divide sin dejar resto alguno. Te sugerimos que antes de programar la solución te hagas preguntas del tipo a las planteadas en en el ejercicio anterior
 
 def mcd (x,y):
@@ -169,50 +168,118 @@ def main():
     print(f"El MCD de {x} y {y} es: {resultado}")
 main()
 
+# 10) El producto de Wallis es una expresión matemática, utilizada para representar el valor del número Pi, que fue descubierta por John Wallis en 1655 y que establece que: Escribir una función, que reciba por parámetro, el valor más alto a utilizar en el cálculo (n). La función debe calcular el valor de Pi utilizando la fórmula de Wallis y devolver el valor de Pi obtenido. Proba la función, utilizando al menos, como valor de n, 100, 1000 y 10000. Fuente de consulta: https://es.wikipedia.org/wiki/Producto_de_Wallis
+
+def pi_wallis(n):
+    # la formula de Wallis es pi= 2n/(2n-1)*2n/(2n+1)
+    pi = 2
+    for i in range(1, n + 1):
+        pi *= ((2*i)/(2*i - 1)) * ((2*i)/(2*i + 1))
+    return pi
+
+def main():
+    n = int(input("Ingrese el valor más alto a utilizar en el cálculo (n): "))
+    pi = pi_wallis(n)
+    print(f"El valor de Pi utilizando Wallis con n={n} es: {pi}")
+main()
+
+# 11. Un palíndromo es una palabra o frase que se puede leer de igual modo en ambos sentidos. (Por ejemplo: Oso - Ana - Oso baboso - Arriba la birra). Escribir una función que reciba una frase que podría estar compuesta por una o más palabras; y devuelva True, si se trata de un palíndromo, de lo contrario, deberá devolver False. Fuente de conulta: https://es.wikipedia.org/wiki/Palíndromo
+
+def esPalindromo(palabra):
+    palindromo = False
+    palabra = palabra.replace(" ", "").lower()
+    palabraInvertida = palabra[::-1]
+    if palabra == palabraInvertida:
+        palindromo = True
+    return palindromo
+
+def main():
+    palabra = input("Ingrese una palabra o frase: ")
+    if esPalindromo(palabra):
+        print("La palabra o frase es un palíndromo.")
+    else:
+        print("La palabra o frase no es un palíndromo.")
+        
+main()
+
 """
-10. El producto de Wallis es una expresión matemática, utilizada para representar el
-valor del número Pi, que fue descubierta por John Wallis en 1655 y que
-establece que:
-Escribir una función, que reciba por parámetro, el valor más alto a utilizar en el
-cálculo (n). La función debe calcular el valor de Pi utilizando la fórmula de Wallis
-y devolver el valor de Pi obtenido.
-Proba la función, utilizando al menos, como valor de n, 100, 1000 y 10000.
-Fuente de consulta: https://es.wikipedia.org/wiki/Producto_de_Wallis
-11. Un palíndromo es una palabra o frase que se puede leer de igual modo en ambos
-sentidos. Por ejemplo: Oso - Ana - Oso baboso - Arriba la birra
-Escribir una función que reciba una frase que podría estar compuesta por una o
-más palabras; y devuelva True, si se trata de un palíndromo, de lo contrario,
-deberá devolver False.
-Fuente de conulta: https://es.wikipedia.org/wiki/Palíndromo
-12. Tome la solución del ejercicio anterior y proceda según lo descripto a
-continuación:
-a) Si en su solución no utiliza un ciclo, entonces, intente resolver el ejercicio
-utilizando uno y sólo uno, y luego siga con los puntos b) y c).
-b) Si decidió utilizar un ciclo para la solución, responda lo siguiente:
-1) Cualquiera sea la cadena recibida, el algoritmo recorrerá siempre toda la
-cadena?
-2) Si la respuesta de la pregunta anterior es afirmativa, entonces, evalúe si
-realmente es necesario recorrer siempre toda la cadena ó podemos evitar
-continuar con la evaluación, si detectamos en algún momento que no es posible
-que la cadena sea un palíndromo.
+12) Tome la solución del ejercicio anterior y proceda según lo descripto a continuación:
+    a) Si en su solución no utiliza un ciclo, entonces, intente resolver el ejercicio utilizando uno y sólo uno, y luego siga con los puntos b) y c).
+    b) Si decidió utilizar un ciclo para la solución, responda lo siguiente:
+        1) Cualquiera sea la cadena recibida, el algoritmo recorrerá siempre toda la cadena?
+        2) Si la respuesta de la pregunta anterior es afirmativa, entonces, evalúe si realmente es necesario recorrer siempre toda la cadena ó podemos evitar continuar con la evaluación, si detectamos en algún momento que no es posible que la cadena sea un palíndromo.
 Genere un nuevo algoritmo teniendo en cuenta esto.
-______________________________________________________________________________________
-Lic. Gustavo Bianchi Página 2
-Ejercicios Prácticos - Versión Preliminar Introducción a la Programación - FIUBA
-______________________________________________________________________________________
-13. Escribir una función que reciba por parámetro un texto todo en mayúsculas.
-La función deberá devolver el texto pero respetando la regla que indica que
-luego de un punto la primer letra debe ser mayúscula, y el resto minúsculas.
-14. Escribir una función que recibirá por parámetro, una palabra, que representa un
-sustantivo en singular.
-La función deberá devolver, el plural de dicho sustantivo, aplicando las
-siguientes reglas:
-a. Agregar una “s” al final, si la palabra termina en vocal sin acento.
-b. Agregar una “s” al final, si la palabra termina con una é (acentuada).
-c. Si la palabra termina en “z”, la reemplazamos por “ces”.
-d. Agregamos “es” al final, si la palabra termina en una consonante (a excepción
-de la “s”, la “z”, y la “x”), ó si la palabra termina con las vocales acentuadas: á,
-í, ó, ú.
-e. Si el sustantivo termina en “s” ó “x”, entonces el plural es igual al singular,
-por lo tanto la función deberá devolver lo mismo que recibió.
 """
+
+def palindromo_con_ciclo(cadena):
+    palindromo = True
+    # Eliminar espacios y convertir a minúsculas
+    cadena = cadena.replace(" ", "").lower()
+    longitud = len(cadena)
+
+    # Recorrer solo hasta la mitad de la cadena
+    for i in range(longitud // 2):
+        if cadena[i] != cadena[longitud - i - 1]:
+            palindromo = False  # Si hay un desajuste, no es un palíndromo
+    return palindromo  # Si no hay desajustes, es un palíndromo
+
+def main():
+    cadena = input("Ingrese una palabra o frase: ")
+    if palindromo_con_ciclo(cadena):
+        print("La palabra o frase es un palíndromo.")
+    else:
+        print("La palabra o frase no es un palíndromo.")
+main()
+
+
+# 13) Escribir una función que reciba por parámetro un texto todo en mayúsculas. La función deberá devolver el texto pero respetando la regla que indica que luego de un punto la primer letra debe ser mayúscula, y el resto minúsculas.
+
+def formatear_texto(texto):
+    # Dividir el texto en oraciones usando el punto como delimitador
+    oraciones = texto.split(".")
+    # Formatear cada oración
+    for i in range(len(oraciones)):
+        oraciones[i] = oraciones[i].strip().capitalize()  # Eliminar espacios y capitalizar
+    # Unir las oraciones nuevamente con un punto
+    return oraciones
+
+def main():
+    texto = input("Ingrese un texto en mayúsculas: ")
+    resultado = formatear_texto(texto)
+    print("Texto formateado:")
+    for oracion in resultado:
+        print(oracion.strip() + ".")  # Imprimir cada oración con un punto al final
+
+main()
+
+"""
+14) Escribir una función que recibirá por parámetro, una palabra, que representa un sustantivo en singular. La función deberá devolver, el plural de dicho sustantivo, aplicando las siguientes reglas:
+    a. Agregar una “s” al final, si la palabra termina en vocal sin acento.
+    b. Agregar una “s” al final, si la palabra termina con una é (acentuada).
+    c. Si la palabra termina en “z”, la reemplazamos por “ces”.
+    d. Agregamos “es” al final, si la palabra termina en una consonante (a excepción de la “s”, la “z”, y la “x”), ó si la palabra termina con las vocales acentuadas: á, í, ó, ú.
+    e. Si el sustantivo termina en “s” ó “x”, entonces el plural es igual al singular, por lo tanto la función deberá devolver lo mismo que recibió.
+"""
+
+def convertir_a_plural(sustantivo):
+    sustantivo = sustantivo.lower()  # Convertir a minúsculas para facilitar la comparación
+    if sustantivo.endswith(("s", "x")): # Regla e
+        sustantivo = sustantivo
+    elif sustantivo.endswith(("a", "e", "i", "o", "u")):
+        sustantivo += "s"  # Regla a
+    elif sustantivo.endswith("é"):
+        sustantivo += "s"  # Regla b
+    elif sustantivo.endswith("z"):
+        sustantivo = sustantivo[:-1] + "ces"  # Regla c
+    elif not sustantivo[-1].lower() in ("s", "z", "x"):
+        sustantivo += "es"  # Regla d
+    else:
+        sustantivo = sustantivo  # Si no se cumple ninguna regla, devolver el mismo sustantivo
+    return sustantivo
+
+def main():
+    sustantivo = input("Ingrese un sustantivo en singular: ")
+    plural = convertir_a_plural(sustantivo)
+    print(f"El plural de '{sustantivo}' es: '{plural}'")
+
+main()
