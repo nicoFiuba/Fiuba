@@ -10,9 +10,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    howiam= url_for('howiam')
+    link_howiam= url_for('howiam')
 
-    return f'Hello, World! <a href = "{howiam}">Quien soy?</a>'
+    return f'Hello, World! <a href = "{link_howiam}">Quien soy?</a>'
 
 @app.route('/howiam')
 def howiam():
