@@ -219,7 +219,7 @@ def palindromo_con_ciclo(cadena):
 
     # Recorrer solo hasta la mitad de la cadena
     for i in range(longitud // 2):
-        if cadena[i] != cadena[longitud - i - 1]:
+        if cadena[i] != cadena[longitud - i - 1]: # Compara caracteres desde ambos extremos, el -i -1 es para ir desde el contrario a i con paso negativo 
             palindromo = False  # Si hay un desajuste, no es un palíndromo
     return palindromo  # Si no hay desajustes, es un palíndromo
 

@@ -1,7 +1,6 @@
 """
 Escribiendo progamas
-Para cada uno de los siguientes ejercicios, deberás escribir un programa compuesto por una o más funciones. Recordá que lo adecuado es que una función realice sólo una tarea, por eso, antes de ponerte a programar cada una de las soluciones de los ejercicios, diseña la solución indicando cuáles serán las funciones que escribirás y compondrán tu programa. Es recomendable que hayas resuelto los ejercicios de las guías anteriores, ya que te
-encontrarás que podrás reutilizar funciones que ya has escrito.
+Para cada uno de los siguientes ejercicios, deberás escribir un programa compuesto por una o más funciones. Recordá que lo adecuado es que una función realice sólo una tarea, por eso, antes de ponerte a programar cada una de las soluciones de los ejercicios, diseña la solución indicando cuáles serán las funciones que escribirás y compondrán tu programa. Es recomendable que hayas resuelto los ejercicios de las guías anteriores, ya que te encontrarás que podrás reutilizar funciones que ya has escrito.
 """
 
 
@@ -34,9 +33,50 @@ main()
 
 """
 2. Escribir un programa que solicite el ingreso de una serie de números. Por cada número ingresado se deberá informar si el mismo es ó no, un número capicúa. Se debe evaluar que lo ingresado, sea un número entero positivo; de lo contrario, se debe enviar el mensaje “Número Inválido”, y solicitar el siguiente. El ingreso de números, termina cuando en lugar de un número, el usuario ingresa “FIN”.
+"""
+def es_capicua(numero):
+    numero = str(numero)
+    longitud = len(numero)
+    capicua = True
+    for i in range(longitud//2):
+        if numero[i] != numero[longitud - i - 1]:
+            capicua = False
+    return capicua
 
+def solicitar_numero():
+    ingreso = input("Ingrese un número entero positivo (o 'FIN' para terminar): ")
+    if ingreso.upper() == "FIN" or not ingreso.isdigit():
+        ingreso = None
+        #Si el ingreso no es un numero entero positivo tendria que devolver "Numero invalido, intentar nuevamente"
+    return ingreso
 
+def es_positivo():
+    numero = - 1
 
+    while numero < 0:
+        ingreso = solicitar_numero()
+        if ingreso is None:
+            numero = None
+        elif ingreso.isdigit():
+            numero = int(ingreso)
+        else:
+            print("Número inválido. Intente nuevamente.")
+    return numero                        
+
+def main():
+    continuar = True
+    while continuar:
+        numero = solicitar_numero()
+        if numero is None:
+            continuar = False
+        else:
+            capicua = es_capicua(numero)
+            print(f"El número {numero} {'es' if capicua else 'no es'} capicúa.")
+    print("Fin del programa.")
+
+main()
+
+"""
 3. Escribir un programa que solicite el ingreso de valores, que representarán una cantidad de segundos. El programa deberá informar al usuario, el equivalente en días, horas, minutos y segundos. Se debe validar que el valor ingresado sea entero y positivo, de lo contrario, deberá mostrarse el mensaje: “Valor ingresado inválido”.
 El ingreso de valores finaliza cuando el usuario ingrese como valor, 0.
 
