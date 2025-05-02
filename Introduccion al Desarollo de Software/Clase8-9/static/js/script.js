@@ -1,9 +1,10 @@
-const alerta = document.getElementsByClassName("alerta")
+const alerta = document.getElementsByClassName("alerta");
+const boton = document.querySelector(".boton");
 
-alerta.onclick = function (event) {
-    alert(alerta.innerHTML)
-}
-
-function randomNumber() {
-    return (Math.random() * 256).toFixed(0)
-}
+boton.onclick = function () {
+    let texto = "";
+    for (let i = 0; i < alerta.length; i++) {
+        texto += alerta[i].textContent + " ";
+    }
+    alert(texto.trim());
+};

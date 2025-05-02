@@ -19,3 +19,12 @@ p{
     font-size: 30px;
     border: 2px solid black;
 }
+
+.boton:hover{
+    cursor: grab;
+
+}
+
+.boton:active{
+    cursor: grabbing;
+}
