@@ -1,0 +1,37 @@
+Punto 1
+
+#!/bin/bash
+
+archivo="$1"
+
+sed -i 's/Pasta frola/Pasta frola de la abuela/g' "$archivo"
+
+Punto 4
+    parte de html
+
+{% extends "base.html" %}
+
+{% block body %}
+
+<div>
+    <h1>recetas</h1>
+    {% for dato in datos %}
+    <li>
+        {{datos[dato]["nombre"]}} 
+        <a href= "{{ url_for('mireceta',id = dato)}}">
+            <button>ver</button>
+        </a>
+    </li>
+     {% endfor %}
+</div>
+
+{% endblock %}
+
+    parte app,py
+
+@app.route('/mireceta/{id}')
+def mireceta(id):
+    datos = {"1":{"nombre":"Budín de pan","descripción":"El mejor budín de pan...","preparación":"Incorporar el pan de miga...","ingredientes":{"Pan de miga":"250gr","Leche tibia":"750cc","Huevos":"3"}},
+             "2":{"nombre":"Chocotorta","descripción":"La chocotorta origial","preparación":"Con las galletitas...","ingredientes":{"Dulce de leche":"350gr","Crema":"350cc","Galletitas de chocolate":"700gr","Cacao en polvo":"50gr"}},
+             "3":{"nombre":"Pasta frola","descripción":"La pastafrola de la abuela","preparación":"Incorporar el huevo, la yema ...","ingredientes":{"Huevo":"1","Yema":"1","Azucar":"200gr","Manteca":"250gr","Dulce de batata":"400gr"}}}
+    return render_template('mireceta.html', receta= datos[id])
