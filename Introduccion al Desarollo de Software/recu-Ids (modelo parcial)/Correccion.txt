@@ -6,32 +6,108 @@ archivo="$1"
 
 sed -i 's/Pasta frola/Pasta frola de la abuela/g' "$archivo"
 
-Punto 4
-    parte de html
 
-{% extends "base.html" %}
+Punto 2
+Crear base.html y agregegrale esto: 
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>1er Parcial de Introducción al Desarrollo de Software</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css', _external=True) }}" />
+	</head>
+	<body>
+			<div id="header">
+				<img src="{{ url_for('static', filename='/images/fiuba_logo.jpeg', _external=True) }}" alt="FIUBA">
+			</div>
+			{% block body %}
+			{% endblock %}
+	</body>
+</html>
 
+En el app.py tiene que quedar asi:
+@app.route('/')
+def Home():
+    return render_template('home.html', nombre='Tu nombre' , apellido='Tu apellido')
+
+Punto 3
+Crear home.html y agregarle esto:
+{% extends 'base.html' %}
 {% block body %}
-
-<div>
-    <h1>recetas</h1>
-    {% for dato in datos %}
-    <li>
-        {{datos[dato]["nombre"]}} 
-        <a href= "{{ url_for('mireceta',id = dato)}}">
-            <button>ver</button>
-        </a>
-    </li>
-     {% endfor %}
-</div>
-
+    <div class="home">
+        <h1>Este examen corresponde a {{ nombre }} {{ apellido }}</h1>
+        <p><a href="{{ url_for( 'Recetas' , _external=True ) }}">Haga click</a> aquí para continuar</p>
+    </div>
 {% endblock %}
 
-    parte app,py
+En el app.py tiene que quedar asi:
+@app.route('/recetas')
+def Recetas():
+    return render_template('recetas.html', datos=
+        {
+            "1":{
+                "nombre":"Budín de pan",
+                "descripción":"El mejor budín de pan...",
+                "preparación":"Incorporar el pan de miga...",
+                "ingredientes":{"Pan de miga":"250gr","Leche tibia":"750cc","Huevos":"3"}},
+            "2":{"nombre":"Chocotorta",
+                 "descripción":"La chocotorta origial",
+                 "preparación":"Con las galletitas...",
+                 "ingredientes":{"Dulce de leche":"350gr","Crema":"350cc","Galletitas de chocolate":"700gr","Cacao en polvo":"50gr"}},
+            "3":{"nombre":"Pasta frola",
+                 "descripción":"La pastafrola de la abuela",
+                 "preparación":"Incorporar el huevo, la yema ...",
+                 "ingredientes":{"Huevo":"1","Yema":"1","Azucar":"200gr","Manteca":"250gr","Dulce de batata":"400gr"}}}
+    )
 
-@app.route('/mireceta/{id}')
-def mireceta(id):
-    datos = {"1":{"nombre":"Budín de pan","descripción":"El mejor budín de pan...","preparación":"Incorporar el pan de miga...","ingredientes":{"Pan de miga":"250gr","Leche tibia":"750cc","Huevos":"3"}},
-             "2":{"nombre":"Chocotorta","descripción":"La chocotorta origial","preparación":"Con las galletitas...","ingredientes":{"Dulce de leche":"350gr","Crema":"350cc","Galletitas de chocolate":"700gr","Cacao en polvo":"50gr"}},
-             "3":{"nombre":"Pasta frola","descripción":"La pastafrola de la abuela","preparación":"Incorporar el huevo, la yema ...","ingredientes":{"Huevo":"1","Yema":"1","Azucar":"200gr","Manteca":"250gr","Dulce de batata":"400gr"}}}
-    return render_template('mireceta.html', receta= datos[id])
+Punto 4
+Crear receta.html y agregarle esto:
+{% extends 'base.html' %}
+{% block body %}
+    {% if id %}
+        <div>
+            <h1> Nombre: <span class="nombre_receta">{{ datos[id]['nombre'] }}</span></h1>
+            <h2>{{ datos[id]['descripción'] }}</h2>
+            <p>{{ datos[id]['preparación'] }}</p>
+            <ul>
+                {% for key in  datos[id]['ingredientes']%}
+                <li>{{ key }}:{{ datos[id]['ingredientes'][key] }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% else %}
+    <div>
+        {% for key in datos %}
+            <form action="/mireceta/{{ key }}" method="get">
+                <div>
+                    <p>{{ datos[key]['nombre'] }}</p>
+                    <button type="submit" > ver </button>
+                </div>
+            </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+En el app,py tiene que quedar asi:
+
+@app.route('/mireceta/<int:id>', methods=['GET'])
+def Mireceta(id):
+    return render_template('recetas.html',id=str(id), datos=
+        {
+            "1":{
+                "nombre":"Budín de pan",
+                "descripción":"El mejor budín de pan...",
+                "preparación":"Incorporar el pan de miga...",
+                "ingredientes":{"Pan de miga":"250gr","Leche tibia":"750cc","Huevos":"3"}},
+            "2":{"nombre":"Chocotorta",
+                 "descripción":"La chocotorta origial",
+                 "preparación":"Con las galletitas...",
+                 "ingredientes":{"Dulce de leche":"350gr","Crema":"350cc","Galletitas de chocolate":"700gr","Cacao en polvo":"50gr"}},
+            "3":{"nombre":"Pasta frola",
+                 "descripción":"La pastafrola de la abuela",
+                 "preparación":"Incorporar el huevo, la yema ...",
+                 "ingredientes":{"Huevo":"1","Yema":"1","Azucar":"200gr","Manteca":"250gr","Dulce de batata":"400gr"}}}
+    )
