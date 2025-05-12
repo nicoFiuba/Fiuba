@@ -69,8 +69,7 @@ doctest.testmod()
 
 """
 Ejercicio 2
-Escribir una función que reciba un texto y devuelva una lista anidada que representa un ranking de palabras. El texto puede tener gran cantidad de palabras.
-La función deberá devolver una lista anidada, en la que cada sublista, esté formada por un par [palabra, cantidad de veces en el texto], ordenada por la cantidad de veces que aparece la palabra. Las palabras sólo deben aparecer una vez en la lista.
+Escribir una función que reciba un texto y devuelva una lista anidada que representa un ranking de palabras. El texto puede tener gran cantidad de palabras. La función deberá devolver una lista anidada, en la que cada sublista, esté formada por un par [palabra, cantidad de veces en el texto], ordenada por la cantidad de veces que aparece la palabra. Las palabras sólo deben aparecer una vez en la lista.
 """
 
 def generar_ranking_palabras(texto):
@@ -95,13 +94,12 @@ def generar_ranking_palabras(texto):
 """
 Ejercicio 3:
 Escribir un programa modular que haciendo uso de listas, permita:
-1. El ingreso de una secuencia de valores, que termina con el valor 0.
-2. Muestre los valores ingresados.
-3. Muestre los valores hasta encontrar el 3er. valor impar ingresado inclusive.
-4. Muestre los elementos que se encuentren en posiciones pares.
-5. Muestre los elementos ordenados de menor a mayor, sin repetirlos.
-En todos los casos, las salidas deben contener un título que indique lo que se está mostrando
-y mostrar un valor por línea.
+    1. El ingreso de una secuencia de valores, que termina con el valor 0.
+    2. Muestre los valores ingresados.
+    3. Muestre los valores hasta encontrar el 3er. valor impar ingresado inclusive.
+    4. Muestre los elementos que se encuentren en posiciones pares.
+    5. Muestre los elementos ordenados de menor a mayor, sin repetirlos.
+En todos los casos, las salidas deben contener un título que indique lo que se está mostrando y mostrar un valor por línea.
 """
 
 def generar_lista():

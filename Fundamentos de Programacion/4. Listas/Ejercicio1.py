@@ -1,19 +1,12 @@
 """
 Ejercicio: Operaciones varias sobre una lista de valores
 Escribir un programa modular (compuesto por funciones), que haciendo uso de listas:
-1. Solicite el ingreso de una secuencia de valores, que termina con el valor 0.
-A medida que se solicita y se ingresa un valor se debe almacenar en una lista.
-El valor 0 no debe almacenarse.
-2. Muestre los valores ingresados.
-3. Muestre los valores hasta encontrar el 3er. valor par ingresado inclusive.
-En caso de haber ninguno o menos de 3 valores pares en la lista, se mostrarán todos los
-valores.
-4. Muestre los elementos que se encuentren en posiciones pares.
-5. Muestre los elementos ordenados de menor a mayor, sin repetirlos.
-Si hay 2 o más valores iguales, sólo mostrar el valor una vez, y a su lado colocar “valor
-repetido”.
-En todos los casos, las salidas deben ser presentadas con un título que indique lo que se está
-mostrando y mostrar un valor por línea.
+    1. Solicite el ingreso de una secuencia de valores, que termina con el valor 0. A medida que se solicita y se ingresa un valor se debe almacenar en una lista. El valor 0 no debe almacenarse.
+    2. Muestre los valores ingresados.
+    3. Muestre los valores hasta encontrar el 3er. valor par ingresado inclusive. En caso de haber ninguno o menos de 3 valores pares en la lista, se mostrarán todos los valores.
+    4. Muestre los elementos que se encuentren en posiciones pares.
+    5. Muestre los elementos ordenados de menor a mayor, sin repetirlos. Si hay 2 o más valores iguales, sólo mostrar el valor una vez, y a su lado colocar “valor repetido”.
+En todos los casos, las salidas deben ser presentadas con un título que indique lo que se está mostrando y mostrar un valor por línea.
 """
 
 def ingresar_valores():
