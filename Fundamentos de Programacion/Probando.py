@@ -1,31 +1,22 @@
-def contar_caracteres(cadena):
-    caracteres = []
-    cant_mayusculas = 0
-    cant_minusculas = 0
-    cant_simbolos = 0
+"""
+2) Escribir una funcion elegir_comidas en Python que reciba una lista de listas, cada sublista es una comida, en donde el primer elemento es el nombre de la comida y los siguientes elementos los respectivos ingredientes. Tambien recibe una lista de ingredientes prohibidos. Debe devolver una lista con los nombres de las comidas permitidas (no deben contener ingredientes prohibidos).
+    Ejemplo:
+        comidas = ["milanesa", "bifes de nalga", "pan rallado", "huevo"], 
+        ["ravioles", "harina", "espinaca", "ricota"],["pizza", "queso", "harina", "tomate", "aceitunas"]]
+    prohibidos_1 = ["huevo", "nueces", "aceitunas"]
+    prohibidos_2 = ["huevo", "nueces"]
+    elegir_comidas(comidas, prohibidos_1) => ["ravioles"]
+    elegir_comidas(comidas, prohibidos_2) => ["ravioles", "pizza"]
+Testea la funcion con DOS casos usando doctest, con 2 listas de prohibidos distintas a las del ejemplo.
+"""
+def elegir_comidas(comidas, prohibidos):
+    comidas_permitidas = []
+    for com in comidas:
+        permitido = True
+        for ingrediente in com[1:]:
+            if ingrediente in prohibidos:
+                permitido = False
+    if permitido:
+        comidas_permitidas.append(com[0])
+    return comidas_permitidas
 
-    reemplazos = {
-        "Á": "A",
-        "É": "E",
-        "Í": "I",
-        "Ó": "O",
-        "Ú": "U",
-        "á": "a",
-        "é": "e",
-        "í": "i",
-        "ó": "o",
-        "ú": "u",
-    }
-
-    for caracter in cadena:
-        if caracter in reemplazos:
-            caracter = reemplazos[caracter]
-        if caracter.isalpha() and caracter.isupper():
-            cant_mayusculas += 1
-        elif caracter.isalpha() and caracter.islower():
-            cant_minusculas += 1
-        elif not caracter.isalpha():
-            cant_simbolos += 1
-    caracteres.extend([cant_mayusculas, cant_minusculas, cant_simbolos])
-    caracteres = tuple(caracteres)
-    return caracteres
