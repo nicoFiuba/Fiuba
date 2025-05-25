@@ -5,11 +5,11 @@ from tkinter import *
 
 def crear_ventana():
     # Crear la ventana
-    ventana = Tk()
-    ventana.title("Ingreso de Datos")
-    ventana.geometry("500x300")
+    raiz = Tk()
+    raiz.title("Ingreso de Datos")
+    raiz.geometry("500x300")
 
     # Mostrar la ventana
-    ventana.mainloop()
+    raiz.mainloop()
 # Llamar a la función para crear la ventana
 crear_ventana()
