@@ -10,10 +10,31 @@ Deben agregar:
 from tkinter import *
 from tkinter import messagebox
 
-usuarios ={"Nicolas": "123", "Agustin": "456", "Feldman": "789"}
+RUTA_CSV = "usuarios.csv"
 
+def cargar_usuarios():
+    usuarios = {}
+    
+    archivo = open(RUTA_CSV, "r")
+    linea = archivo.readline()
+    while linea:
+        datos = linea.strip().split(",")
+        if len(datos) == 3:
+            nombre_completo, usuario, clave = datos
+            usuarios[usuario] ={"nombre_completo": nombre_completo, "clave": clave}
+            linea = archivo.readline()
+    archivo.close()
+    return usuarios
 
-def ventana_registro():
+def guardar_usuarios(usuarios):
+    archivo = open(RUTA_CSV, "w")
+    archivo.write("nombre_completo,usuario,clave\n")
+    for usuario, datos in usuarios.items():
+        archivo.write(f"{datos['nombre_completo']},{usuario},{datos['clave']}\n")
+    archivo.close()
+    return
+
+def ventana_registro(usuarios):
     registro = Toplevel()
     registro.title("Registro Grupo 24")
     registro.geometry("300x180")
@@ -24,33 +45,42 @@ def ventana_registro():
     formularioFrame = Frame(registro, bg="lightblue")   
     formularioFrame.pack(padx=5, pady=10, anchor="w")
 
+    nombreCompletoLabel = Label(formularioFrame, text="Nombre y Apellido:")
+    nombreCompletoLabel.grid(row=0, column=0, sticky="w", padx=(5,2), pady=5)
+    cuadroNombreCompleto = Entry(formularioFrame)
+    cuadroNombreCompleto.grid(row=0, column=1, padx=(15,10), pady=5)
+
     nombreLabel = Label(formularioFrame, text="Usuario Alumno:")
-    nombreLabel.grid(row=0, column=0, sticky="w", padx=(5,2), pady=5)
+    nombreLabel.grid(row=1, column=0, sticky="w", padx=(5,2), pady=5)
     cuadroNombre = Entry(formularioFrame)
-    cuadroNombre.grid(row=0, column=1, padx=(15,10), pady=5)
+    cuadroNombre.grid(row=1, column=1, padx=(15,10), pady=5)
 
     passLabel = Label(formularioFrame, text="Clave:")
-    passLabel.grid(row=1, column=0, sticky="w", padx=(5,2), pady=5)
+    passLabel.grid(row=2, column=0, sticky="w", padx=(5,2), pady=5)
     cuadroPass = Entry(formularioFrame)
-    cuadroPass.grid(row=1, column=1, padx=(15,10), pady=5)
+    cuadroPass.grid(row=2, column=1, padx=(15,10), pady=5)
     cuadroPass.config(show="*")
 
     def registrar_usuario():
-        nuevo_usuario = cuadroNombre.get()
-        nueva_clave = cuadroPass.get()
+        nombre_completo = cuadroNombreCompleto.get() 
+        usuario = cuadroNombre.get()
+        clave = cuadroPass.get()
 
-        if nuevo_usuario in usuarios:
+        if not nombre_completo or not usuario or not clave:
+            messagebox.showerror("","Todos los campos son obligatorios.")
+        elif usuario in usuarios:
             messagebox.showerror("","El usuario ya existe.")
         else:
-            usuarios[nuevo_usuario] = nueva_clave
+            usuarios[usuario] = {"nombre_completo": nombre_completo, "clave": clave}
+            guardar_usuarios(usuarios)
             messagebox.showinfo("","Usuario registrado correctamente.")
             registro.destroy()
-
+        return
     botonRegistrar = Button(formularioFrame, text="Registrar Usuario", command=registrar_usuario)
     botonRegistrar.grid(row=3, column=0, columnspan=2, pady=10)
 
-def ventana_login():
-    raiz = Tk()
+def ventana_login(usuarios):
+    raiz = Toplevel()
     raiz.title("Login Grupo 24")
     raiz.geometry("300x180")
     raiz.resizable(False, False)
@@ -72,20 +102,37 @@ def ventana_login():
     cuadroPass.config(show="*")
     
     def validar_ingreso():
-        nombre = cuadroNombre.get()
+        usuario = cuadroNombre.get()
         clave = cuadroPass.get()
 
-        if nombre in usuarios and clave == usuarios[nombre]:
-            messagebox.showinfo("","Usuario y Clave Correctos.")  
+        if usuario in usuarios and clave == usuarios[usuario]["clave"]:
+            messagebox.showinfo("","Usuario y Clave Correctos.")
+            raiz.destroy()
         else:
             messagebox.showerror("","Alguno de los datos ingresados es Incorrecto")
-            
+        
     botonEnviar = Button(formularioFrame, text="Enviar", command=validar_ingreso)
     botonEnviar.grid(row=2, column=0, columnspan=2, pady=10)
     
-    botonRegistrar = Button(formularioFrame, text="Registrar Usuario", command=ventana_registro)
+    botonRegistrar = Button(formularioFrame, text="Registrar Usuario", command=lambda: ventana_registro(usuarios))
     botonRegistrar.grid(row=3, column=0, columnspan=2, pady=10)
-    
-    raiz.mainloop()
 
-ventana_login()
+def menu_de_opciones(usuarios):
+    menu = Tk()
+    menu.title("Menu de Opciones")
+    menu.geometry("300x200")
+    menu.resizable(False, False)
+    menu.iconbitmap("IMG_Grupo_24.ico")
+    menu.config(bg="lightblue")
+
+    Button(menu, text="Registrar Usuario", command=lambda: ventana_registro(usuarios)).pack(pady=10)
+    Button(menu, text="Iniciar Sesión", command=lambda: ventana_login(usuarios)).pack(pady=10)
+    Button(menu, text="Salir", command=menu.destroy).pack(pady=10)
+    menu.mainloop()
+    
+def main():
+    usuarios = cargar_usuarios()
+    menu_de_opciones(usuarios)
+    guardar_usuarios(usuarios)
+
+main()
