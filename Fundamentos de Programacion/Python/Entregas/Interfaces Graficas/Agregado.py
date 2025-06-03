@@ -14,7 +14,6 @@ RUTA_CSV = "usuarios.csv"
 
 def cargar_usuarios():
     usuarios = {}
-    
     archivo = open(RUTA_CSV, "r")
     linea = archivo.readline()
     while linea:
@@ -28,7 +27,6 @@ def cargar_usuarios():
 
 def guardar_usuarios(usuarios):
     archivo = open(RUTA_CSV, "w")
-    archivo.write("nombre_completo,usuario,clave\n")
     for usuario, datos in usuarios.items():
         archivo.write(f"{datos['nombre_completo']},{usuario},{datos['clave']}\n")
     archivo.close()
@@ -117,6 +115,86 @@ def ventana_login(usuarios):
     botonRegistrar = Button(formularioFrame, text="Registrar Usuario", command=lambda: ventana_registro(usuarios))
     botonRegistrar.grid(row=3, column=0, columnspan=2, pady=10)
 
+def ventana_baja(usuarios):
+    baja = Toplevel()
+    baja.title("Baja Usuario")
+    baja.geometry("300x180")
+    baja.resizable(False, False)
+    baja.iconbitmap("IMG_Grupo_24.ico")
+    baja.config(bg="lightblue")
+
+    formularioFrame = Frame(baja, bg="lightblue")   
+    formularioFrame.pack(padx=5, pady=10, anchor="w")
+
+    eliminarUsuarioLabel = Label(formularioFrame, text="Usuario a Eliminar:")
+    eliminarUsuarioLabel.grid(row=0, column=0, sticky="w", padx=(5,2), pady=5)
+    cuadroEliminarUsuario = Entry(formularioFrame)
+    cuadroEliminarUsuario.grid(row=0, column=1, padx=(15,10), pady=5)
+
+    def eliminar_usuario():
+        usuario = cuadroEliminarUsuario.get()
+
+        if usuario in usuarios:
+            del usuarios[usuario]
+            guardar_usuarios(usuarios)
+            messagebox.showinfo("","Usuario eliminado correctamente.")
+            baja.destroy()
+        else:
+            messagebox.showerror("","El usuario no existe.")
+        return
+    botonEliminar = Button(formularioFrame, text="Eliminar Usuario", command=eliminar_usuario)
+    botonEliminar.grid(row=1, column=0, columnspan=2, pady=10)
+
+def ventana_modificacion(usuarios):
+    modificar = Toplevel()
+    modificar.title("Modificar Usuario")
+    modificar.geometry("300x200")
+    modificar.resizable(False, False)
+    modificar.iconbitmap("IMG_Grupo_24.ico")
+    modificar.config(bg="lightblue")
+
+    formularioFrame = Frame(modificar, bg="lightblue")
+    formularioFrame.pack(padx=5, pady=10, anchor="w")
+
+    usuarioLabel = Label(formularioFrame, text="Usuario a Modificar:")
+    usuarioLabel.grid(row=0, column=0, sticky="w", padx=(5,2), pady=5)
+    cuadroUsuario = Entry(formularioFrame)
+    cuadroUsuario.grid(row=0, column=1, padx=(15,10), pady=5)
+
+    nombreCompletoLabel = Label(formularioFrame, text="Nombre y Apellido:")
+    nombreCompletoLabel.grid(row=1, column=0, sticky="w", padx=(5,2), pady=5)
+    cuadroNombreCompleto = Entry(formularioFrame)
+    cuadroNombreCompleto.grid(row=1, column=1, padx=(15,10), pady=5)
+
+    claveLabel = Label(formularioFrame, text="Nueva Clave:")
+    claveLabel.grid(row=2, column=0, sticky="w", padx=(5,2), pady=5)
+    cuadroClave = Entry(formularioFrame)
+    cuadroClave.grid(row=2, column=1, padx=(15,10), pady=5)
+    cuadroClave.config(show="*")
+
+    def modificar_usuario():
+        usuario = cuadroUsuario.get()
+        nueva_clave = cuadroClave.get()
+        nuevo_nombre_completo = cuadroNombreCompleto.get()
+
+        if usuario not in usuarios:
+            messagebox.showerror("","El usuario no existe.")
+        elif not nuevo_nombre_completo and not nueva_clave:
+            messagebox.showerror("","Debe ingresar al menos un campo para modificar.")
+        else:
+            if nuevo_nombre_completo:
+                usuarios[usuario]["nombre_completo"] = nuevo_nombre_completo
+            if nueva_clave:
+                usuarios[usuario]["clave"] = nueva_clave
+            guardar_usuarios(usuarios)
+            messagebox.showinfo("","Usuario modificado correctamente.")
+            modificar.destroy()
+        return
+    
+    botonModificar = Button(formularioFrame, text="Modificar Usuario", command=modificar_usuario)
+    botonModificar.grid(row=2, column=0, columnspan=2, pady=10)
+            
+
 def menu_de_opciones(usuarios):
     menu = Tk()
     menu.title("Menu de Opciones")
@@ -128,6 +206,8 @@ def menu_de_opciones(usuarios):
     Button(menu, text="Registrar Usuario", command=lambda: ventana_registro(usuarios)).pack(pady=10)
     Button(menu, text="Iniciar Sesión", command=lambda: ventana_login(usuarios)).pack(pady=10)
     Button(menu, text="Salir", command=menu.destroy).pack(pady=10)
+    Button(menu, text="Eliminar Usuario", command=lambda: ventana_baja(usuarios)).pack(pady=10)
+    Button(menu, text="Modificar Usuario", command=lambda: ventana_modificacion(usuarios)).pack(pady=10)
     menu.mainloop()
     
 def main():
