@@ -1,0 +1,1 @@
+printf("Días: %d, Horas: %d, Minutos: %d, Segundos: %d\n", dias, horas, minutos, segundos);

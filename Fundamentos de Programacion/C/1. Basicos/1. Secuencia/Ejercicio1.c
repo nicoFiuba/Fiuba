@@ -1,6 +1,5 @@
 /*
-1) Hallar la superficie de un triángulo conociendo la base y la altura. Solicitarle
-los datos de entrada al usuario.
+1) Hallar la superficie de un triángulo conociendo la base y la altura. Solicitarle los datos de entrada al usuario.
 */
 
 #include <stdio.h>
