@@ -63,7 +63,7 @@ Escribir un programa modular (compuesto por funciones), en Python, que en base a
         
 
 """
-
+"""
 MAX = "zzz,zzz,zzz,zzz,zzz"
 
 def leer(archivo):
@@ -124,12 +124,125 @@ def main():
     archivo.close()
 main()
 
-
-
-
-
-"""
 archivo_salida = open("trabajan.csv", "w")
                 archivo_salida.close()
                     guardar_trabajan(registro, archivo_salida)
                     """
+
+
+MAX = "99,zzz,zzz,11"
+
+def leer(archivo):
+
+    linea = archivo.readline()
+    
+    if linea:
+        linea = linea.strip()
+    else:
+        linea = MAX
+    
+    campos = linea.split(",")
+    return int(campos[0]), campos[1], campos[2], int(campos[3])
+
+def corte_de_control(archivo):
+
+    semana,actividad,_,nota = leer(archivo)    
+
+    while semana < 99:
+        semana_actual = semana
+        actividades_semanales = 0
+        print(f"Semana {semana_actual}:")
+
+        while semana == semana_actual:
+            actividad_actual = actividad
+            entregados = 0
+            aprobados = 0
+
+            while semana == semana_actual and actividad == actividad_actual:
+                entregados += 1
+                if nota >= 6:
+                    aprobados += 1
+                
+                semana, actividad,_, nota = leer(archivo)
+
+            print(f"-- {actividad_actual}: entregados: {entregados} - aprobados: {aprobados}")
+            actividades_semanales += entregados
+
+        print(f"Total de actividades semanales entregadas: {actividades_semanales} ")
+
+def main():
+    archivo = open("notas.txt", "r")
+    archivo.readline() 
+    corte_de_control(archivo)
+    archivo.close()
+
+main()
+
+
+
+MAX = "zzz,zzz,zzz,zzz,zzz"
+
+def leer(archivo):
+    
+    linea = archivo.readline()
+    
+    if linea:
+        linea = linea.strip()
+    else:
+        linea = MAX
+    
+    campos = linea.split(",")
+
+    return int(campos[0]), campos[1], campos[2], campos[3], campos[4]
+
+def guardar(Nro_Inscripto,Nivel_Educativo,Nombre_Curso,Codigo_Comision,salida):
+    salida.write(f"{Nro_Inscripto},{Nivel_Educativo},{Nombre_Curso},{Codigo_Comision}\n")
+
+def corte_de_control(archivo, salida):
+
+    Nro_Inscripto,Nivel_Educativo,Trabaja_Actualmente,Nombre_Curso,Codigo_Comision = leer(archivo)
+
+    alumnos_totales = 0
+    alumnos_que_trabajan = 0
+
+    while Nombre_Curso != "zzz":
+        curso_actual = Nombre_Curso
+        alumnos_por_curso = 0
+
+        print(f"Curso: {curso_actual}")
+
+        while Nombre_Curso == curso_actual:
+            comision_actual = Codigo_Comision
+            alumnos_por_comision = 0
+
+            while Nombre_Curso == curso_actual and Codigo_Comision == comision_actual:
+                alumnos_por_comision += 1
+                alumnos_por_curso += 1
+                alumnos_totales += 1
+                
+                if Trabaja_Actualmente.lower() == "si":
+                    alumnos_que_trabajan += 1
+                    
+                    guardar(Nro_Inscripto, Nivel_Educativo, Nombre_Curso, Codigo_Comision, salida)
+
+                Nro_Inscripto,Nivel_Educativo,Trabaja_Actualmente,Nombre_Curso,Codigo_Comision = leer(archivo)
+
+            print(f" Comision: {comision_actual}, Alumnos inscriptos: {alumnos_por_comision}")
+
+        print(f"Total alumnos inscriptos en {curso_actual}: {alumnos_por_curso}")
+    
+    if alumnos_totales > 0:
+        porcentaje = (alumnos_que_trabajan/alumnos_totales) * 100
+    else:
+        porcentaje = 0
+
+    print(f"Total alumnos inscriptos en todos los cursos: {alumnos_totales}")
+    print(f"Porcentaje de alumnos que trabajan: {porcentaje:.2f}%")
+
+def main():
+    archivo = open("inscriptos_AP40.csv", "r")
+    salida = open("trabajan.csv", "w")
+    corte_de_control(archivo, salida)
+    archivo.close()
+    salida.close()
+main()
