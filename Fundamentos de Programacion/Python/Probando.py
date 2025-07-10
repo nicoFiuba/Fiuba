@@ -63,8 +63,8 @@ Escribir un programa modular (compuesto por funciones), en Python, que en base a
         
 
 """
-"""
-MAX = "zzz,zzz,zzz,zzz,zzz"
+
+MAX = "50,zzz,10,zzz,10"
 
 def leer(archivo):
     
@@ -81,51 +81,33 @@ def leer(archivo):
 
 def corte_de_control(archivo):
 
-    _, _, Trabaja_Actualmente, Nombre_Curso, Codigo_Comision = leer(archivo)
+    print("Dia - Partidos - Sets")
 
-    alumnos_totales = 0
-    alumnos_que_trabajan = 0
+    dia,_,puntos1_sets,_,puntos2_sets = leer(archivo)
 
-    while Nombre_Curso != "zzz":
-        curso_actual = Nombre_Curso
-        alumnos_por_curso = 0
+    while dia < 50:
+        
+        dia_actual = dia
+        partidos = 0
+        sets = 0
+        
+        while dia == dia_actual:
+            
+            partidos += 1
+            sets += max(len(puntos1_sets.split("-")), len(puntos2_sets.split("-")))
 
-        print(f"Curso: {curso_actual}")
+            dia,_,puntos1_sets,_,puntos2_sets = leer(archivo)
 
-        while Nombre_Curso == curso_actual:
-            comision_actual = Codigo_Comision
-            alumnos_por_comision = 0
-
-            while Nombre_Curso == curso_actual and Codigo_Comision == comision_actual:
-                alumnos_por_comision += 1
-                alumnos_por_curso += 1
-                alumnos_totales += 1
-                
-                if Trabaja_Actualmente.lower() == "si":
-                    alumnos_que_trabajan += 1
-
-                _, _, Trabaja_Actualmente, Nombre_Curso, Codigo_Comision = leer(archivo)
-
-            print(f" Comision: {comision_actual}, Alumnos inscriptos: {alumnos_por_comision}")
-
-        print(f"Total alumnos inscriptos en {curso_actual}: {alumnos_por_curso}")
-    
-    if alumnos_totales > 0:
-        porcentaje = (alumnos_que_trabajan/alumnos_totales) * 100
-    else:
-        porcentaje = 0
-
-    print(f"Total alumnos inscriptos en todos los cursos: {alumnos_totales}")
-    print(f"Porcentaje de alumnos que trabajan: {porcentaje:.2f}%")
+        print(f"{dia_actual} - {partidos} - {sets}")
 
 def main():
-    archivo = open("inscriptos_AP40.csv", "r")
+    archivo = open("resultados.csv", "r")
     corte_de_control(archivo)
     archivo.close()
 main()
-"""
 
-MAX = "40,zzz,zzz,10000"
+
+MAX = "50,zzz,100,zzz,100"
 
 def leer(archivo):
 
@@ -138,52 +120,35 @@ def leer(archivo):
     
     campos = linea.split(",")
     
-    return int(campos[0]), campos[1], campos[2], int(campos[3])
+    return int(campos[0]), campos[1], campos[2], campos[3], campos[4]
 
-def guardar (dia,codigo_poductos,descripcion,cantidad_vendida,sucursal,union):
-    union.write(f"{dia},{codigo_poductos},{descripcion},{cantidad_vendida},{sucursal}\n")
+def guardar (dia,eq_loc,gol_loc,eq_vis,gol_vis,torneo,union):
+    union.write(f"{dia},{eq_loc},{gol_loc},{eq_vis},{gol_vis},{torneo}\n")
 
-def merge (suc_1,suc_2,suc_3,union):
+def merge (torneo1,torneo2,union):
 
-    dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
-    dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
-    dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
+    dia1,eq_loc1,gol_loc1,eq_vis1,gol_vis1 = leer(torneo1)
+    dia2,eq_loc2,gol_loc2,eq_vis2,gol_vis2 = leer(torneo2)
 
-    while dia1 < 40 or dia2 < 40 or dia3 < 40:
+    while dia1 < 50 or dia2 < 50:
         
-        minimo = min(dia1, dia2, dia3)
+        minimo = min(dia1, dia2)
 
         while minimo == dia1:
-            guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
-            dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+            guardar(dia1,eq_loc1,gol_loc1,eq_vis1,gol_vis1,"EUROCOPA",union)
+            dia1,eq_loc1,gol_loc1,eq_vis1,gol_vis1 = leer(torneo1)
         
         while minimo == dia2:
-            guardar(dia2, codigo_poductos2, descripcion2, cantidad_vendida2, "Sucursal 2", union)
-            dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
-
-        while minimo == dia3:
-            guardar(dia3, codigo_poductos3, descripcion3, cantidad_vendida3, "Sucursal 3", union)
-            dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
-            
-            if minimo == dia3 and minimo == dia2 and minimo == dia1:
-                guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
-                dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
-            elif minimo == dia3 and minimo == dia2:
-                guardar(dia2, codigo_poductos2, descripcion2, cantidad_vendida2, "Sucursal 2", union)
-                dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
-            else:
-                guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
-                dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+            guardar(dia2,eq_loc2,gol_loc2,eq_vis2,gol_vis2,"COPA AMERICA",union)
+            dia2,eq_loc2,gol_loc2,eq_vis2,gol_vis2 = leer(torneo2)
                 
 def unificar():
-    suc_1 = open("ventas1.csv", "r")
-    suc_2 = open("ventas2.csv", "r")
-    suc_3 = open("ventas3.csv", "r")
+    eurocopa = open("eurocopa.csv", "r")
+    copa_america = open("copa_america.csv", "r")
     union = open("union.csv", "w")
-    merge(suc_1, suc_2, suc_3, union)
-    suc_1.close()
-    suc_2.close()
-    suc_3.close()
+    merge(eurocopa,copa_america,union)
+    eurocopa.close()
+    copa_america.close()
     union.close()
 
 def main():
@@ -191,7 +156,7 @@ def main():
 main()
 
 
-MAX = "40,zzz,zzz,10000"
+MAX = "99,zzz,zzz,11"
 
 def leer(archivo):
 
@@ -206,42 +171,43 @@ def leer(archivo):
     
     return int(campos[0]), campos[1], campos[2], int(campos[3])
 
-def guardar (dia,codigo_poductos,descripcion,cantidad_vendida,sucursal,union):
-    union.write(f"{dia},{codigo_poductos},{descripcion},{cantidad_vendida},{sucursal}\n")
+def corte_de_control(archivo):
 
-def merge (suc_1,suc_2,suc_3,union):
+    semana,actividad,_,nota = leer(archivo)
 
-    dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
-    dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
-    dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
-
-    while dia1 < 40 or dia2 < 40 or dia3 < 40:
+    while semana < 99:
         
-        minimo = min(dia1, dia2, dia3)
-
-        while minimo == dia1:
-            guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
-            dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+        semana_actual = semana
+        actividades_semanales = 0
         
-        while minimo == dia2:
-            guardar(dia2, codigo_poductos2, descripcion2, cantidad_vendida2, "Sucursal 2", union)
-            dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
+        print(f"Semana {semana_actual}:")
 
-        while minimo == dia3:
-            guardar(dia3, codigo_poductos3, descripcion3, cantidad_vendida3, "Sucursal 3", union)
-            dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
+        while semana == semana_actual:
             
-def unificar():
-    suc_1 = open("ventas1.csv", "r")
-    suc_2 = open("ventas2.csv", "r")
-    suc_3 = open("ventas3.csv", "r")
-    union = open("union.csv", "w")
-    merge(suc_1, suc_2, suc_3, union)
-    suc_1.close()
-    suc_2.close()
-    suc_3.close()
-    union.close()
+            actividad_actual = actividad
+            entregados = 0
+            aprobados = 0
+            
+            while semana == semana_actual and actividad == actividad_actual:
+                
+                entregados += 1
+                
+                if nota >= 6:
+                    aprobados += 1
+                
+                semana,actividad,_,nota = leer(archivo)
+            
+            print(f"-- {actividad_actual}: entregados: {entregados} - aprobados: {aprobados}")
+            
+            actividades_semanales += 1
 
+
+        print(f"- Total de actividades semanales entregadas: {actividades_semanales}\n")
+            
 def main():
-    unificar()
+    archivo = open("notas.csv", "r")
+    archivo.readline()  
+    corte_de_control(archivo)
+    archivo.close()
+
 main()
