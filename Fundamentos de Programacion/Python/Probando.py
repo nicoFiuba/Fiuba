@@ -211,3 +211,71 @@ def main():
     archivo.close()
 
 main()
+
+
+
+
+MAX = "40,zzz,zzz,10000"
+
+def leer(archivo):
+
+    linea = archivo.readline()
+    
+    if linea:
+        linea = linea.strip()
+    else:
+        linea = MAX
+    
+    campos = linea.split(",")
+    
+    return int(campos[0]), campos[1], campos[2], int(campos[3])
+
+def guardar (dia,codigo_poductos,descripcion,cantidad_vendida,sucursal,union):
+    union.write(f"{dia},{codigo_poductos},{descripcion},{cantidad_vendida},{sucursal}\n")
+
+def merge (suc_1,suc_2,suc_3,union):
+
+    dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+    dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
+    dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
+
+    while dia1 < 40 or dia2 < 40 or dia3 < 40:
+        
+        minimo = min(dia1, dia2, dia3)
+
+        while minimo == dia1:
+            guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
+            dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+        
+        while minimo == dia2:
+            guardar(dia2, codigo_poductos2, descripcion2, cantidad_vendida2, "Sucursal 2", union)
+            dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
+
+        while minimo == dia3:
+            guardar(dia3, codigo_poductos3, descripcion3, cantidad_vendida3, "Sucursal 3", union)
+            dia3, codigo_poductos3, descripcion3, cantidad_vendida3 = leer(suc_3)
+            
+            if minimo == dia3 and minimo == dia2 and minimo == dia1:
+                guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
+                dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+            elif minimo == dia3 and minimo == dia2:
+                guardar(dia2, codigo_poductos2, descripcion2, cantidad_vendida2, "Sucursal 2", union)
+                dia2, codigo_poductos2, descripcion2, cantidad_vendida2 = leer(suc_2)
+            else:
+                guardar(dia1, codigo_poductos1, descripcion1, cantidad_vendida1, "Sucursal 1", union)
+                dia1, codigo_poductos1, descripcion1, cantidad_vendida1 = leer(suc_1)
+                
+def unificar():
+    suc_1 = open("ventas1.csv", "r")
+    suc_2 = open("ventas2.csv", "r")
+    suc_3 = open("ventas3.csv", "r")
+    union = open("union.csv", "w")
+    merge(suc_1, suc_2, suc_3, union)
+    suc_1.close()
+    suc_2.close()
+    suc_3.close()
+    union.close()
+
+def main():
+    unificar()
+main()
