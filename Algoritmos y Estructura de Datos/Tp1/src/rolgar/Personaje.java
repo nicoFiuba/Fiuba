@@ -5,13 +5,22 @@ public class Personaje {
     private int vida;
     private int posX;
     private int posY;
+    private int vidaMaxima;
 
     public Personaje(String nombre, int vida, int posX, int posY) {
         this.nombre = nombre;
         this.vida = vida;
+        this.vidaMaxima = vida;
         this.posX = posX;
         this.posY = posY;
     }
+
+    public void recuperarVida() {
+    int recuperacion = (int)(vida * 0.05); // 5%
+    if (recuperacion < 1) recuperacion = 1; // mínimo 1 punto
+    vida += recuperacion;
+    if (vida > vidaMaxima) vida = vidaMaxima;
+}
 
     // --- Getters y setters ---
     public String getNombre() { return nombre; }
@@ -28,4 +37,5 @@ public class Personaje {
     public void moverAbajo() { posX++; }
     public void moverIzquierda() { posY--; }
     public void moverDerecha() { posY++; }
+    
 }

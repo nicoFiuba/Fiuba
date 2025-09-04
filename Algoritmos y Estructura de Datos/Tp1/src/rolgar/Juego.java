@@ -36,28 +36,83 @@ public class Juego {
             for (Enemigo e : enemigos) {
                 tablero.colocar(e.getPosX(), e.getPosY(), 'E');
             }
-            tablero.mostrar();
+            tablero.mostrarVision(personaje.getPosX(), personaje.getPosY());
 
-            System.out.println("Mover (WASD, Q para salir): ");
+
+            System.out.println("WASD para moverte o Q para salir): ");
             char opcion = sc.next().toUpperCase().charAt(0);
             if (opcion == 'Q') {
                 jugando = false;
             } else {
                 moverPersonaje(opcion);
+                verificarPelea();
+                personaje.recuperarVida();
+                System.out.println("Vida actual: " + personaje.getVida());
+                verificarVictoria();
             }
         }
     }
 
     private void moverPersonaje(char opcion) {
-        tablero.limpiar(personaje.getPosX(), personaje.getPosY());
-        switch (opcion) {
-            case 'W': personaje.moverArriba(); break;
-            case 'S': personaje.moverAbajo(); break;
-            case 'A': personaje.moverIzquierda(); break;
-            case 'D': personaje.moverDerecha(); break;
-        }
+    int nuevoX = personaje.getPosX();
+    int nuevoY = personaje.getPosY();
+
+    switch (opcion) {
+        case 'W': nuevoX--; break;
+        case 'S': nuevoX++; break;
+        case 'A': nuevoY--; break;
+        case 'D': nuevoY++; break;
+        default: 
+            System.out.println("Movimiento inválido");
+            return;
     }
+
+    if (esMovimientoValido(nuevoX, nuevoY)) {
+        personaje.setPosX(nuevoX);
+        personaje.setPosY(nuevoY);
+    } else {
+        System.out.println("Llegaste al límite del tablero.");
+    }
+}
 
     private int tableroFilas() { return tablero == null ? 0 : 5; } // ajustar
     private int tableroColumnas() { return tablero == null ? 0 : 5; } // ajustar
+
+    private boolean esMovimientoValido(int x, int y) {
+    return x >= 0 && x < tablero.getFilas() && y >= 0 && y < tablero.getColumnas();
+}
+
+private void verificarPelea() {
+    Iterator<Enemigo> it = enemigos.iterator();
+    while (it.hasNext()) {
+        Enemigo e = it.next();
+        if (personaje.getPosX() == e.getPosX() && personaje.getPosY() == e.getPosY()) {
+            System.out.println("Encontraste a " + e.getNombre() + " ahora te toca aguantar el 1v1");
+            
+            // Daños
+            personaje.setVida(personaje.getVida() - 10);
+            e.setVida(e.getVida() - 20);
+
+            System.out.println(personaje.getNombre() + " tiene " + personaje.getVida() + " de vida.");
+            System.out.println(e.getNombre() + " tiene " + e.getVida() + " de vida.");
+
+            // Revisar si alguien murió
+            if (e.getVida() <= 0) {
+                System.out.println(e.getNombre() + " fue derrotado");
+                it.remove(); // lo saco de la lista
+            }
+            if (personaje.getVida() <= 0) {
+                System.out.println("Te ganaron los bots, sos malisimo");
+                System.exit(0);
+            }
+        }
+    }
+}
+
+private void verificarVictoria() {
+    if (enemigos.isEmpty()) {
+        System.out.println("Hiciste lo que tenias que hacer, ganaste");
+        System.exit(0);
+    }
+}
 }

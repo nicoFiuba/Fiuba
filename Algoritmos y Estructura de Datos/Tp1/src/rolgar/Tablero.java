@@ -36,4 +36,25 @@ public class Tablero {
     public void limpiar(int x, int y) {
         grilla[x][y] = '.';
     }
+
+    public int getFilas() {
+        return filas;
+    }
+
+    public int getColumnas() {
+        return columnas;
+    }
+
+    public void mostrarVision(int posX, int posY) {
+    for (int i = posX - 1; i <= posX + 1; i++) {
+        for (int j = posY - 1; j <= posY + 1; j++) {
+            if (i >= 0 && i < filas && j >= 0 && j < columnas) {
+                System.out.print(grilla[i][j] + " ");
+            } else {
+                System.out.print("X "); // fuera de los límites
+            }
+        }
+        System.out.println();
+    }
+}
 }
