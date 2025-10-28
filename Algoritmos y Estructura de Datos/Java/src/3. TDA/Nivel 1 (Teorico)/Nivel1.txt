@@ -1,0 +1,63 @@
+1) Un TDA es un modelo que define valores y acciones que se pueden realizar sobre estos mismos, sin enfocarse en el como se realizan dichas acciones.
+
+2) 
+public class Fraccion {
+    
+    private int numerador;
+    private int denominador;
+
+    public Fraccion (int numerador, int denominador){
+
+    }
+    
+    public void simplificarFraccion() {
+
+    }
+    
+    public Fraccion sumar(Fraccion fraccion2) {
+
+        return null;
+    }
+    
+    public Fraccion restar(Fraccion fraccion2) {
+
+        return null;
+    }
+    
+    public Fraccion multiplicar(Fraccion fraccion2) {
+
+        return null;
+    }
+    
+    public Fraccion dividir(Fraccion fraccion2){
+
+        return null;
+    }
+}
+
+En la guia no hay (3) ni (4), pasa del (2) al (5).
+
+5) Una clase es una plantilla, es decir un molde para crear el objeto.
+
+6) Un objeto es el resultado creado a partir de la plantilla (La definicion exacta es que es una instancia de una clase).
+
+7) Las principales caracteristicas de los TDA son: la abstraccion y el encapsulamiento. Con la abstraccion logramos enfocarnos en el QUE mientras que con el encapsulamiento logramos protegernos de que nadie pueda modificar nuestros datos desde afuera.
+
+8) Un problema en TDA se debe encarar pensando en que atributos tiene que tener mi objeto, y tambien que metodos tiene el mismo, es decr que acciones puede realizar.
+
+9) public siginifica que es publico, es decir que se puede acceder desde afuera, mientras que private siginifica que es privado, es decir solo se puede acceder desde adentro.
+
+10) static significa que el atributo o el metodo pertenecen a la clase, conviene acceder usando el nombre de la clase. Un ejemplo seria:
+public static void main (String[] args){
+    
+}
+
+11) Un constructor es la forma en la que inicializamos el objeto, es decir que recibimos parametros para luego asignarselos a nuestros datos privados.
+
+La guia no tiene (12), salta del (11) al (13)
+
+13) La sobrecarga de los metodos es que se puede tener el mismo metodo varias veces siempe y cuando este reciba diferentes parametros.
+
+14) El objeto this es la forma en la cual un objeto se refiere a si mismo.
+
+15) Las pre son comentarios en los cuales se indica que tienen que recibir los metodos para poder funcionar, mientras que los post son los comentarios que indican que devuelven, siempre y cuando se haya recibido lo indicado en las pre.
