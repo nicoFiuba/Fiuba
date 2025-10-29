@@ -61,3 +61,245 @@ La guia no tiene (12), salta del (11) al (13)
 14) El objeto this es la forma en la cual un objeto se refiere a si mismo.
 
 15) Las pre son comentarios en los cuales se indica que tienen que recibir los metodos para poder funcionar, mientras que los post son los comentarios que indican que devuelven, siempre y cuando se haya recibido lo indicado en las pre.
+
+16)
+public class Rectangulo {
+
+    private double base;
+    private double altura;
+
+    public Rectangulo (double base, double altura) {
+
+        if (base > 0) {
+            this.base = base;
+        } else {
+            this.base = 1;
+        }
+
+        if (altura > 0) {
+            this.altura = altura;
+        } else {
+            this.altura = 1;
+        }
+        
+    }
+
+    public double getBase() {
+        return this.base;
+    }
+
+    public double getAltura() {
+        return this.altura;
+    }
+
+    public void setBase(double nuevaBase) {
+
+        if (nuevaBase > 0) {
+            this.base = nuevaBase;
+        }
+
+    }
+
+    public void setAltura(double nuevaAltura) {
+
+        if (nuevaAltura > 0) {
+            this.altura = nuevaAltura;
+        }
+
+    }
+
+    public double getPerimetro() {
+        return (base*2 + altura*2);
+    }
+
+    public double getArea() {
+        return (base*altura);
+    }
+
+    @Override
+    public String toString() {
+        return "La base mide " + this.base + "cm y la altura mide " + this.altura + "cm";
+    }
+}
+
+17)
+public class Alimento {
+
+    private String nombre;
+    private double caloriasCada100Gramos;
+
+    public Alimento (String nombre, double caloriasCada100Gramos) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;    
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        if (caloriasCada100Gramos > 0) {
+            this.caloriasCada100Gramos = caloriasCada100Gramos;
+        } else {
+            this.caloriasCada100Gramos = 0;
+        }
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public double getCaloriasCada100Gramos() {
+        return this.caloriasCada100Gramos;
+    }
+
+    @Override
+    public String toString() {
+        return this.nombre + " tiene " + this.caloriasCada100Gramos + " calorias cada 100 gramos";
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Alimento alimento = new Alimento("Manzana", 52);
+        System.out.println(alimento);
+    }
+}
+
+18)
+public class Fraccion {
+    
+    private int numerador;
+    private int denominador;
+
+    public Fraccion (int numerador, int denominador){
+
+        this.numerador = numerador;
+
+        if (denominador == 0) {
+            this.denominador = 1;
+        } else {
+            this.denominador = denominador;
+        }
+
+    }
+
+    public int getNumerador() {
+        return this.numerador;
+    }
+
+    public int getDenominador() {
+        return this.denominador;
+    }
+    
+    private int mcd (int numerador, int denominador) {
+
+        int x = Math.abs(numerador);
+        int y = Math.abs(denominador);
+
+        while (y != 0) {
+            int valorTemporal = y;
+            y = x % y;
+            x = valorTemporal;
+        }
+
+        return x;
+    }
+
+    public void simplificar() {
+
+        int mcd = mcd (this.numerador, this.denominador);
+        if (mcd != 0) {
+            this.numerador /= mcd;
+            this.denominador /= mcd;
+        }
+        
+    }
+    
+    public Fraccion sumar(Fraccion fraccion2) {
+
+        int nuevoNumerador = (this.numerador * fraccion2.getDenominador()) + (this.denominador * fraccion2.getNumerador());
+        int nuevoDenominador = this.denominador * fraccion2.getDenominador();
+
+        Fraccion resultado = new Fraccion (nuevoNumerador, nuevoDenominador);
+        resultado.simplificar();
+
+        return resultado;
+    }
+    
+    public Fraccion restar(Fraccion fraccion2) {
+
+        int nuevoNumerador = (this.numerador * fraccion2.getDenominador()) -  (this.denominador * fraccion2.getNumerador());
+        int nuevoDenominador = this.denominador * fraccion2.getDenominador();
+
+        Fraccion resultado = new Fraccion (nuevoNumerador, nuevoDenominador);
+        resultado.simplificar();
+
+        return resultado;
+    }
+    
+    public Fraccion multiplicar(Fraccion fraccion2) {
+
+        int nuevoNumerador = this.numerador * fraccion2.getNumerador();
+        int nuevoDenominador = this.denominador * fraccion2.getDenominador();
+
+        Fraccion resultado = new Fraccion (nuevoNumerador, nuevoDenominador);
+        resultado.simplificar();
+
+        return resultado;
+    }
+    
+    public Fraccion dividir(Fraccion fraccion2){
+
+        int nuevoNumerador = this.numerador * fraccion2.getDenominador();
+        int nuevoDenominador = this.denominador * fraccion2.getNumerador();
+
+        Fraccion resultado = new Fraccion (nuevoNumerador, nuevoDenominador);
+        resultado.simplificar();
+
+        return resultado;
+    }
+
+    @Override
+    public String toString() {
+        return this.numerador + "/" + this.denominador;
+    }
+}
+
+public class Main {
+    
+    public static void main (String[] args) {
+        
+        Fraccion fraccion = new Fraccion(1,2);
+        Fraccion fraccion2 = new Fraccion(4, 3);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Que quiere hacer con las fracciones? (+, -, * o /): ");
+        char eleccion = scanner.next().toLowerCase.charAt(0);
+
+        Fraccion resultado;
+
+        switch (eleccion) {
+            case '+' -> {
+                resultado = fraccion.sumar(fraccion2);
+                System.out.println("La suma de las fracciones es: " + resultado);
+            }
+            case '-' -> {
+                resultado = fraccion.restar(fraccion2);
+                System.out.println("La resta de las fracciones es: " + resultado);
+            }
+            case '*' -> {
+                resultado = fraccion.multiplicar(fraccion2);
+                System.out.println("La multiplicacion de las fracciones es: " + resultado);
+            }
+            case '/' -> {
+                resultado = fraccion.dividir(fraccion2);
+                System.out.println("La division de las fracciones es: " + resultado);
+            }
+            default -> System.out.println("Operacion no valida");
+        }
+        
+        scanner.close();
+    }
+}
