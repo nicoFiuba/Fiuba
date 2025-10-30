@@ -1,0 +1,154 @@
+public class Estudiante {
+
+    private String nombre;
+    private int matricula;
+    private Curso[] cursos;
+    private int cursosActuales;
+
+    public Estudiante(String nombre, int matricula, int cursosMaximos) {
+        
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.matricula = matricula;
+
+        this.cursos = new Curso[cursosMaximos];
+        this.cursosActuales = 0;
+
+    }
+
+    public boolean agregarCurso(Curso cursoParaAgregar) {
+
+        if (this.cursosActuales < this.cursos.length) {
+            this.cursos[cursosActuales] = cursoParaAgregar;
+            this.cursosActuales++;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean eliminarCurso(Curso cursoParaEliminar) {
+
+        int indice = -1;
+        int i = 0;
+
+        while (i < this.cursosActuales) {
+            if (this.cursos[i] == cursoParaEliminar) {
+                indice = i;
+                i = cursosActuales;
+            }
+
+            i++;
+        }
+
+        if (indice != -1) {
+            for (int j = indice; j <this.cursosActuales -1; j++) {
+                this.cursos[j] = this.cursos[j + 1];
+            }
+            
+            this.cursosActuales--;
+            this.cursos[this.cursosActuales] = null;
+            
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getMatricula() {
+        return this.matricula;
+    }
+
+    public int getcursosActuales() {
+        return this.cursosActuales;
+    }
+
+    @Override
+    public String toString() {
+        return "El estudiante " + this.nombre + " cuya matricula es " + this.matricula + " esta anotado en " + this.cursosActuales + " cursos";
+    }
+    
+}
+
+public class Curso {
+
+    private String nombre;
+    private Estudiante[] estudiantes;
+    private int estudiantesActuales;
+
+    public Curso(String nombre, int estudiantesMaximos) {
+        
+        if (nombre != null && !nombre.isBlank()){
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.estudiantes = new Estudiante[estudiantesMaximos];
+        this.estudiantesActuales = 0;
+    }
+
+    public boolean agregarEstudiantes( Estudiante estudianteParaAgregar) {
+
+        if (this.estudiantesActuales < this.estudiantes.length) {
+            this.estudiantes[estudiantesActuales] = estudianteParaAgregar;
+            this.estudiantesActuales++;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+     public boolean eliminarEstudiante(Estudiante estudianteParaEliminar) {
+
+        int indice = -1;
+        int i = 0;
+
+        while (i < this.estudiantesActuales) {
+            if (this.estudiantes[i] == estudianteParaEliminar) {
+                indice = i;
+                i = estudiantesActuales;
+            }
+
+            i++;
+        }
+
+        if (indice != -1) {
+            for (int j = indice; j <this.estudiantesActuales -1; j++) {
+                this.estudiantes[j] = this.estudiantes[j + 1];
+            }
+            
+            this.estudiantesActuales--;
+            this.estudiantes[this.estudiantesActuales] = null;
+            
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public Estudiante listarEstudiantes(int matriculaBuscada) {
+
+        for(int i = 0; i < estudiantesActuales; i++) {
+            if (this.estudiantes[i].getMatricula() == matriculaBuscada) {
+                return this.estudiantes[i];
+            }
+
+        }
+        
+        return null;
+    }
+
+}

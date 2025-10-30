@@ -1,0 +1,139 @@
+public class Libro {
+
+    private String titulo;
+    private String autor;
+    private int año;
+    private int copiasDisponibles;
+
+    public Libro(String titulo, String autor, int año, int copiasDisponibles) {
+
+        if (titulo != null && !titulo.isBlank()) {
+            this.titulo = titulo;
+        } else {
+            this.titulo = "Desconocido";
+        }
+
+        if (autor != null && !autor.isBlank()) {
+            this.autor = autor;
+        } else {
+            this.autor = "Desconocido";
+        }
+
+        if (año == 0) {
+            this.año = 0;
+        } else {
+            this.año = año;
+        }
+
+        if (copiasDisponibles == 0) {
+            this.copiasDisponibles = 0;
+        } else {
+            this.copiasDisponibles = copiasDisponibles;
+        }
+
+    }
+    
+    public String getTitulo() {
+        return this.titulo;
+    }
+
+    public String getAutor() {
+        return this.autor;
+    }
+
+    public int getAño() {
+        return this.año;
+    }
+
+    public int getCopiasDisponibles() {
+        return this.copiasDisponibles;
+    }
+
+    public boolean prestarLibro() {
+
+        if (this.copiasDisponibles > 0) {
+            this.copiasDisponibles--;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public void devolverLibro() {
+        this.copiasDisponibles++;
+    }
+
+    @Override
+    public String toString() {
+        return this.titulo + " de " + this.autor + " (" + this.copiasDisponibles + " copias)";
+    }
+
+}
+
+public class Biblioteca {
+
+    private Libro[] libros;
+    private int cantidadActual;
+
+    public Biblioteca(int capacidad) {
+
+        this.libros = new Libro[capacidad];
+        this.cantidadActual = 0;
+    }
+
+    public boolean agregarLibro(Libro libroParaAgregar) {
+
+        if (this.cantidadActual < this.libros.length) {
+            this.libros[this.cantidadActual] = libroParaAgregar;
+            this.cantidadActual++;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    
+    public Libro buscarPorAutor(String autorBuscado){
+
+        int i = 0;
+
+        while (i < this.cantidadActual) {
+            if (this.libros[i].getAutor().equals(autorBuscado)) {
+                return this.libros[i];
+            }
+
+            i++;
+        }
+        
+        return null;            
+    }
+    
+    public Libro buscarPorTitulo(String tituloBuscado){
+        
+        int i = 0;
+        
+        while (i < this.cantidadActual) {
+            if (this.libros[i].getTitulo().equals(tituloBuscado)) {
+                return this.libros[i];
+            }
+            
+            i++;
+        }
+        
+        return null;            
+    }
+
+    public boolean prestarLibro(String tituloBuscado) {
+
+        Libro libro = this.buscarPorTitulo(tituloBuscado);
+        
+        if (libro != null) {
+            return libro.prestarLibro();
+        } else {
+            return false;
+        }
+
+    }
+
+}
