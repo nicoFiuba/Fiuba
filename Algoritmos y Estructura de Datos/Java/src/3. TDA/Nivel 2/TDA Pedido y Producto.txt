@@ -1,0 +1,112 @@
+public class Producto {
+
+    private String nombre;
+    private int codigo;
+    private double precio;
+
+    public Producto(String nombre, int codigo, double precio) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+        
+        this.codigo = codigo;
+        this.precio = precio;
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getCodigo() {
+        return this.codigo;
+    }
+
+    public double getPrecio() {
+        return this.precio;
+    }
+
+}
+
+public class Pedido {
+
+    private Producto[] productos;
+    private int productosActuales;
+
+    public Pedido (int capacidad) {
+
+        this.productos = new Producto[capacidad];
+        this.productosActuales = 0;
+    }
+
+    public boolean agregarProducto(Producto productoParaAgregar) {
+
+        if (this.productosActuales < this.productos.length) {
+            this.productos[this.productosActuales] = productoParaAgregar;
+            
+            this.productosActuales++;
+            
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean eliminarProducto(Producto producParaEliminar) {
+
+        int indice = -1;
+        int i = 0;
+
+        while (i < this.productosActuales) {
+
+            if (productos[i] == producParaEliminar) {
+                indice = i;
+
+                i = productosActuales;
+            }
+
+            i++;
+        }
+
+        if (indice != -1) {
+            for (int j = indice; j < this.productosActuales - 1; j++) {
+                this.productos[j] = this.productos[j +1];
+            }
+
+            this.productosActuales--;
+            this.productos[this.productosActuales] = null;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public double calcularPrecioPedido() {
+
+        double precioTotal = 0.0;
+
+        for (int i = 0; i < productosActuales; i++) {
+            precioTotal += this.productos[i].getPrecio();
+        }
+
+        return precioTotal;
+    }
+
+    public Producto mostrarPedido(int codigoBuscado) {
+
+        for (int i = 0; i < productosActuales; i++) {
+            if (this.productos[i].getCodigo() == codigoBuscado) {
+                return this.productos[i];
+            }
+
+        }
+
+        return null;
+    }
+}
