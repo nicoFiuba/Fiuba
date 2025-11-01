@@ -1,0 +1,166 @@
+public class Usuario {
+
+    private String nombre;
+    private int identificacion;
+    private CuentaBancaria[] cuentasBancarias;
+    private int cuentasActuales;
+
+    public Usuario(String nombre, int identificacion, int maximoDeCuentas) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.identificacion = identificacion;
+
+        this.cuentasBancarias = new CuentaBancaria[maximoDeCuentas];
+        this.cuentasActuales = 0;
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getIdentificacion() {
+        return this.identificacion;
+    }
+
+    public int getCuentasActuales() {
+        return this.cuentasActuales;
+    }
+
+    public boolean agregarCuenta(CuentaBancaria cuentaParaAgregar) {
+
+        if (this.cuentasActuales < this.cuentasBancarias.length) {
+            this.cuentasBancarias[this.cuentasActuales] = cuentaParaAgregar;
+
+            this.cuentasActuales++;
+            
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public double mostrarSaldoTotal() {
+
+        double saldoTotal = 0.0;
+
+        for (int i = 0; i < this.cuentasActuales; i++) {
+            saldoTotal += this.cuentasBancarias[i].getSaldo();
+        }
+
+        return saldoTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "El usuario " + this.nombre + " de identificacion: " + this.identificacion + " tiene " + this.cuentasActuales + "cuentas bancarias";
+    }
+
+}
+
+public class CuentaBancaria {
+
+    private int numeroDeCuenta;
+    private double saldo;
+    private Transaccion[] transacciones;
+    private int transaccionesActuales;
+
+    public CuentaBancaria (int numeroDeCuenta, double saldo, int maximoDeTransferencias) {
+
+        this.numeroDeCuenta = numeroDeCuenta;
+        
+        this.saldo = saldo;
+        
+        this.transacciones = new Transaccion[maximoDeTransferencias];
+        
+        this.transaccionesActuales =0;
+
+    }
+
+    public int getNumeroDeCuenta() {
+        return this.numeroDeCuenta;
+    }
+
+    public double getSaldo() {
+        return this.saldo;
+    }
+
+    private boolean agregarTransaccion(Transaccion transaccionParaAgregar) {
+
+        if(this.transaccionesActuales < this.transacciones.length) {
+            this.transacciones[this.transaccionesActuales] = transaccionParaAgregar;
+
+            transaccionesActuales++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean realizarDeposito(double montoADepositar) {
+
+        if (montoADepositar <= 0) {
+            return false;
+        } else {
+            this.saldo += montoADepositar;
+
+            Transaccion recibo = new Transaccion(montoADepositar, "Deposito");
+            this.agregarTransaccion(recibo);
+            
+            return true;
+        }
+
+    }
+
+    public boolean realizarRetiro(double montoARetirar) {
+
+        if (montoARetirar <= 0 || montoARetirar > this.saldo) {
+            return false;
+        } else {
+            this.saldo -= montoARetirar;
+
+            Transaccion recibo = new Transaccion(montoARetirar * -1, "Retiro");
+            this.agregarTransaccion(recibo);
+
+            return true;
+        }
+    }
+
+}
+
+import java.util.Date;
+
+public class Transaccion {
+
+    private double monto;
+    private Date fecha;
+    private String tipoDeTransaccion;
+
+    public Transaccion(double monto, String tipoDeTransaccion) {
+
+        this.monto = monto;
+        
+        this.fecha = new Date();
+
+        this.tipoDeTransaccion = tipoDeTransaccion;
+
+    }
+
+    public double getMonto() {
+        return this.monto;
+    }
+
+    @Override
+    public String toString() {
+        return "La transaccion se realizo el: " + this.fecha + " y fue un " + this.tipoDeTransaccion + " de $" + this.monto;
+    }
+
+}
