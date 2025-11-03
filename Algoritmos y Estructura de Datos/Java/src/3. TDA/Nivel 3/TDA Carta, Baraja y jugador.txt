@@ -1,0 +1,204 @@
+public enum Palo {
+    
+    CORAZONES,
+    DIAMANTES,
+    PICAS,
+    TREBOLES
+
+}
+
+public enum Valor {
+
+    DOS("2", 2),
+    TRES("3", 3),
+    CUATRO("4", 4),
+    CINCO("5", 5),
+    SEIS("6", 6),
+    SIETE("7", 7),
+    OCHO("8", 8),
+    NUEVE("9", 9),
+    DIEZ("10", 10),
+    JOTA("J", 10),
+    REINA("Q", 10),
+    REY("K", 10),
+    AS("As", 11);
+
+    private final String nombre;
+    private final int puntuacion;
+
+    Valor(String nombre, int puntuacion) {
+        
+        this.nombre = nombre;
+        this.puntuacion = puntuacion;
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getPuntuacion() {
+        return this.puntuacion;
+    }
+
+}
+
+public class Carta {
+
+    private final Palo palo;
+    private final Valor valor;
+
+    public Carta(Palo palo, Valor valor) {
+        
+        this.palo = palo;
+        this.valor = valor;
+
+    }
+
+    public Palo getPalo() {
+        return this.palo;
+    }
+
+    public Valor getValor() {
+        return this.valor;
+    }
+
+    public int getPuntuacion() {
+        return this.valor.getPuntuacion();
+    }
+
+    @Override
+    public String toString() {
+        return this.valor.getNombre() + " de " + this.palo;
+    }
+
+}
+
+import java.util.Random;
+
+public class Baraja {
+
+    private Carta[] cartas;
+    private int cartasRestantes;
+
+    public Baraja() {
+
+        this.cartas = new Carta[52];
+        this.cartasRestantes = 0;
+
+        crearBarajaCompleta();
+        
+    }
+
+    private void crearBarajaCompleta() {
+        for (Palo palo : Palo.values()) {
+            for (Valor valor : Valor.values()) {
+                this.cartas[this.cartasRestantes] = new Carta(palo, valor);
+
+                this.cartasRestantes++;
+
+            }
+
+        }
+        
+    }
+
+    public void barajar() {
+
+        Random random = new Random();
+
+        for (int i = this.cartasRestantes - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+
+            Carta cartaTemporal = this.cartas[i];
+            this.cartas[i] = this.cartas[j];
+            this.cartas[j] = cartaTemporal;
+            
+        }
+
+    }
+
+    public Carta repartir() {
+
+        if (this.cartasRestantes == 0) {
+            return null;
+        } else {
+            this.cartasRestantes--;
+
+            return this.cartas[this.cartasRestantes];
+        }
+
+    }
+
+    public int getCartasRestantes() {
+        return this.cartasRestantes;
+    }
+
+}
+
+public class Jugador {
+
+    private String nombre;
+    private Carta[] mano;
+    private int cartasEnMano;
+
+    public Jugador(String nombre) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.mano = new Carta[10];
+        this.cartasEnMano = 0;
+
+    }
+
+    public boolean recibirCarta(Carta cartaARecibir) {
+
+        if (this.cartasEnMano < this.mano.length) {
+            this.mano[this.cartasEnMano] = cartaARecibir;
+
+            this.cartasEnMano++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public int getPuntuacionTotal() {
+
+        int puntuacion = 0;
+        int cantidadDeAses = 0;
+
+        for (int i = 0; i < this.cartasEnMano; i++) {
+            puntuacion += this.mano[i].getPuntuacion();
+
+            if (this.mano[i].getValor() == Valor.AS) {
+                cantidadDeAses++;
+            }
+
+        }
+
+        while (puntuacion > 21 && cantidadDeAses > 0) {
+            puntuacion -= 10;
+
+            cantidadDeAses--;
+        }
+
+        return puntuacion;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    @Override
+    public String toString() {
+        return this.nombre + " tiene puntuacion de: " + this.getPuntuacionTotal(); 
+    }
+
+}

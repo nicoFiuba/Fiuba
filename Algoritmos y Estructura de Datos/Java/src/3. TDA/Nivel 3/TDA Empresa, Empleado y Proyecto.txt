@@ -1,0 +1,191 @@
+public enum EstadoDelProyecto {
+    
+    EN_PROGRESO,
+    COMPLETADO
+
+}
+
+public class Empleado {
+
+    private String nombre;
+    private int identificacion;
+    private double salario;
+    private Proyecto[] proyectos;
+    private int proyectosActuales;
+
+    public Empleado(String nombre, int identificacion, double salario, int maximoDeProyectos) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.identificacion = identificacion;
+
+        this.salario = salario;
+
+        this.proyectos = new Proyecto[maximoDeProyectos];
+        this.proyectosActuales = 0;
+
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public int getIdentificacion() {
+        return this.identificacion;
+    }
+
+    public double getSalario() {
+        return this.salario;
+    }
+
+    public boolean agregarProyecto (Proyecto proyectoParaAgregar) {
+
+        if (this.proyectosActuales < this.proyectos.length) {
+            this.proyectos[this.proyectosActuales] = proyectoParaAgregar;
+
+            this.proyectosActuales++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "El empleado " + this.nombre + " cuya identificacion es " + this.identificacion + " participa en " + this.proyectosActuales + " proyectos"; 
+    }
+
+}
+
+public class Proyecto {
+
+    private Empleado[] empleados;
+    private int empleadosActuales;
+    private EstadoDelProyecto estado;
+
+    public Proyecto(int maximoDeEmpleados) {
+
+        this.empleados = new Empleado[maximoDeEmpleados];
+        this.empleadosActuales = 0;
+
+        this.estado = EstadoDelProyecto.EN_PROGRESO;
+
+    }
+
+    public void completarProyecto() {
+        this.estado = EstadoDelProyecto.COMPLETADO;
+    }
+
+    public EstadoDelProyecto getEstadoDelProyecto() {
+        return this.estado;
+    }
+
+    public boolean agregarEmpleado(Empleado empleadoParaAgregar) {
+
+        if (this.empleadosActuales < this.empleados.length) {
+            this.empleados[this.empleadosActuales] = empleadoParaAgregar;
+
+            this.empleadosActuales++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public double calcularCostoDelProyecto() {
+
+        double costoTotalDelProyecto = 0.0;
+        
+        for (int i = 0; i < this.empleadosActuales; i++) {
+            costoTotalDelProyecto += this.empleados[i].getSalario();
+        }
+        
+        return costoTotalDelProyecto;
+    }
+
+}
+
+public class Empresa {
+
+    private Proyecto[] proyectos;
+    private Empleado[] empleados;
+    private int empleadosActuales;
+    private int proyectosActuales;
+
+    public Empresa(int maximoDeEmpleados, int maximoDeProyectos) {
+
+        this.proyectos = new Proyecto[maximoDeProyectos];
+        this.proyectosActuales = 0;
+
+        this.empleados = new Empleado[maximoDeEmpleados];
+        this.empleadosActuales = 0;
+
+    }
+
+    public boolean agregarEmpleado(Empleado empleadoParaAgregar) {
+
+        if (this.empleadosActuales < this.empleados.length) {
+            this.empleados[this.empleadosActuales] = empleadoParaAgregar;
+
+            this.empleadosActuales++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean agregarProyecto(Proyecto proyectoParaAgregar) {
+
+        if (this.proyectosActuales < this.proyectos.length) {
+            this.proyectos[this.proyectosActuales] = proyectoParaAgregar;
+
+            this.proyectosActuales++;
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public double calcularCostosDeLosProyectos() {
+
+        double costoTotalDeLosProyectos = 0.0;
+
+        for (int i = 0; i < this.proyectosActuales; i++) {
+            if (this.proyectos[i].getEstadoDelProyecto() == EstadoDelProyecto.EN_PROGRESO) {
+                costoTotalDeLosProyectos += this.proyectos[i].calcularCostoDelProyecto();
+            }
+            
+        }
+
+        return costoTotalDeLosProyectos;
+    }
+
+    public String generarInformesDeProgreso() {
+
+        int enProgreso = 0;
+        int completados = 0;
+
+        for (int i =0; i < proyectosActuales; i++) {
+            if (this.proyectos[i].getEstadoDelProyecto() == EstadoDelProyecto.EN_PROGRESO) {
+                enProgreso++;
+            } else if (this.proyectos[i].getEstadoDelProyecto() == EstadoDelProyecto.COMPLETADO) {
+                completados++;
+            }
+        }
+
+        return "Informes de progreso -> completados: " + completados + ", en progreso: " + enProgreso; 
+    }
+
+}
