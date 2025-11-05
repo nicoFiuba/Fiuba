@@ -30,7 +30,7 @@ class Pila {
     
     }
 
-    public void push(int elemento) {
+    public void apilar(int elemento) {
 
         if (cima < capacidad - 1) {
             elementos[++cima] = elemento;
@@ -40,7 +40,7 @@ class Pila {
 
     }
 
-    public int pop() {
+    public int desapilar() {
         
         if (estaVacia()) {
             throw new EmptyStackException();
@@ -58,14 +58,14 @@ public class Ejercicio8 {
         Pila pilaTemporal = new Pila(lista.size() * 2);
         
         for (int elemento : lista) {
-            pilaTemporal.push(elemento);
+            pilaTemporal.apilar(elemento);
         }
         
         ArrayList<Integer> listaInvertida = new ArrayList<>();
         
         while (!pilaTemporal.estaVacia()) {
             try {
-                int elemento = pilaTemporal.pop();
+                int elemento = pilaTemporal.desapilar();
     
                 listaInvertida.add(elemento);
             } catch (EmptyStackException e) {

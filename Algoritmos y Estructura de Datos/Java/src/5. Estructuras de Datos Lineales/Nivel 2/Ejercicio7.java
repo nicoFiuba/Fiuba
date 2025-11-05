@@ -30,7 +30,7 @@ class Pila {
 
     }
 
-    public void push(int elemento) {
+    public void apilar(int elemento) {
         
         if (cima == capacidad - 1) {
             redimensionar();
@@ -40,7 +40,7 @@ class Pila {
 
     }
 
-    public int pop() {
+    public int desapilar() {
         
         if (estaVacia()) {
             throw new EmptyStackException();
@@ -49,7 +49,7 @@ class Pila {
         return elementos[cima--];
     }
 
-    public int peek() {
+    public int obtenerTope() {
         
         if (estaVacia()) {
             throw new EmptyStackException();
@@ -66,17 +66,17 @@ public class Ejercicio7 {
         
         Pila pila = new Pila(2);
         
-        pila.push(10);
-        System.out.println("Cima de la pila: " + pila.peek()); 
+        pila.apilar(10);
+        System.out.println("Cima de la pila: " + pila.obtenerTope()); 
 
-        pila.push(20);
-        System.out.println("Cima de la pila: " + pila.peek()); 
+        pila.apilar(20);
+        System.out.println("Cima de la pila: " + pila.obtenerTope()); 
 
-        pila.push(30); 
-        System.out.println("Cima de la pila: " + pila.peek()); 
+        pila.apilar(30); 
+        System.out.println("Cima de la pila: " + pila.obtenerTope()); 
         
-        System.out.println("Elemento desapilado: " + pila.pop()); 
-        System.out.println("Cima de la pila después de pop: " + pila.peek()); 
+        System.out.println("Elemento desapilado: " + pila.desapilar()); 
+        System.out.println("Cima de la pila después de desapilar: " + pila.obtenerTope()); 
         
     }
 }

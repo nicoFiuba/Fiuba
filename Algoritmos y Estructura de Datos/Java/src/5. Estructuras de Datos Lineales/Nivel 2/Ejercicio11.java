@@ -39,7 +39,7 @@ class ColaCircular {
 
     }
 
-    public void enqueue(String elemento) {
+    public void encolar(String elemento) {
 
         if (contador == capacidad) {
             redimensionar();
@@ -51,7 +51,7 @@ class ColaCircular {
 
     }
 
-    public String dequeue() {
+    public String desencolar() {
 
         if (estaVacia()) {
             throw new NoSuchElementException();
@@ -66,7 +66,7 @@ class ColaCircular {
         return elemento;
     }
 
-    public String peek() {
+    public String obtenerTope() {
 
         if (estaVacia()) {
             throw new NoSuchElementException("La cola está vacía.");
@@ -82,27 +82,27 @@ public class Ejercicio11 {
 
         ColaCircular cola = new ColaCircular(3); 
         
-        cola.enqueue("Tarea A");
-        cola.enqueue("Tarea B");
-        cola.enqueue("Tarea C");
+        cola.encolar("Tarea A");
+        cola.encolar("Tarea B");
+        cola.encolar("Tarea C");
 
-        System.out.println("Frente -> " + cola.peek());
+        System.out.println("Frente -> " + cola.obtenerTope());
         
-        cola.enqueue("Tarea D (Desborde)"); 
-        System.out.println("Capacidad aumentada. Frente -> " + cola.peek());
+        cola.encolar("Tarea D (Desborde)"); 
+        System.out.println("Capacidad aumentada. Frente -> " + cola.obtenerTope());
         
-        System.out.println("DEQUEUE: " + cola.dequeue()); 
-        System.out.println("Frente actual: " + cola.peek());
+        System.out.println("DESENCOLAR: " + cola.desencolar()); 
+        System.out.println("Frente actual: " + cola.obtenerTope());
         
-        System.out.println("DEQUEUE: " + cola.dequeue()); 
-        System.out.println("Frente actual: " + cola.peek()); 
+        System.out.println("DESENCOLAR: " + cola.desencolar()); 
+        System.out.println("Frente actual: " + cola.obtenerTope()); 
         
         try {
-            cola.dequeue(); 
-            cola.dequeue(); 
+            cola.desencolar(); 
+            cola.desencolar(); 
             
-            System.out.println("La cola está vacía. Intento de DEQUEUE...");
-            cola.dequeue();
+            System.out.println("La cola está vacía. Intento de DESENCOLAR...");
+            cola.desencolar();
             
         } catch (NoSuchElementException e) {
             System.err.println("ERROR ATRAPADO: La operación de extracción falló porque la cola está vacía.");

@@ -36,7 +36,7 @@ class Cola {
         fin = contador;
     }
 
-    public void enqueue(int elemento) {
+    public void encolar(int elemento) {
 
         if (contador == capacidad) {
             redimencionar();
@@ -48,7 +48,7 @@ class Cola {
 
     }
 
-    public int dequeue() {
+    public int desencolar() {
 
         if (estaVacia()) {
             throw new NoSuchElementException("La cola está vacía");
@@ -63,7 +63,7 @@ class Cola {
         return elemento;
     }
 
-    public int peek() {
+    public int obtenerTope() {
 
         if (estaVacia()) {
             throw new NoSuchElementException("La cola está vacía");
@@ -84,21 +84,21 @@ public class Ejercicio5 {
         int[] elementosParaAgregar = {10, 20, 30, 40, 50};
 
         for (int elemento : elementosParaAgregar) {
-            cola.enqueue(elemento);
-            System.out.println("Enqueued: " + elemento);
+            cola.encolar(elemento);
+            System.out.println("ENCOLADO: " + elemento); 
         }
 
         System.out.println("Elementos agregados a la cola.");
 
         try {
             for (int i = 0; i < elementosParaAgregar.length; i++) {
-                System.out.println("Elemento al frente: " + cola.peek() + " | Elemeto eliminado: " + cola.dequeue());
+                System.out.println("Elemento al frente: " + cola.obtenerTope() + " | Elemeto eliminado: " + cola.desencolar());
             }
 
             System.out.println("La cola está vacía? " + cola.estaVacia());
 
-            System.out.println("Intentando hacer dequeue en una cola vacía...");
-            cola.dequeue();
+            System.out.println("Intentando desencolar en una cola vacía...");
+            cola.desencolar();
 
         } catch (NoSuchElementException e) {
             System.err.println("ERROR ATTRAPADO: " + e.getClass().getSimpleName() + ". No se puede desencolar.");

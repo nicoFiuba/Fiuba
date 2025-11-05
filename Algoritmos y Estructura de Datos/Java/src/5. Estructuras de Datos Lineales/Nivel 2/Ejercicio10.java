@@ -18,7 +18,7 @@ class Pila {
         return cima == -1;
     }
 
-    public void push(int elemento) {
+    public void apilar(int elemento) {
 
         if (cima < capacidad - 1) {
             elementos[++cima] = elemento;
@@ -28,7 +28,7 @@ class Pila {
 
     }
 
-    public int pop() {
+    public int desapilar() {
 
         if (estaVacia()) {
             throw new EmptyStackException();
@@ -57,14 +57,14 @@ public class Ejercicio10 {
 
         while (numero > 0) {
             int residuo = numero % 2;
-            pila.push(residuo);
+            pila.apilar(residuo);
             numero /= 2;
         }
 
         StringBuilder numeroBinario = new StringBuilder();
 
         while (!pila.estaVacia()) {
-            numeroBinario.append(pila.pop());
+            numeroBinario.append(pila.desapilar());
         }
 
         return numeroBinario.toString();

@@ -26,7 +26,7 @@ class Pila {
         capacidad = nuevaCapacidad;
     }
 
-    public void push(int elemento) {
+    public void apilar(int elemento) {
 
         if (cima < capacidad - 1) {
             elementos[++cima] = elemento;
@@ -37,7 +37,7 @@ class Pila {
 
     }
 
-    public int pop() {
+    public int desapilar() {
 
         if (estaVacia()) {
             throw new IllegalStateException("La pila está vacía"); // Porque usas IllegalStateException y no EmptyStackException? rta: Porque EmptyStackException es específica de la clase Stack y aquí estamos implementando nuestra propia pila.
@@ -52,7 +52,7 @@ class Pila {
         return elemento;
     }
 
-    public int peek() {
+    public int obtenerTope() {
 
         if (estaVacia()) {
             throw new IllegalStateException("La pila está vacía");
@@ -74,22 +74,22 @@ class PilaConMin {
     
     }
 
-    public void push(int elemento) {
+    public void apilar(int elemento) {
         
-        pilaDatos.push(elemento);
+        pilaDatos.apilar(elemento);
         
-        if (pilaMinimos.estaVacia() || elemento <= pilaMinimos.peek()) {
-            pilaMinimos.push(elemento);
+        if (pilaMinimos.estaVacia() || elemento <= pilaMinimos.obtenerTope()) {
+            pilaMinimos.apilar(elemento);
         }
     
     }
 
-    public int pop() {
+    public int desapilar() {
         
-        int elemento = pilaDatos.pop();
+        int elemento = pilaDatos.desapilar();
         
-        if (elemento == pilaMinimos.peek()) {
-            pilaMinimos.pop();
+        if (elemento == pilaMinimos.obtenerTope()) {
+            pilaMinimos.desapilar();
         }
         
         return elemento;
@@ -102,12 +102,12 @@ class PilaConMin {
             throw new IllegalStateException("La pila está vacía");
         }
         
-        return pilaMinimos.peek();
+        return pilaMinimos.obtenerTope();
     
     }
 
-    public int peek() {
-        return pilaDatos.peek();
+    public int obtenerTope() {
+        return pilaDatos.obtenerTope();
     }
 }
 
@@ -117,23 +117,23 @@ public class Ejercicio13 {
         
         PilaConMin pila = new PilaConMin(10); 
 
-        pila.push(8);
-        System.out.println("Tope: " + pila.peek() + " | Mínimo: " + pila.getMin());
+        pila.apilar(8);
+        System.out.println("Tope: " + pila.obtenerTope() + " | Mínimo: " + pila.getMin());
 
-        pila.push(5);
-        System.out.println("Tope: " + pila.peek() + " | Mínimo: " + pila.getMin()); 
+        pila.apilar(5);
+        System.out.println("Tope: " + pila.obtenerTope() + " | Mínimo: " + pila.getMin()); 
 
-        pila.push(10);
-        System.out.println("Tope: " + pila.peek() + " | Mínimo: " + pila.getMin()); 
+        pila.apilar(10);
+        System.out.println("Tope: " + pila.obtenerTope() + " | Mínimo: " + pila.getMin()); 
 
-        pila.push(5);
-        System.out.println("Tope: " + pila.peek() + " | Mínimo: " + pila.getMin()); 
+        pila.apilar(5);
+        System.out.println("Tope: " + pila.obtenerTope() + " | Mínimo: " + pila.getMin()); 
         
-        System.out.println("POP: " + pila.pop() + " | Nuevo Tope: " + pila.peek() + " | Nuevo Mínimo: " + pila.getMin()); 
+        System.out.println("DESAPILAR: " + pila.desapilar() + " | Nuevo Tope: " + pila.obtenerTope() + " | Nuevo Mínimo: " + pila.getMin()); 
     
-        System.out.println("POP: " + pila.pop() + " | Nuevo Tope: " + pila.peek() + " | Nuevo Mínimo: " + pila.getMin()); 
+        System.out.println("DESAPILAR: " + pila.desapilar() + " | Nuevo Tope: " + pila.obtenerTope() + " | Nuevo Mínimo: " + pila.getMin()); 
 
-        System.out.println("POP: " + pila.pop() + " | Nuevo Tope: " + pila.peek() + " | Nuevo Mínimo: " + pila.getMin()); 
+        System.out.println("DESAPILAR: " + pila.desapilar() + " | Nuevo Tope: " + pila.obtenerTope() + " | Nuevo Mínimo: " + pila.getMin()); 
 
     }
     
