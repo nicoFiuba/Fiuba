@@ -1,0 +1,208 @@
+public class Mozo {
+
+    private String nombre;
+    private double propinaTotal;
+
+    public Mozo(String nombre) {
+
+        if (nombre != null && !nombre.isBlank()) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = "Desconocido";
+        }
+
+        this.propinaTotal = 0;
+    }
+
+    public void sumarPropina(double monto) {
+
+        if (monto > 0) {
+            this.propinaTotal += monto;
+        }
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public double getPropinaTotal() {
+        return this.propinaTotal;
+    }
+}
+
+public enum EstadoDeLaMesa {
+
+    LIBRE,
+    OCUPADA,
+    CERRADA
+}
+
+
+public class Mesa {
+
+    private final int numeroDeMesa;
+    private Mozo mozoAsignado;
+    private EstadoDeLaMesa estado;
+
+    public Mesa(int numeroDeMesa) {
+
+        this.numeroDeMesa = numeroDeMesa;
+        this.mozoAsignado = null;
+        this.estado = EstadoDeLaMesa.LIBRE;
+
+    }
+
+    public void ocuparMesa(Mozo mozo) {
+
+        if (this.estado != EstadoDeLaMesa.LIBRE) {
+            throw new IllegalStateException("La mesa no esta libre");
+        }
+
+        this.mozoAsignado = mozo;
+        this.estado = EstadoDeLaMesa.OCUPADA;
+
+    }
+
+    public Mozo liberar() {
+
+        Mozo mozo = this.mozoAsignado;
+        this.mozoAsignado = null;
+        this.estado = EstadoDeLaMesa.CERRADA;
+        
+        return mozo;
+    }
+
+    public void limpiar() {
+        this.estado = EstadoDeLaMesa.LIBRE;
+    }
+
+    public boolean estaLibre() {
+        return this.estado == EstadoDeLaMesa.LIBRE;
+    }
+
+    public Mozo getMozo() {
+        return this.mozoAsignado;
+    }
+
+}
+
+
+public class Restaurante {
+
+    private Mesa[] mesas;
+    private Mozo[] mozos;
+    private int mozosActuales;
+
+    public Restaurante (int cantidadDeMesas) {
+
+        this.mesas = new Mesa[cantidadDeMesas];
+
+        for(int i = 0; i < cantidadDeMesas; i++) {
+            this.mesas[i] = new Mesa(i + 1);
+        }
+
+        this.mozos = new Mozo[cantidadDeMesas];
+        this.mozosActuales = 0;
+    }
+
+    public void ingresoMozo(Mozo mozoParaIngresar) {
+        
+        if (mozosActuales >= mesas.length) {
+            throw new IllegalStateException("La mesa ya tiene mozo");
+        }
+
+        this.mozos[mozosActuales] = mozoParaIngresar;
+        this.mozosActuales++;
+
+    }
+
+    public Mesa solicitarMesa(String nombreCliente) {
+
+        Mesa mesaLibre = null;
+
+        for (Mesa mesa : this.mesas) {
+            if (mesa.estaLibre()) {
+                mesaLibre = mesa;
+                break;
+            }
+        }
+
+        if (mesaLibre == null) {
+            return null;
+        }
+
+        Mozo mozoLibre = null;
+        Mozo mozoParaAsignar = this.mozos[0];
+
+        if (mozoParaAsignar != null) {
+            mesaLibre.ocuparMesa(mozoParaAsignar);
+        }
+
+        return mesaLibre;
+    }
+
+    public void cerrarMesa(Mesa mesaACerrar, double montoPropina) {
+
+        if(mesaACerrar.estaLibre()) {
+            throw new IllegalArgumentException("La mesa ya esta libre");
+        }
+
+        Mozo mozo = mesaACerrar.liberar();
+
+        if (montoPropina > 0 && mozo != null) {
+            mozo.sumarPropina(montoPropina);
+        }
+    }
+    
+    public double totalPropinas() {
+        
+        double propinasTotales = 0.0;
+        
+        for (int i = 0; i < this.mozosActuales; i++) {
+            propinasTotales += this.mozos[i].getPropinaTotal();
+        }
+        return propinasTotales;
+    }
+
+    public double mayorPropina() {
+
+        if (this.mozosActuales == 0) {
+            return 0.0;
+        }
+
+        double propinaMaxima = 0.0;
+
+        for (int i = 0; i < this.mozosActuales; i++) {
+            double propina = this.mozos[i].getPropinaTotal();
+
+            if (propina > propinaMaxima) {
+                propinaMaxima = propina;
+            }
+
+        }
+
+        return propinaMaxima;
+    }
+
+    public Mozo mozoConMasPropina() {
+
+        if (this.mozosActuales == 0) {
+            return null;
+        }
+
+        Mozo mozoGanador = this.mozos[0];
+
+        double propinaMaxima = mozoGanador.getPropinaTotal();
+
+        for (int i = 1; i < this.mozosActuales; i++) {
+            Mozo mozoActual = this.mozos[i];
+
+            if (mozoActual.getPropinaTotal() > propinaMaxima) {
+                propinaMaxima = mozoActual.getPropinaTotal();
+                mozoGanador = mozoActual;
+            }
+        }
+
+        return mozoGanador;
+    }
+}

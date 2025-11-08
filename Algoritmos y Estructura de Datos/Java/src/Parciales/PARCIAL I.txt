@@ -1,0 +1,150 @@
+4)
+
+public class Donacion {
+
+    private double monto;
+
+    public Donacion(double monto) {
+        this.monto = monto;
+    }
+
+    public double getMonto() {
+        return this.monto;
+    }
+
+}
+
+public class Colecta {
+
+    private Donacion[] donaciones;
+    private double montoObjetivo;
+    private double maximaDonacionAceptada;
+    private int donacionesActuales;
+    private int capacidadMaxima;
+
+    public Colecta(double montoObjetivo, double maximaDonacionAceptada, int capacidadMaxima) {
+        
+        this.donaciones = new Donacion[capacidadMaxima];
+        this.montoObjetivo = montoObjetivo;
+        this.maximaDonacionAceptada = maximaDonacionAceptada;
+        this.donacionesActuales = 0;
+
+    }
+    
+    public void donar(double donacion) {
+
+        if (donacion <= 0) {
+            throw new IllegalArgumentException("No se puede no donar");
+        } else if (donacion > this.maximaDonacionAceptada) {
+            throw new IllegalArgumentException("La donacion supera el limite");
+        } else if (this.donacionesActuales >= this.capacidadMaxima) {
+            throw new IllegalArgumentException("Se ha excedido la capacidad maxima de donaciones");
+        } else {
+            this.donaciones[this.donacionesActuales] = new Donacion(donacion);
+            donacionesActuales++;
+        }
+    }
+
+    public double calcularRecaudacion() {
+
+        double recaudacion = 0.0;
+
+        for (int i = 0; i < this.donacionesActuales; i++) {
+            recaudacion += this.donaciones[i].getMonto();
+        }
+
+        return recaudacion;
+    }
+
+    public int contarDonacionesRecibidas() {
+        return this.donacionesActuales;
+    }
+
+
+    public double donacionMaxima() {
+
+        if (this.donacionesActuales == 0) {
+            return 0.0;
+        }
+
+        double donacionMaxima = 0.0;
+
+        for (int i = 0; i < this.donacionesActuales; i++) {
+            if (this.donaciones[i].getMonto() > donacionMaxima) {
+                donacionMaxima = donaciones[i].getMonto();
+            }
+        }
+        
+        return donacionMaxima;
+    }
+
+    public double calcularRecaudacionFaltante() {
+        
+        double recaudacion = calcularRecaudacion();
+
+        if (recaudacion >= this.montoObjetivo) {
+            return 0.0;
+        }
+
+        return this.montoObjetivo - recaudacion;
+    }
+}
+
+2) 
+
+public class Editor {
+
+    public Imagen seleccionarImagen(Lista<Imagen> imagenesDisponibles, int cantidadMinimaDeComentarios) {
+
+        Imagen imagenSeleccionada = null;
+        double maximoPromedio = -1.0;
+
+        imagenesDisponibles.iniciarCursor();
+
+        while (imagenesDisponibles.avanzarCursor()) {
+
+            Imagen imagenActual = imagenesDisponibles.obtenerCursor();
+
+            double promedio = this.calcularPromedio(imagenActual, catidadMinimaDeComentarios);
+
+            if (promedio > maximoPromedio) {
+                maximoPromedio = promedio;
+                imagenSeleccionada = imagenActual;
+            }
+
+        }
+
+        return imagenSeleccionada;
+    }
+
+    private double calcularPromedio(Imagen imagen, int cantidadMinimaDeComentarios) {
+
+        Lista<Comentario> comentarios = imagen.obtenerComentarios();
+
+        int comentariosCalificados = 0;
+        int sumaCalificaciones = 0;
+
+        comentarios.iniciarCursor();
+
+        while (comentarios.avanzarCursor()) {
+            Comentario comentarioActual = comentarios.obtenerCursor();
+
+            int calificacion = comentarioActual.obtenerCalificacion();
+
+            if (calificacion > 0) {
+                sumaCalificaciones += calificacion;
+                comentariosCalificados++;
+            }
+
+        }
+
+        if (comentariosCalificados < cantidadMinimaDeComentarios) {
+            return -1.0;
+        } else if (comentariosCalificados == 0) {
+            return 0.0;
+        } else {
+            return (double) sumaCalificaciones / comentariosCalificados;
+        }
+
+    }
+}
