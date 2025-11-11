@@ -1,4 +1,6 @@
-public class Mozo {
+2)
+ 
+ public class Mozo {
 
     private String nombre;
     private double propinaTotal;
@@ -204,5 +206,61 @@ public class Restaurante {
         }
 
         return mozoGanador;
+    }
+}
+
+3) 
+
+public class Moderador {
+
+    public Mensaje buscarMensajeMasVotadoDelUsuarioSegunTematica(Lista<Foro> foros, String usuarioBuscado, String tematicaBuscada) {
+
+        Mensaje mensajeMasVotado = null;
+        int votosMaximos = -1;
+
+        foros.iniciarCursor();
+
+        while (foros.avanzarCursor()) {
+            Foro foroActual = foros.obtenerCursor();
+
+            if (this.tieneTematica(foroActual, tematicaBuscada)) {
+                Lista<Mensaje> mensajes = foroActual.obtenerMensajes();
+                
+                mensajes. iniciarCursor(); 
+                while (mensajes.avanzarCursor()) {
+                    Mensaje mensajeActual = mensajes.obtenerCursor();
+                    
+                    if (mensajeActual.obtenerAutor().equals(usuarioBuscado)) {
+                        int votosActuales = mensajeActual.contarVotos();
+
+                        if (votosActuales > votosMaximos) {
+                            votosMaximos = votosActuales;
+                            mensajeMasVotado = mensajeActual;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return mensajeMasVotado;
+    }
+
+    private boolean tieneTematica(Foro foro, String tematicaBuscada) {
+        
+        Lista<String> tematicas = foro.obtenerTematicas();
+
+        tematicas.iniciarCursor();
+        while (tematicas.avanzarCursor()) {
+            if (tematicas.obtenerCursor().equals(tematicaBuscada)) {
+                return true;
+            }
+
+        }
+
+        return false;
     }
 }

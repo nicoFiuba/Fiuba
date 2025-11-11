@@ -1,0 +1,156 @@
+2)
+public Profesor {
+
+    private List<String> obtenerMaterias(List<Nota> promedios) {
+
+        List<String> materias = new Lista<>();
+
+        promedios.iniciarCursor();
+        while (promedios.avanzarCursor()) {
+            Nota notaActual = promedios.obtenerCursor();
+            String materiaActual = notaActual.getMateria();
+
+            if (!this.contieneMateria(materias, materiaActual)) {
+                materias.agregar(materiaActual);
+            }
+
+        }
+
+        return materias;
+    }
+
+    private boolean contieneMateria(List>String> listaMaterias, String materiaBuscada) {
+        
+        listaMaterias.iniciarCursor();
+        while (listaMaterias.avanzarCursor()) {
+            if (listaMaterias.obtenerCursor().equals(materiaBuscada)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Alumno buscarAlumnoPorPadron(List<Alumno> alumnos, int padronBuscado) {
+
+        alumnos.iniciarCursor();
+        while (alumnos.avanzarCursor()) {
+            Alumno alumnoActual = alumnos.obtenerCursor();
+
+            if (alumnoActual.getPadron() == padronBuscado) {
+                return alumnoActual;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Alumno> buscarMejoresAlumnos(List<Alumno> alumnos, List<Nota> promedios) {
+
+       List<Alumno> mejoresAlumnos = new Lista<>();
+
+       List<String> materias = this.obtenerMaterias(promedios);
+
+       materias.iniciarCursor();
+       while (materias.avanzarCursor()) {
+            String materiaActual = materias.obtenerCursor();
+
+            Alumno mejorAlumno = null;
+            double promedioMaximo = -1.0;
+
+            promedios.iniciarCursor();
+            while (promedios.avanzarCursor()) {
+                Nota notaActual = promedios.obtenerCursor();
+
+                if (notaActual.getMateria().equals(materiaActual)) {
+                    double valorActual = notaActual.getValor();
+
+                    if (valorActual > promedioMaximo) {
+                        promedioMaximo = valorActual;
+
+                        mejorAlumno = this.buscarAlumnoPorPadron(alumnos, notaActual.getPadron());
+                    }
+                }
+            }
+
+            if (mejorAlumno != null) {
+                mejoresAlumnos.agregar(mejorAlumno);
+            }
+
+       }
+
+       return mejoresAlumnos;
+    }
+}
+
+3) 
+
+public class Bateria {
+
+    private final double capacidadMaxima;
+    private final double consumoPromedio;
+    private double cargaActual;
+
+    public Bateria(double capacidadMaxima, double consumoPromedio) {
+
+        if (capacidadMaxima <= 0 || consumoPromedio <= 0) {
+            throw new IllegalArgumentException("No se puede no ingresar");
+        }
+
+        this.capacidadMaxima = capacidadMaxima;
+        this.consumoPromedio = consumoPromedio;
+        this.cargaActual = 0.0;
+
+    }
+
+    public void cargar(double valor) {
+
+        double nuevaCarga = this.cargaActual += valor;
+
+        if (nuevaCarga > this.capacidadMaxima) {
+            this.cargaActual = this.capacidadMaxima;
+        } else if (valor <= 0) {
+            this.cargaActual += 0;
+        }  else {
+            this.cargaActual = nuevaCarga;
+        }
+
+    }
+
+    public void desplazar(double distancia) {
+
+        if (distancia <= 0) {
+            return;
+        }
+
+        double energiaRequerida = distancia * this.consumoPromedio;
+
+        if (energiaRequerida > this.cargaActual) {
+            throw new IllegalStateException("Carga insuficiente");
+        }
+
+        this.cargaActual -= energiaRequerida;
+
+    }
+
+    public double getCargaActual() {
+        return this.cargaActual;
+    }
+
+    public double getAutonomia() {
+
+        if (consumoPromedio == 0) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        return this.cargaActual / this.consumoPromedio;
+    }
+
+    public boolean estaVacia() {
+        return this.cargaActual <= 0.0;
+    }
+
+    public boolean estaLlena() {
+        return this.cargaActual >= this.capacidadMaxima;
+    }
+}
