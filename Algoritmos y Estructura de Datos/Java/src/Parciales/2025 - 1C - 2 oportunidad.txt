@@ -1,0 +1,241 @@
+2) 
+
+public class Pixel {
+
+    private int red;
+    private int green;
+    private int blue;
+
+    public Pixel(int red, int green, int blue) {
+
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+
+    }
+
+    public int getRed() {
+        return this.red;
+    }
+
+    public int getGreen() {
+        return this.green;
+    }
+
+    public int getBlue() {
+        return this.blue;
+    }
+
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
+    }
+
+    public boolean esColorPuro() {
+
+        int ceros = 0;
+
+        if (this.red == 0) {
+            ceros++;
+        }
+
+        if (this.green == 0) {
+            ceros++;
+        }
+
+        if (this.blue == 0) {
+            ceros++;
+        }
+
+        return ceros >=2;
+    }
+}
+
+public class Imagen {
+
+    private Pixel[][] matriz;
+    private int ancho;
+    private int alto;
+
+    public Imagen(int ancho, int alto) {
+
+        if (ancho <= 0 || alto <=0) {
+            throw new IllegalArgumentException("Las dimensiones tienen que ser positivas");
+        }
+
+        this.ancho = ancho;
+        this.alto = alto;
+        this.matriz = new Pixel[alto][ancho];
+
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                this.matriz[i][j] = new Pixel(0,0,0);
+            }
+        }
+    }
+
+    public int getAncho() {
+        return this.ancho;
+    }
+
+    public int getAlto() {
+        return this.alto;
+    }
+
+    public Pixel getPixel(int x, int y) {
+        return this.matriz[y][x];
+    }
+
+    public void setPixel(int x, int y, Pixel pixel) {
+        this.matriz[y][x] = pixel;
+    }
+
+    public Pixel getPixelMasRojo() {
+
+        Pixel maxRojo = this.matriz[0][0];
+        
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                if (this.matriz[i][j].getRed() > maxRojo.getRed()) {
+                    maxRojo = this.matriz[i][j];
+                }
+            }
+        }
+
+        return maxRojo;
+    }
+
+    public Pixel getPixelMasVerde() {
+
+        Pixel maxVerde = this.matriz[0][0];
+
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                if (this.matriz[i][j].getGreen() > maxVerde.getGreen()) {
+                    maxVerde = this.matriz[i][j];
+                }
+            }
+        }
+
+        return maxVerde;
+    }
+
+    public Pixel getPixelMasAzul() {
+
+        Pixel maxAzul = this.matriz[0][0];
+
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                if (this.matriz[i][j].getBlue() > maxAzul.getBlue()) {
+                    maxAzul = this.matriz[i][j];
+                }
+            }
+        }
+
+        return maxAzul;
+    }
+
+    public void aplicarFiltroEscalaDeGrises() {
+        for (int i = 0; i < alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                Pixel pixel = this.matriz[i][j];
+
+                double valorGris = 0.299 * pixel.getRed() + 0.587 * pixel.getGreen() + 0.114 * pixel.getBlue();
+
+                int gris = (int) valorGris;
+
+                pixel.setRed(gris);
+                pixel.setGreen(gris);
+                pixel.setBlue(gris);
+            }
+        }
+    }
+
+    public void aplicarFiltroBrillo(int valor) {
+
+        for (int i = 0; i< alto; i++) {
+            for (int j = 0; j < ancho; j++) {
+                Pixel pixel = this.matriz[i][j];
+
+                int newRed = pixel.getRed() + valor;
+                int newGreen = pixel.getGreen() + valor;
+                int newBlue = pixel.getBlue() + valor;
+
+                pixel.setRed(Math.min(255, Math.max(0, newRed)));
+                pixel.setGreen(Math.min(255, Math.max(0, newGreen)));
+                pixel.setBlue(Math.min(255, Math.max(0, newBlue)));
+            }
+        }
+    }
+
+    public void invertirHorizontalmente() {
+        
+        for(int i = 0; i < this.alto; i++) {
+            for (int j = 0; j <this.ancho / 2; j++) {
+                Pixel pixelTemporal = this.matriz[i][j];
+                int opuesto = this.ancho - 1 - j;
+                this.matriz[i][j] = this.matriz[i][opuesto];
+                this.matriz[i][opuesto] = pixelTemporal;
+            }
+        }
+    }
+
+    public void invertirVerticalmente() {
+
+        for(int i = 0; i < alto / 2; i++) {
+            for (int j = 0; j < ancho; j++) {
+                Pixel pixelTemporal = this.matriz[i][j];
+                int opuesto = this.alto -1 - i;
+                this.matriz[i][j] = this.matriz[opuesto][j];
+                this.matriz[opuesto][j] = pixelTemporal;
+            }
+        }
+    }
+}
+
+3)
+Agrego este metodo al ejercicio 2:
+public int contarPixelesPuros() {
+    
+    int contador = 0;
+
+    for (int i = 0; i < alto; i++) {
+        for (int j = 0; j < ancho; j++) {
+            if (this.matriz[i][j].esColorPuro()) {
+                contador++;
+            }
+        }
+    }
+
+    return contador;
+}
+
+public class AdministradorDeImagenes {
+
+    public Imagen getImagenMasPura(List<Imagen> imagenes) {
+
+        Imagen imagenMasPura = null;
+        int purosMaximos = -1;
+
+        imagenes.iniciarCursor();
+        while (imagenes.avanzarCursor()) {
+            Imagen imagenActual = imagenes.obtenerCursor();
+
+            int purosActuales = imagenActual.contarPixelesPuros();
+
+            if (purosActuales > purosMaximos) {
+                purosMaximos = purosActuales;
+                imagenMasPura = imagenActual;
+            }
+        }
+
+        return imagenMasPura;
+    }
+}

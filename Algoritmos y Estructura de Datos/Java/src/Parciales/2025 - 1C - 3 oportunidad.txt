@@ -1,0 +1,101 @@
+2) 
+
+public class Escudo {
+
+    private int resitencia;
+    private int resistenciaActual;
+    private boolean fueDestruido;
+    private int contadorDeAtaquesSoportados;
+
+    public Escudo(int resitencia) {
+
+        if (resistencia <= 0) {
+            throw new IllegalArgumentException("La resitencia debe ser positiva");
+        }
+
+        this.resitencia = resitencia;
+        this.resistenciaActual = resistencia;
+        this.fueDestruido = false;
+        this.contadorDeAtaquesSoportados = 0;
+
+    }
+
+    public boolean estaDestruido() {
+        return this.resistenciaActual <= 0;
+    }
+
+    public void defenderAtaque(int puntosAtaque) {
+
+        if (puntosAtaque <= 0) {
+            return;
+        }
+
+        if (this.estaDestruido()) {
+            return;
+        }
+
+        this.resistenciaActual -= puntosAtaque;
+        contadorDeAtaquesSoportados++;
+
+        if (this.estaDestruido()) {
+            this.fueDestruido = true;
+        }
+
+    }
+
+    public void reparar() {
+
+        if (!this.fueDestruido) {
+            this.resistenciaActual = this.resitencia;
+        }
+    }
+
+    public int contarAtaquesSoportados() {
+        return contadorDeAtaquesSoportados;
+    }
+}
+
+3) 
+
+public class AsistenteComercial {
+
+    public PlanComercial elegirPlanMasEconomico(Lista<PlanComercial> planesDisponibles, serviciosRequeridos) {
+
+        PlanComercial planSeleccionado = null;
+
+        planesDisponibles.iniciarCursor()
+        while (planesDisponibles.avanzarCursor()) {
+            PlanComercial planActual = planesDisponibles.obtenerCursor();
+
+            double precio = this.calcularPrecio(planActual, List<String> serviciosRequeridos)
+        }
+
+        return planSeleccionado;
+    }
+
+    private double calcularPrecio(PlanComercial plan, List<String> serviciosRequeridos) {
+
+        Lista<Servicios> servicios = plan.obtenerServicios();
+        double precio = 0.0;
+
+        servicios.iniciarCursor();
+        while (servicios.avanzarCursor()) {
+
+            Servicio servicioActual = servicios.obtenerCursor();
+
+            double precioActual = servicioActual.obtenerPrecio();
+
+            if (servicioActual.esAdicional()) {
+                return;
+            }
+            
+            if (precioActual == 0.0) {
+                return 0.0;
+            } else {
+                precio += precioActual;
+            }
+        }
+
+        return precio;
+    }
+}
