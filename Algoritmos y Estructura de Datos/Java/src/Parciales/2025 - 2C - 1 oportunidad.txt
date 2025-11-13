@@ -1,0 +1,210 @@
+2)
+
+public class Libro {
+
+    private String titulo;
+    private double ancho;
+    private double peso;
+
+    public Libro(String titulo, double ancho, double peso) {
+
+        if (titulo != null && !titulo.isBlank()) {
+            this.titulo = titulo;
+        } else {
+            this.titulo = "Desconocido";
+        }
+
+        if (ancho < 0) {
+            throw new IllegalArgumentException("No existe ancho negativo");
+        } else {
+            this.ancho = ancho;
+        }
+
+        if (peso < 0) {
+            throw new IllegalArgumentException("No existe peso negativo");
+        } else {
+            this.peso = peso;
+        }
+
+    }
+
+    public String getTitulo() {
+        return this.titulo;
+    }
+
+    public double getAncho() {
+        return this.ancho;
+    }
+
+    public double getPeso() {
+        return this.peso;
+    }
+}
+
+public enum EstadoDelEstante {
+    
+    EN_REPARACION,
+    LISTO_PARA_USAR
+}
+
+public class Estante {
+
+    private final double ancho;
+    private final double pesoSoportado;
+    private Libro[] libros;
+    private double pesoActual;
+    private double anchoActual;
+    private int librosActuales;
+    private EstadoDelEstante estado;
+
+    public Estante(double ancho, double pesoSoportado, int capacidadMaxima) {
+
+        if (ancho <= 0 || pesoSoportado <= 0) {
+            throw new IllegalArgumentException("El ancho y el peso deben ser positivos");
+        }
+
+        this.ancho = ancho;
+        this.pesoSoportado = pesoSoportado;
+        this.libros = new Libro[capacidadMaxima];
+        this.librosActuales = 0;
+        this.pesoActual = 0;
+        this.anchoActual = 0;
+        this.estado = EstadoDelEstante.LISTO_PARA_USAR;
+
+    }
+
+    public boolean agregarLibro(Libro libroParaAgregar) {
+
+        if (this.estado == EstadoDelEstante.EN_REPARACION) {
+            return false;
+        }
+
+        if ((this.pesoActual + libroParaAgregar.getPeso()) > this.pesoSoportado) {
+            return false;
+        }
+
+        if ((this.anchoActual + libroParaAgregar.getAncho()) > this.ancho) {
+            return false;
+        }
+
+        if (this.librosActuales >= this.libros.length) {
+            return false;
+        }
+        
+        this.libros[this.librosActuales] = libroParaAgregar;
+        this.librosActuales++;
+        this.pesoActual += libroParaAgregar.getPeso();
+        this.anchoActual += libroParaAgregar.getAncho();
+
+        return true;
+    }
+
+    public Libro buscarPorTitulo(String tituloBuscado) {
+
+        int i = 0;
+        while (i < this.librosActuales) {
+            if (this.libros[i].getTitulo().equals(tituloBuscado)) {
+                return this.libros[i];
+            }
+
+            i++;
+        }
+        
+        return null;
+    }
+
+    public int getCantidadDeLibros() {
+        return this.librosActuales;
+    }
+
+    public double getPesoActual() {
+        return this.pesoActual;
+    }
+
+    public double getEspacioLibreDelEstante() {
+        return this.ancho - this.anchoActual;
+    }
+
+    public void ponerEstanteEnReparacion() {
+        
+        if (this.estado == EstadoDelEstante.EN_REPARACION) {
+            throw new IllegalStateException("El estante ya esta en reparacion");
+        }
+
+        this.estado = EstadoDelEstante.EN_REPARACION;
+    }
+}
+
+3) 
+
+public class AsistenteComercial {
+
+    public Lista<Atuendo> comprarAtuendos(Lista<Atuendo> stockDeAtuendos, Lista<Comprador> compradores) {
+
+        Lista<Atuendo> atuendosComprados = new Lista<>();
+
+        compradores.iniciarCursor();
+        while (compradores.avanzarCursor()) {
+            Comprador compradorActual = compradores.obtenerCursor();
+            double presupuesto = compradorActual.getPresupuesto();
+
+            boolean compradorYaCompro = false;
+
+            stockDeAtuendos.iniciarCursor();
+            while (stockDeAtuendos.avanzarCursor() && !compradorYaCompro) {
+                Atuendo atuendo1 = stockDeAtuendos.obtenerCursor();
+
+                if (this.listaContiene(atuendosComprados, atuendo1)) {
+                    continue;
+                }
+                
+                stockDeAtuendos.iniciarCursor();
+                while (stockDeAtuendos.avanzarCursor() && !compradorYaCompro) {
+                    Atuendo atuendo2 = stockDeAtuendos.obtenerCursor();
+
+                    if (atuendo1 == atuendo2 || this.listaContiene(atuendosComprados, atuendo2)) {
+                        continue;
+                    }
+                    
+                    boolean mismoColor = atuendo1.getColor().equals(atuendo2.getColor());
+
+                    boolean entraEnPresupuesto = (atuendo1.getPrecio() + atuendo2.getPrecio() <= presupuesto);
+
+                    boolean distintoTipo = !atuendo1.getTipo().equals(atuendo2.getTipo());
+
+                    if (mismoColor && entraEnPresupuesto && distintoTipo) {
+                        atuendosComprados.agregar(atuendo1);
+                        atuendosComprados.agregar(atuendo2);
+
+                        compradorYaCompro = true;
+                    }
+                }
+            }
+        }
+
+        Lista<Atuendo> atuendosNoComprados = new Lista<>();
+
+        stockDeAtuendos.iniciarCursor();
+        while (stockDeAtuendos.avanzarCursor()) {
+            Atuendo atuendoStock = stockDeAtuendos.obtenerCursor();
+            
+            if (!this.listaContiene(atuendosComprados, atuendoStock)) {
+                atuendosNoComprados.agregar(atuendoStock);
+            }
+        }
+
+        return atuendosNoComprados;
+    }
+
+    private boolean listaContiene(Lista<Atuendo> lista, Atuendo atuendoBuscado) {
+        
+        lista.iniciarCursor();
+        while (lista.avanzarCursor()) {
+            if (lista.obtenerCursor() == atuendoBuscado) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

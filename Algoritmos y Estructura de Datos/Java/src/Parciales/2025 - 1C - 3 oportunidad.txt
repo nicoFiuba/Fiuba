@@ -59,43 +59,66 @@ public class Escudo {
 
 public class AsistenteComercial {
 
-    public PlanComercial elegirPlanMasEconomico(Lista<PlanComercial> planesDisponibles, serviciosRequeridos) {
+    public PlanComercial elegirPlanMasEconomico(Lista<PlanComercial> planesDisponibles, List<String> serviciosRequeridos) {
 
-        PlanComercial planSeleccionado = null;
+        PlanComercial planGanador = null;
+        int precioMinimo = Integer.MAX_VALUE;
 
-        planesDisponibles.iniciarCursor()
+        planesDisponibles.iniciarCursor();
         while (planesDisponibles.avanzarCursor()) {
             PlanComercial planActual = planesDisponibles.obtenerCursor();
 
-            double precio = this.calcularPrecio(planActual, List<String> serviciosRequeridos)
+            if (this.elPlanCumpleConLosRequisitos(planActual, serviciosRequeridos)) {
+
+                int precioActual = planActual.obtenerPrecio();
+
+                if (precioActual < precioMinimo) {
+                    precioMinimo = precioActual;
+                    planGanador = planActual;
+                }
+
+            }
         }
 
-        return planSeleccionado;
+        return planGanador;
     }
 
-    private double calcularPrecio(PlanComercial plan, List<String> serviciosRequeridos) {
 
-        Lista<Servicios> servicios = plan.obtenerServicios();
-        double precio = 0.0;
+    private boolean elPlanCumpleConLosRequisitos(PlanComercial plan, List<String> serviciosRequeridos) {
+
+        Lista<Servicio> servicios = plan.obtenerServicios();
+
+        serviciosRequeridos.iniciarCursor();
+        while (serviciosRequeridos.avanzarCursor()) {
+            String servicioBuscado = serviciosRequeridos.obtenerCursor();
+
+            boolean encontradoYValido = this.buscarYValidarServicio(servicios, servicioBuscado);
+
+            if (!encontradoYValido) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private boolean buscarYValidarServicio(Lista<Servicio> servicios, String servicioBuscado) {
 
         servicios.iniciarCursor();
         while (servicios.avanzarCursor()) {
-
             Servicio servicioActual = servicios.obtenerCursor();
 
-            double precioActual = servicioActual.obtenerPrecio();
+            if (servicioActual.obtenerNombre().equals(servicioBuscado)) {
+                if (servicioActual.esAdicional()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
-            if (servicioActual.esAdicional()) {
-                return;
-            }
-            
-            if (precioActual == 0.0) {
-                return 0.0;
-            } else {
-                precio += precioActual;
-            }
         }
 
-        return precio;
+        return false;
     }
 }

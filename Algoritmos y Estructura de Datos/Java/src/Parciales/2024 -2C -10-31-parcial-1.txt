@@ -1,0 +1,181 @@
+2)
+
+public enum EstadoDelJuego {
+    JUGANDO,
+    GANADO,
+    PERDIDO
+}
+
+public class Ahorcado {
+
+    private String palabraSecreta;
+    private int erroresPermitidos;
+    private int erroresActuales;
+    private EstadoDelJuego estado;
+    private char[] palabraVisible;
+
+    public Ahorcado(String palabra, int erroresPermitidos) {
+
+        if (palabra == null || palabra.isBlank()) {
+            throw new IllegalArgumentException("La palabra no puede estar vacia");
+        }
+
+        if (erroresPermitidos <= 0) {
+            throw new IllegalArgumentException("La cantidad de errorres debe ser positiva");
+        }
+
+        this.palabraSecreta = palabra;
+        this.erroresPermitidos = erroresPermitidos;
+        this.erroresActuales = 0;
+        this.estado = EstadoDelJuego.JUGANDO;
+        
+        this.palabraVisible = new char[palabra.length()];
+        for (int i = 0; i < palabra.length(); i++) {
+            this.palabraVisible[i] = '_';
+        }
+
+    }
+
+    public int cantidadDeLetrasDeLaPalabra() {
+        return this.palabraSecreta.length();
+    }
+    
+    public EstadoDelJuego getEstado() {
+        return this.estado;
+    }
+
+    public int getErroresActuales() {
+        return this.erroresActuales;
+    }
+
+    public int agregarLetra(char letraParaAgregar) {
+
+        if (this.estado != EstadoDelJuego.JUGANDO) {
+            return 0;
+        }
+
+        int apariciones = 0;
+
+        for (int i = 0; i < this.palabraSecreta.length(); i++) {
+            if (this.palabraSecreta.charAt(i) == letraParaAgregar) {
+                this.palabraVisible[i] = letraParaAgregar;
+                apariciones++;
+            }
+        }
+
+        if (apariciones == 0) {
+            this.erroresActuales++;
+
+            if (this.erroresActuales > this.erroresPermitidos) {
+                this.estado = EstadoDelJuego.PERDIDO;
+            }
+
+        } else if (this.verificarSiGano()) {
+            this.estado = EstadoDelJuego.GANADO;
+        }
+
+        return apariciones;
+    }
+
+    public boolean arriesgarPalabra(String palabraPropuesta) {
+
+        if (this.estado != EstadoDelJuego.JUGANDO) {
+            return false;
+        }
+
+        if(this.palabraSecreta.equals(palabraPropuesta)) {
+            this.estado = EstadoDelJuego.GANADO;
+
+            return true;
+        } else {
+            this.estado = EstadoDelJuego.PERDIDO;
+            
+            this.erroresActuales = this.erroresPermitidos + 1;
+
+            return false;
+        }
+    }
+
+    public String getPalabra() {
+
+        if (this.estado == EstadoDelJuego.JUGANDO) {
+            return "";
+        }
+
+        return this.palabraSecreta;
+    }
+
+    private boolean verificarSiGano() {
+        for (char caracter : this.palabraVisible) {
+            if (caracter == '_') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public String getPalabraVisible() {
+        return new String(this.palabraVisible);
+    }
+}
+
+3)
+
+public class Blog {
+
+    public Lista<Articulo> buscarArticulos(Lista<String> palabrasClaves) {
+
+        Lista<Articulo> articuloFiltrados = new Lista<>();
+        Lista<Articulo> articulos = this.getArticulos();
+
+        articulos.iniciarCursor();
+        while (articulos.avanzarCursor()) {
+            Articulo articuloActual = articulos.obtenerCursor();
+
+            boolean cumpleInclusion = this.elArticuloContiene(articuloActual, palabrasClaves);
+            boolean cumpleExclusion = this.elArticuloNoContiene(articuloActual, articuloActual.getPalabrasExcluyentes());
+
+            if (cumpleInclusion && cumpleExclusion) {
+                articulosFiltrados.agregar(articuloActual);
+            }
+
+        }
+
+        return articulosFiltrados;
+    }
+
+    private boolean elArticuloContiene(Articulo articulo, Lista<String> palabrasClaves) {
+
+        String contenido = articulo.getTitulo() + " " + articulo.getTexto();
+
+        palabrasClaves.iniciarCursor();
+        while (palabrasClaves.avanzarCursor()) {
+            String clave = palabrasClaves.obtenerCursor();
+
+            if (!contenido.toLowerCase().contains(clave.toLowerCase())) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private boolean elArticuloNoContiene(Articulo articulo, Lista<String> palabrasExcluyentes) {
+
+        String contenido = articulo.getTitulo() + " " + articulo.getTexto();
+
+        palabrasExcluyentes.iniciarCursor();
+        while (palabrasExcluyentes.avanzarCursor()) {
+            String prohibida = palabrasExcluyentes.obtenerCursor();
+
+            if (contenido.toLowerCase().contains(prohibida.toLowerCase())) {
+                return false;
+            }
+
+        }
+        
+        return true;
+    }
+}
