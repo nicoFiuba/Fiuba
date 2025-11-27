@@ -1,0 +1,308 @@
+1) 
+
+public class NavegadorSeguro {
+
+    public Lista<PaginaWeb> limpiarPaginasInseguras(Pila<PaginaWeb> web) {
+
+        Lista<PaginaWeb> paginasEliminadas = new Lista<>();
+        Pila<PaginaWeb> auxiliar = new Pila<>();
+
+        if ( web == null || web.estaVacia()) {
+            return paginasEliminadas;
+        }
+
+        while(!web.estaVacia()) {
+            PaginaWeb paginaActual = web.desapilar();
+
+            if (paginaActual.esSegura()) {
+                auxiliar.apilar(paginaActual);
+            } else {
+                paginasEliminadas.agregar(paginaActual);
+            }
+
+        }
+
+        while (!auxiliar.estaVacia()) {
+            web.apilar(auxiliar.desapilar());
+        }
+
+        return paginasEliminadas;
+    }
+}
+
+2)
+
+public class TorreDeControl {
+
+    public Lista<Avion> priorizarAterrizajeDeEmergencia(Cola<Avion> traficoAereo) {
+
+        Lista<Avion> avionesParaAterrizar = new Lista<>();
+
+        if (traficoAereo == null || traficoAereo.estaVacia()) {
+            return avionesParaAterrizar;
+        }
+        
+        int cantidad = traficoAereo.contarElementos();
+
+        for (int i = 0; i < cantidad; i++) {
+            Avion avionActual = traficoAereo.desacolar();
+
+            if (avionActual.tieneEmergencia()) {
+                avionesParaAterrizar.agregar(avionActual);
+            } else {
+                traficoAereo.acolar(avionActual);
+            }
+        }
+
+        return avionesParaAterrizar;
+    }
+}
+
+3)
+
+public class Compilador {
+
+    public boolean verificarBalanceo (Cola<Character> lineaDeCodigo) {
+
+        if (lineaDeCodigo == null || lineaDeCodigo.estaVacia()) {
+            return true;
+        }
+
+        Pila<Character> pilaParentesis = new Pila<>();
+        
+        boolean balanceado = true;
+
+        int cantidad = lineaDeCodigo.contarElementos();
+
+        for (int i = 0; i < cantidad; i++) {
+            Character caracterActual = lineaDeCodigo.desacolar();
+
+            if (balanceado) {
+                if (caracterActual.equals('(')) {
+                    pilaParentesis.apilar(caracterActual);
+                } else if (caracterActual.equals(')')) {
+                    if (!pilaParentesis.estaVacia()) {
+                        pilaParentesis.desapilar();
+                    } else {
+                        balanceado = false;
+                    }
+                }
+            }
+
+            lineaDeCodigo.acolar(caracterActual);
+        }
+
+        return balanceado && pilaParentesis.estaVacia();
+    }
+}
+
+4) 
+
+public class AnalistaDeLogs {
+
+    public Lista<Log> extraerErroresCriticosInversos(Cola<Log> registrosDelServidor) {
+
+        Lista<Log> erroresCriticos = new lista<>();
+
+        if (registrosDelServidor == null || registrosDelServidor.estaVacia()) {
+            return erroresCriticos;
+        }
+
+        Pila<Log> PilaInversa = new Pila<>();
+
+        int cantidad = registrosDelServidor.contarElementos();
+
+        for (int i = 0; i < cantidad; i++) {
+            Log logActual = registrosDelServidor.desacolar();
+
+            if (logActual.esCritico()) {
+                PilaInversa.apilar(logActual);
+            } else {
+                registrosDelServidor.acolar(logActual);
+            }
+
+        }
+
+        while(!PilaInversa.estaVacia()) {
+            Log logInverso = PilaInversa.desapilar();
+            erroresCriticos.agregar(logInverso);
+        }
+
+        return erroresCriticos;
+    }
+}
+
+5) 
+
+public class DJVirtual {
+
+    public Lista<Cancion> generarFlashback(Pila<Cancion> historial, String generoBuscado) {
+
+        Lista<Cancion> ListaDeReproduccion = new Lista<>();
+
+        if (historial == null || historial.estaVacia()) {
+            return ListaDeReproduccion;
+        }
+
+        Pila<Cancion> pilaInversa = new Pila<>();
+
+        while (!historial.estaVacia()) {
+            pilaInversa.apilar(historial.desapilar());
+        }
+
+        while (!pilaInversa.estaVacia()) {
+            Cancion cancionActual = pilaInversa.desapilar();
+
+            if (cancionActual.getGenero().equals(generoBuscado)) {
+                ListaDeReproduccion.agregar(cancionActual);
+            }
+            
+            historial.apilar(cancionActual)
+            
+        }
+
+        return ListaDeReproduccion;
+    }
+}
+
+6)
+
+public class Terminal {
+
+    public void depurarComandosRepetidos(Pila<String> historial) {
+
+        if (historial == null || historial.estaVacia()) {
+            return;
+        }
+
+        Pila<String> pilaAuxiliar = new Pila<>();
+        Lista<String> comandosVistos = new Lista<>();
+
+        while (!historial.estaVacia()) {
+            String comandoActual = historial.desapilar();
+
+            if (!this.listaContiene(comandosVistos, comandoActual)) {
+                pilaAuxiliar.apilar(comandoActual);
+                comandosVistos.agregar(comandoActual);
+            }
+
+        }
+
+        while (!pilaAuxiliar.estaVacia()) {
+            historial.apilar(pilaAuxiliar.desapilar());
+        }
+    }
+
+    private boolean listaContiene(Lista<String> lista, String buscado) {
+        
+        lista.iniciarCursor();
+        while(lista.avanzarCursor()) {
+            if (lista.obtenerCursor().equals(buscado)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+7)
+
+public class PlantaIndustrial {
+
+    public void separarProductosDefectuosos(Cola<Producto> cinta, Pila<Producto> contenedorDescarte) {
+
+        if (cinta == null || cinta.estaVacia()) {
+            return;
+        }
+
+        int cantidad = cinta.contarElementos();
+
+        for (int i = 0; i < cantidad; i++) {
+            Producto productoActual = cinta.desacolar();
+
+            if (productoActual.esDefectuoso()) {
+                contenedorDescarte.apilar(productoActual);
+            } else {
+                cinta.acolar(productoActual);
+                }
+        }
+    }
+}
+
+8)
+
+public class Despachante {
+
+    public void reorganizarColaDeEnvios(Cola<Envio> envios) {
+
+        if (envios == null ||  envios.estaVacia()) {
+            return;
+        }
+
+        Cola<Envio> colaAuxiliar = new Cola<>();
+
+        int cantidad = envios.contarElementos();
+
+        for (int i = 0; i < cantidad; i ++) {
+            Envio envioActual = envios.desacolar();
+
+            if (!envioActual.esPrioritario()) {
+                colaAuxiliar.acolar(envioActual);
+            } else {
+                envios.acolar(envioActual);
+                }
+        }
+
+        int cantidadAuxiliar = colaAuxiliar.contarElementos();
+        for (int i = 0; i < cantidadAuxiliar; i++) {
+            envios.acolar(colaAuxiliar.desacolar());
+        }
+    }
+}
+
+9)
+
+public class Auditoria {
+
+    public Lista<Transaccion> revertirTransaccionesNoAutorizadas(Pila<Transaccion> bitacora, Lista<String> usuariosAutorizados) {
+
+        Lista<Transaccion> incidentes = new Lista<>();
+
+        if (bitacora == null || usuariosAutorizados == null || bitacora.estaVacia() || usuariosAutorizados.estaVacia()) {
+            return incidentes;
+        }
+
+        Pila<Transaccion> pilaAuxiliar = new Pila<>();
+
+        while (!bitacora.estaVacia()) {
+            Transaccion transaccionActual = bitacora.desapilar();
+            String usuario = transaccionActual.getUsuario();
+
+            if (this.listaContiene(usuariosAutorizados, usuario)) {
+                pilaAuxiliar.apilar(transaccionActual);
+            } else {
+                incidentes.agregar(transaccionActual);
+            }
+
+        }
+
+        while (!pilaAuxiliar.estaVacia()) {
+            bitacora.apilar(pilaAuxiliar.desapilar());
+        }
+
+        return incidentes;
+    }
+
+    private boolean listaContiene(Lista<String> lista, String buscado) {
+
+        lista.iniciarCursor();
+        while (lista.avanzarCursor()) {
+            if (lista.obtenerCursor().equals(buscado)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
