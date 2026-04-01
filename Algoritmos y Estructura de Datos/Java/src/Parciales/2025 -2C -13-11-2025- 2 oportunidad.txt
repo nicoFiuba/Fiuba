@@ -1,0 +1,244 @@
+2) 
+
+public class Aplicacion {
+
+    private String nombre;
+    private double consumoEnDisco;
+    private double consumoRam;
+
+    public Aplicacion(String nombre, double consumoRam, double consumoEnDisco) {
+
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("LA aplicacion no puede no tener nombre");
+        }
+
+        if (consumoEnDisco <= 0 || consumoRam <= 0) {
+            throw new IllegalArgumentException("El consumo debe ser positivo");
+        }
+
+        this.nombre = nombre;
+        this.consumoEnDisco = consumoEnDisco;
+        this.consumoRam = consumoRam;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public double getConsumoRam() {
+        return this.consumoRam;
+    }
+
+    public double getConsumoEnDisco() {
+        return this.consumoEnDisco;
+    }
+}
+
+public class Servidor {
+
+    private final double capacidadRam;
+    private final double capacidaDelDisco;
+    private Aplicacion[] aplicacionesGuardadas;
+    private Aplicacion[] aplicacionesEnEjecucion;
+    private double ramEnUso;
+    private double discoEnUso;
+    private int cantidadDeAplicacionesGuardadas;
+    private int cantidadDeAplicacionesEnEjecucion;
+
+    public Servidor(double capacidadRam, double capacidaDelDisco, int maximoDeAplicaciones) {
+
+        if (capacidaDelDisco <= 0 || capacidadRam <= 0 || maximoDeAplicaciones <= 0) {
+            throw new IllegalArgumentException("Las capcidades y el maximo deben ser positivos");
+        }
+
+        this.capacidadRam = capacidadRam;
+        this.capacidaDelDisco = capacidaDelDisco;
+        this.aplicacionesGuardadas = new Aplicacion[maximoDeAplicaciones];
+        this.aplicacionesEnEjecucion = new Aplicacion[maximoDeAplicaciones];
+        this.ramEnUso = 0.0;
+        this.discoEnUso =0.0;
+        this.cantidadDeAplicacionesGuardadas = 0;
+        this.cantidadDeAplicacionesEnEjecucion = 0;
+    }
+
+    public boolean guardarAplicacion(Aplicacion aplicacionParaGuardar) {
+
+        if ((this.discoEnUso + aplicacionParaGuardar.getConsumoEnDisco()) > this.capacidaDelDisco || aplicacionParaGuardar.getConsumoEnDisco() > this.capacidaDelDisco) {
+            return false;
+        } 
+
+        if (this.cantidadDeAplicacionesGuardadas >= this.aplicacionesGuardadas.length) {
+            return false;
+        }
+
+        if (this.estaGuardada(aplicacionParaGuardar)) {
+            return false;
+        }
+
+        this.aplicacionesGuardadas[this.cantidadDeAplicacionesGuardadas] = aplicacionParaGuardar;
+        this.cantidadDeAplicacionesGuardadas++;
+        this.discoEnUso += aplicacionParaGuardar.getConsumoEnDisco();
+
+        return true;
+    }
+
+    public boolean ejecutarAplicacion(Aplicacion aplicacionAEjecutar) {
+        
+        if ((this.ramEnUso + aplicacionAEjecutar.getConsumoRam()) > this.capacidadRam || aplicacionAEjecutar.getConsumoRam() > this.capacidadRam) {
+            return false;
+        }
+
+        if (this.cantidadDeAplicacionesEnEjecucion >= this.aplicacionesEnEjecucion.length) {
+            return false;
+        }
+
+        if (this.estaEnEjecucion(aplicacionAEjecutar)) {
+            return false;
+        }
+
+        this.aplicacionesEnEjecucion[this.cantidadDeAplicacionesEnEjecucion] = aplicacionAEjecutar;
+        this.cantidadDeAplicacionesEnEjecucion++;
+        this.ramEnUso += aplicacionAEjecutar.getConsumoRam();
+
+        return true;
+    }
+
+    public double getConsumoEnDisco() {
+        return this.discoEnUso;
+    }
+
+    public double getConsumoRam() {
+        return this.ramEnUso;
+    }
+
+    public int getCantidadDeAplicacionesEnEjecucion() {
+        return this.cantidadDeAplicacionesEnEjecucion;
+    }
+
+    private boolean estaGuardada(Aplicacion app) {
+
+        for (int i = 0; i < this.cantidadDeAplicacionesGuardadas; i++) {
+            if (this.aplicacionesGuardadas[i].getNombre().equals(app.getNombre())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean estaEnEjecucion(Aplicacion app) {
+
+        for (int i = 0; i < this.cantidadDeAplicacionesEnEjecucion; i++) {
+            if (this.aplicacionesEnEjecucion[i].getNombre().equals(app.getNombre())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+3)
+
+Creo TDA para poder reliazar el ejercicio.
+
+public class EstadisticasDelServidor {
+
+    private Servidor servidor;
+    private Lista<String> asuntosEnviados;
+    private int contadorSpam;
+
+    public EstadisticasDelServidor(Servidor servidor) {
+
+        this.servidor = servidor;
+        this.asuntosEnviados = new Lista<String>();
+        this.contadorSpam = 0;
+    }
+
+    public Servidor getServidor(){
+        return this.servidor;
+    }
+
+    public int getContadorSpam() {
+        return this.contadorSpam;
+    }
+
+    public boolean procesarAsunto(String asunto) {
+
+        if (this.esAsuntoRepetido(asunto)) {
+            this.contadorSpam++;
+
+            return true;
+        } else {
+            this.asuntosEnviados.agregar(asunto);
+
+            return false;
+        }
+
+    }
+
+    private boolean esAsuntoRepetido(String asunto) {
+
+        this.asuntosEnviados.iniciarCursor();
+        while (this.asuntosEnviados.avanzarCursor()) {
+            if (this.asuntosEnviados.obtenerCursor().equals(asunto)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+public class AnalizadorSpam {
+
+    public Servidor encontrarServidorConMasSpam(Queue<CorreoElectronico> colaCorreos) {
+
+        Lista<EstadisticasDelServidor> memoria = new Lista<EstadisticasDelServidor>();
+
+        Servidor servidorGanador = null;
+        int spamMaximo = -1;
+
+        while(!colaCorreos.isEmpty()) {
+            CorreoElectronico correo = colaCorreos.dequeue();
+
+            Servidor servidorDeCorreo = correo.getServidor();
+            
+            String asuntoDelCorreo = correo.getAsunto();
+
+            EstadisticasDelServidor estadisticas = this.buscarEnMemoria(memoria, servidorDeCorreo.getIp());
+
+            if (estadisticas == null) {
+                estadisticas = new EstadisticasDelServidor(servidorDeCorreo);
+                memoria.agregar(estadisticas);
+            }
+
+            boolean fueSpam = estadisticas.procesarAsunto(asuntoDelCorreo);
+
+            if (fueSpam) {
+                if (estadisticas.getContadorSpam() > spamMaximo) {
+                    spamMaximo = estadisticas.getContadorSpam();
+                    servidorGanador = estadisticas.getServidor();
+                }
+            }
+
+        }
+
+        return servidorGanador;
+    }
+
+    private EstadisticasDelServidor buscarEnMemoria(Lista<EstadisticasDelServidor> memoria, String ip) {
+
+        memoria.iniciarCursor();
+        while (memoria.avanzarCursor()) {
+            EstadisticasDelServidor estadisticas = memoria.obtenerCursor();
+
+            if (estadisticas.getServidor().getIp().equals(ip)) {
+                return estadisticas;
+            }
+
+        }
+
+        return null;
+    }
+}
