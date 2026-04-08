@@ -2,9 +2,7 @@
 TEORÍA DE ALGORITMOS - EJERCICIO 7: El Ágape Antillense (K-Core)
 
 1. ESTRATEGIA (Elección Golosa Destructiva)
-El problema puede modelarse como un grafo donde los nodos son los socios y las aristas 
-son las relaciones de conocimiento. Buscamos el subgrafo inducido máximo donde todos 
-los nodos tengan grado >= 4.
+El problema puede modelarse como un grafo donde los nodos son los socios y las aristas son las relaciones de conocimiento. Buscamos el subgrafo inducido máximo donde todos los nodos tengan grado >= 4.
 
 Estrategia greedy:
 1. Asumimos inicialmente que TODOS los 'n' socios están invitados.
@@ -76,25 +74,13 @@ Complejidad Espacial: O(V + E)
 
 3. JUSTIFICACIÓN DE OPTIMALIDAD (Eliminación Segura)
 
-Demostramos que el algoritmo es óptimo probando que nunca eliminamos a un socio 
-que podría haber pertenecido a la solución óptima.
+Demostramos que el algoritmo es óptimo probando que nunca eliminamos a un socio que podría haber pertenecido a la solución óptima.
 
-Por el absurdo, supongamos que nuestro algoritmo se equivoca y elimina a un socio "S" 
-que SÍ pertenece al subgrafo máximo válido (la solución óptima). 
-Para que el algoritmo haya decidido eliminar a "S", en algún momento de la ejecución 
-"S" debió tener estrictamente menos de 4 conocidos en el grupo actual de invitados. 
+Por el absurdo, supongamos que nuestro algoritmo se equivoca y elimina a un socio "S" que SÍ pertenece al subgrafo máximo válido (la solución óptima). Para que el algoritmo haya decidido eliminar a "S", en algún momento de la ejecución "S" debió tener estrictamente menos de 4 conocidos en el grupo actual de invitados. 
 
-Sabemos que en cada paso el algoritmo solo achica el grupo de invitados (nunca se 
-agrega gente nueva). Por lo tanto, el grupo de invitados en el momento en que "S" fue 
-eliminado es un SUPERCONJUNTO de la solución óptima final. 
-Si "S" tiene menos de 4 conocidos en este superconjunto, es matemáticamente imposible 
-que tenga 4 o más conocidos en un subconjunto más pequeño (como lo es la solución óptima). 
-El grado de un nodo en un subgrafo inducido siempre es menor o igual a su grado en el 
-grafo original.
+Sabemos que en cada paso el algoritmo solo achica el grupo de invitados (nunca se agrega gente nueva). Por lo tanto, el grupo de invitados en el momento en que "S" fue eliminado es un SUPERCONJUNTO de la solución óptima final. Si "S" tiene menos de 4 conocidos en este superconjunto, es matemáticamente imposible que tenga 4 o más conocidos en un subconjunto más pequeño (como lo es la solución óptima). El grado de un nodo en un subgrafo inducido siempre es menor o igual a su grado en el grafo original.
 
-Por lo tanto, "S" jamás podría haber formado parte de un grupo válido. Esto demuestra 
-que la decisión Greedy de eliminar vértices con grado menor a 4 es una "elección segura" 
-(Safe Step) que no descarta ninguna solución válida. Al detenerse solo cuando todos 
+Por lo tanto, "S" jamás podría haber formado parte de un grupo válido. Esto demuestra que la decisión Greedy de eliminar vértices con grado menor a 4 es una "elección segura" (Safe Step) que no descarta ninguna solución válida. Al detenerse solo cuando todos 
 cumplen la condición, el conjunto resultante es obligatoriamente el máximo posible.
 """
 

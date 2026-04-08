@@ -1,3 +1,15 @@
+"""
+TEORÍA DE ALGORITMOS - EJERCICIO 1: Patrulleros en la ruta
+
+1. ESTRATEGIA (Elección Golosa)
+El problema se modela como una cobertura de puntos en una dimensión. 
+La estrategia greedy consiste en:
+1. Ordenar el listado de bifurcaciones de menor a mayor según su ubicación en kilómetros.
+2. Iterar sobre la ruta de izquierda a derecha. Al encontrar la primera bifurcación que aún no está cubierta (llamémosla X), la elección localmente óptima es ubicar el patrullero en la bifurcación Y más lejana posible hacia la derecha, tal que la distancia entre X e Y sea menor o igual a 50 km.
+3. Al colocar el patrullero en Y, todas las bifurcaciones ubicadas a una distancia de hasta 50 km hacia la derecha de Y quedan automáticamente cubiertas. Avanzamos nuestro índice saltando todas estas bifurcaciones cubiertas y repetimos el proceso.
+"""
+
+
 def ubicar_patrulleros(bifurcaciones):
 
     # Asumimos que bifurcaciones es una lista de enteros (los kilómetros)
@@ -49,27 +61,16 @@ Complejidad Espacial: O(N)
 
 3. JUSTIFICACIÓN DE OPTIMALIDAD
 
-Para demostrar que nuestra solución Greedy es óptima, utilizamos el argumento de que 
-"la elección golosa siempre se mantiene adelante" (Greedy stays ahead).
+Para demostrar que nuestra solución Greedy es óptima, utilizamos el argumento de que "la elección golosa siempre se mantiene adelante" (Greedy stays ahead).
 
-Supongamos que existe una solución óptima distinta a la nuestra. Al evaluar el primer 
-pueblo sin cobertura desde la izquierda, nuestra estrategia Greedy ubica el patrullero 
-en la bifurcación más a la derecha posible que aún alcance a cubrir ese pueblo (a <= 50 km). 
+Supongamos que existe una solución óptima distinta a la nuestra. Al evaluar el primer pueblo sin cobertura desde la izquierda, nuestra estrategia Greedy ubica el patrullero en la bifurcación más a la derecha posible que aún alcance a cubrir ese pueblo (a <= 50km). 
 
-Cualquier otra solución óptima deberá poner su patrullero en la misma bifurcación o en 
-una que esté más a la izquierda. Como el patrullero Greedy está situado lo más a la 
-derecha posible, su rango de cobertura hacia adelante (posición + 50 km) será mayor o 
+Cualquier otra solución óptima deberá poner su patrullero en la misma bifurcación o en una que esté más a la izquierda. Como el patrullero Greedy está situado lo más a la derecha posible, su rango de cobertura hacia adelante (posición + 50 km) será mayor o 
 igual al rango de cobertura del patrullero de la solución óptima. 
 
-Esto significa que, tras la primera elección, el subproblema restante que debe resolver 
-nuestro algoritmo (los pueblos que aún quedan por cubrir) es siempre un subconjunto 
-(es igual o más pequeño) del subproblema que le queda a la solución óptima. 
+Esto significa que, tras la primera elección, el subproblema restante que debe resolver nuestro algoritmo (los pueblos que aún quedan por cubrir) es siempre un subconjunto (es igual o más pequeño) del subproblema que le queda a la solución óptima. 
 
-Aplicando este mismo razonamiento de forma inductiva en cada paso, nuestra solución 
-Greedy siempre cubre al menos la misma cantidad de pueblos con la misma cantidad de 
-patrulleros. Por lo tanto, es imposible que una solución óptima logre cubrir toda la 
-ruta utilizando estrictamente menos patrulleros que nuestro algoritmo. Concluimos que 
-la estrategia Greedy garantiza la cantidad mínima y óptima de patrulleros.
+Aplicando este mismo razonamiento de forma inductiva en cada paso, nuestra solución Greedy siempre cubre al menos la misma cantidad de pueblos con la misma cantidad de patrulleros. Por lo tanto, es imposible que una solución óptima logre cubrir toda la ruta utilizando estrictamente menos patrulleros que nuestro algoritmo. Concluimos que la estrategia Greedy garantiza la cantidad mínima y óptima de patrulleros.
 """
 
 # Bloque de prueba opcional para que lo corras en tu compu

@@ -1,3 +1,16 @@
+"""
+TEORÍA DE ALGORITMOS - EJERCICIO 2: Estrategia Destructiva para MST (Reverse-Delete)
+
+1. ESTRATEGIA Y RESOLUCIÓN
+El enunciado propone un algoritmo "destructivo" (inverso a Kruskal). 
+- ¿Corresponde a un algoritmo óptimo?
+SÍ, es un algoritmo óptimo y generará correctamente un Árbol Recubridor Mínimo (MST).
+
+-¿Con qué estructuras implementarlo eficientemente?
+Para encontrar ciclos y aristas pesadas de forma eficiente, la mejor estrategia no es buscar ciclos ciegamente en el grafo, sino ordenar TODAS las aristas de mayor a menor peso. Luego, iteramos sobre esta lista intentando eliminar cada arista. Para saber si esa arista formaba parte de un ciclo (y por ende, se puede borrar) o si era vital para mantener el grafo unido (un "puente"), utilizamos un recorrido estándar como BFS o DFS (Búsqueda en Anchura o Profundidad) para verificar la conectividad.
+"""
+
+
 def reverse_delete_mst(nodos, aristas):
 
     # nodos: lista de nodos [1, 2, 3...]
@@ -52,13 +65,10 @@ Complejidad Espacial: O(V + E)
 3. JUSTIFICACIÓN DE OPTIMALIDAD (Propiedad del Ciclo)
 
 La correctitud y optimalidad de este algoritmo se basan matemáticamente en la "Propiedad del Ciclo" de los árboles recubridores mínimos, la cual establece que:
+
 "Para cualquier ciclo C en un grafo G, la arista de mayor peso en ese ciclo NUNCA pertenecerá al MST".
 
-Demostración por el absurdo:
-Supongamos que armamos un árbol recubridor T que SÍ incluye la arista más pesada (llamémosla Ep) de un ciclo C. Si quitamos Ep de T, el árbol se divide en dos componentes desconectadas. Sin embargo, como Ep pertenecía a un ciclo C original, existe obligatoriamente al menos otra arista alternativa en ese ciclo (llamémosla El) que puede volver a unir estas dos mitades. Como Ep era estrictamente la arista más pesada del ciclo, sabemos que peso(El) < peso(Ep).  Si reemplazamos Ep por El, el grafo vuelve a ser un árbol conexo, pero su peso total ahora es estrictamente menor. Por lo tanto, T no podía ser un Árbol Recubridor Mínimo.
+Demostración por el absurdo: supongamos que armamos un árbol recubridor T que SÍ incluye la arista más pesada (llamémosla Ep) de un ciclo C. Si quitamos Ep de T, el árbol se divide en dos componentes desconectadas. Sin embargo, como Ep pertenecía a un ciclo C original, existe obligatoriamente al menos otra arista alternativa en ese ciclo (llamémosla El) que puede volver a unir estas dos mitades. Como Ep era estrictamente la arista más pesada del ciclo, sabemos que peso(El) < peso(Ep).  Si reemplazamos Ep por El, el grafo vuelve a ser un árbol conexo, pero su peso total ahora es estrictamente menor. Por lo tanto, T no podía ser un Árbol Recubridor Mínimo.
 
-Conclusión: 
-Al ordenar de mayor a menor, el algoritmo evalúa primero las aristas más pesadas 
-de todo el grafo. Si al borrar una de estas aristas el grafo no se desconecta, es la prueba de que existía un camino alternativo (es decir, la arista formaba parte 
-de un ciclo). Por la Propiedad del Ciclo, es 100% seguro eliminarla. Al finalizar, nos queda un árbol conexo sin ciclos, que obligatoriamente es el MST.
+Conclusión: al ordenar de mayor a menor, el algoritmo evalúa primero las aristas más pesadas de todo el grafo. Si al borrar una de estas aristas el grafo no se desconecta, es la prueba de que existía un camino alternativo (es decir, la arista formaba parte de un ciclo). Por la Propiedad del Ciclo, es 100% seguro eliminarla. Al finalizar, nos queda un árbol conexo sin ciclos, que obligatoriamente es el MST.
 """

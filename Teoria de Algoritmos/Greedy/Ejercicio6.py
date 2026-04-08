@@ -2,8 +2,7 @@
 TEORÍA DE ALGORITMOS - EJERCICIO 6: Club de Vinos (Asignación de Recursos)
 
 1. ESTRATEGIA (Elección Golosa)
-El problema se resuelve asignando primero los recursos a los elementos más restrictivos,
-y priorizando el consumo de los recursos menos flexibles.
+El problema se resuelve asignando primero los recursos a los elementos más restrictivos, y priorizando el consumo de los recursos menos flexibles.
 
 Orden de prioridad de asignación:
 1. Socios Titanio: Solo aceptan Alfa. Se les asigna Alfa. Si faltan, es IMPOSIBLE.
@@ -96,8 +95,7 @@ Complejidad Espacial: O(1)
 
 3. JUSTIFICACIÓN DE OPTIMALIDAD (Argumento de Intercambio / Restricciones)
 
-Demostramos la optimalidad comprobando que cualquier otra elección conduciría a un 
-escenario peor o igual.
+Demostramos la optimalidad comprobando que cualquier otra elección conduciría a un escenario peor o igual.
 
 - Titanio: Como solo aceptan Alfa, asignarles Alfa es una condición necesaria y obligatoria para cualquier solución válida. No hay decisión Greedy acá, es una restricción dura.
 - Oro y Plata: Ambos compiten por el pack Alfa como plan de contingencia. El pack Beta es exclusivo para Oro (y Básico), y el pack Gamma es exclusivo para Plata (y Básico). Supongamos que, en lugar de agotar primero Beta para los Oro, usamos un pack Alfa mientras aún hay Beta disponible. Al hacer esto, reducimos la cantidad de packs Alfa disponibles para los Plata, mientras dejamos un pack Beta que los Plata NO pueden usar. Esta decisión estrictamente reduce el espacio de soluciones posibles para las siguientes etapas sin aportar ningún beneficio. Por lo tanto, la estrategia Greedy de consumir primero los recursos menos flexibles (Beta para Oro, Gamma para Plata) es localmente óptima y garantiza dejar la mayor cantidad del recurso compartido (Alfa) para satisfacer las contingencias de ambos.

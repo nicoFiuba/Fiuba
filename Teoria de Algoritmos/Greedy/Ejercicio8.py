@@ -2,8 +2,7 @@
 TEORÍA DE ALGORITMOS - EJERCICIO 8: Ágape Antillense (Doble Restricción)
 
 1. ESTRATEGIA (Elección Golosa Destructiva)
-Al problema anterior se le agrega la restricción de que cada invitado debe tener 
-al menos 4 "NO conocidos" (desconocidos) en la fiesta para sociabilizar. 
+Al problema anterior se le agrega la restricción de que cada invitado debe tener al menos 4 "NO conocidos" (desconocidos) en la fiesta para sociabilizar. 
 
 Estrategia greedy:
 1. Asumimos inicialmente que todos los socios están invitados.
@@ -83,22 +82,16 @@ Complejidad Temporal: O(V^2)
 Complejidad Espacial: O(V + E)
 - Las estructuras de datos son las mismas que en el Ejercicio 7 (diccionarios para el grafo, arreglos de grados, cola de eliminación).
 
-
 3. JUSTIFICACIÓN DE OPTIMALIDAD (Eliminación Segura Monótona)
 
-El algoritmo mantiene la optimalidad por el principio de monotonía de subconjuntos.
-Sea O el conjunto óptimo de invitados (el más grande posible).
-Si un socio 's' en nuestra lista actual 'L' tiene menos de 4 amigos o menos de 4 
-desconocidos, afirmamos que es imposible que 's' pertenezca a 'O'.
+El algoritmo mantiene la optimalidad por el principio de monotonía de subconjuntos. Sea O el conjunto óptimo de invitados (el más grande posible). Si un socio 's' en nuestra lista actual 'L' tiene menos de 4 amigos o menos de 4 desconocidos, afirmamos que es imposible que 's' pertenezca a 'O'.
 
 Demostración:
-Cualquier subconjunto válido O debe estar contenido en L (O ⊆ L) porque nosotros 
-arrancamos con todos los socios y solo achicamos la lista.
+Cualquier subconjunto válido O debe estar contenido en L (O ⊆ L) porque nosotros arrancamos con todos los socios y solo achicamos la lista.
 1. Para los amigos: Los amigos de 's' en O no pueden ser más que sus amigos en L. Si ya en L tiene < 4 amigos, en O tendrá aún menos. Falla la condición 1.
 2. Para los desconocidos: Los desconocidos de 's' en O son (O - 1 - amigos_en_O). Como vamos eliminando gente de L para llegar a O, la cantidad máxima de personas disponibles para ser "desconocidos" se reduce estrictamente o se mantiene igual. Si en el grupo grande L no llega a juntar 4 personas que no conoce, en un grupo más chico O, la cantidad de extraños será igual o menor. Falla la condición 2.
 
-Por lo tanto, la decisión Greedy de eliminar a 's' es 100% segura y nunca descartará 
-elementos de la solución óptima.
+Por lo tanto, la decisión Greedy de eliminar a 's' es 100% segura y nunca descartará elementos de la solución óptima.
 """
 
 # Bloque de prueba

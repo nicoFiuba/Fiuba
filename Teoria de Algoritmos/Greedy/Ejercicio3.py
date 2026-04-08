@@ -1,11 +1,16 @@
 """
-a) C corresponde a un árbol recubridor.
+TEORÍA DE ALGORITMOS - EJERCICIO 3: Dijkstra y Árboles Recubridores
 
+ENUNCIADO: 
+Sea C el conjunto de ejes seleccionados por el algoritmo de Dijkstra para un 
+grafo G=(V,E) pesado no dirigido.
+
+
+a) C corresponde a un árbol recubridor.
 Respuesta: VERDADERO (asumiendo que el grafo G original es conexo).
 Justificación: el algoritmo de Dijkstra, partiendo desde un nodo origen 's', visita todos los vértices del grafo buscando el camino de menor costo hacia cada uno de ellos. Para registrar estos caminos, el algoritmo guarda para cada vértice (distinto del origen) un único nodo "predecesor" o "padre". Dado un grafo conexo de V vértices, este proceso seleccionará exactamente V-1 aristas (una por cada vértice destino que se conecta a su predecesor). Un subgrafo conexo que contiene a todos los V vértices del grafo original y tiene exactamente V-1 aristas no puede contener ciclos. Por definición matemática, un grafo conexo, sin ciclos y que incluye a todos los vértices es un árbol recubridor (específicamente, se lo denomina Árbol de Caminos Mínimos o Shortest Path Tree).
 
 b) C corresponde a un árbol recubridor mínimo.
-
 Respuesta: FALSO.
 Justificación por contraejemplo: para demostrar que el árbol de caminos mínimos de Dijkstra no siempre es un Árbol Recubridor Mínimo (MST), proponemos el siguiente contraejemplo con un grafo G de 3 vértices: V = {A, B, C}. Definimos los pesos de las aristas de la siguiente manera:
 - Arista (A, B) con peso 5.
@@ -27,7 +32,6 @@ El peso total de este árbol recubridor mínimo es 1 + 5 = 6.
 
 Conclusión: como el peso del árbol generado por Dijkstra (10) es estrictamente mayor al peso del Árbol Recubridor Mínimo (6) para el mismo grafo, queda demostrado que el conjunto C seleccionado por Dijkstra NO corresponde obligatoriamente a un árbol recubridor mínimo.
 """
-
 
 def imprimir_contraejemplo():
     print("--- Ejercicio 3: Contraejemplo Dijkstra vs MST ---")
