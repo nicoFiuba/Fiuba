@@ -3,15 +3,8 @@
 EJERCICIO 1: GREEDY (Optimizando la jornada)
 -----------------------------------------------------------------------------
 Enunciado: 
-Para aprovechar al máximo el día, un conductor de una aplicación de viajes 
-tiene una lista de 'N' solicitudes de viaje posibles para realizar con su 
-Renault Clio. 
-Cada viaje 'i' tiene un horario de inicio exacto (Inicio[i]) y un horario 
-de finalización exacto (Fin[i]). El conductor solo puede realizar un viaje a 
-la vez (los horarios de los viajes elegidos no pueden superponerse).
-
-Diseñar un algoritmo Greedy que seleccione la MÁXIMA CANTIDAD de viajes 
-que el conductor puede realizar en el día.
+Para aprovechar al máximo el día, un conductor de una aplicación de viajes tiene una lista de 'N' solicitudes de viaje posibles para realizar con su Renault Clio. Cada viaje 'i' tiene un horario de inicio exacto (Inicio[i]) y un horario de finalización exacto (Fin[i]). El conductor solo puede realizar un viaje a la vez (los horarios de los viajes elegidos no pueden superponerse).
+Diseñar un algoritmo Greedy que seleccione la MÁXIMA CANTIDAD de viajes que el conductor puede realizar en el día.
 
 Se pide:
 1. Explicación y por qué la elección es Greedy.
@@ -21,37 +14,36 @@ Se pide:
 -----------------------------------------------------------------------------
 RESOLUCIÓN ESPERADA:
 
-Explicacion: la estrategia consiste en ordenar las solicitudes de menor a mayor segun su horario de finalizacion, agarrar la solicitud que finaliza primero y agregarlo a la lista de viajes, iteramos y nos fijamos si el horario de inicio de la nueva solicitud es mayor o igual que la finalizacion de nuestro viaje, si se cumple esta condicion aceptamos la solicitud y la agregamos a la lista de viajes. Es Greedy porque en cada iteracion agarramos la solicitud que termina primero para lograr liberar el auto lo mas rapido posible y poder meter mas viajes.
+Explicacion: la estrategia consiste en ordenar las solicitudes de menor a mayor segun su horario de finalizacion, agarrar la solicitud que finaliza primero y sumarla a nuestro  contador, iteramos y nos fijamos si el horario de inicio de la nueva solicitud es mayor o igual que la finalizacion de nuestro viaje, si se cumple esta condicion aceptamos la solicitud y la sumamos al contador. Es Greedy porque en cada iteracion agarramos la solicitud que termina primero para lograr liberar el auto lo mas rapido posible y poder meter mas viajes.
 
 
 Pseudocodigo:
 
 def viajes_maximos(solicitudes):
 
-    solicitudes.sort() # ordena los finales de las solicitudes de menor a mayor
+    solicitudes.sort(key = lambda x: x.fin) # ordena los finales de las solicitudes de menor a mayor
     n = len(solicitudes)
 
     if n == 0:
         return 0
     
-    viajes = []
-    viajes.append(solicitudes[0])
+    cantidad_viajes = 1
 
     fin_viaje = solicitudes[0].fin 
 
     for i in range(1, n):
         if solicitudes[i].inicio >= fin_viaje:
-            viajes.append(solicitudes[i])
+            cantidad_viajes += 1
 
             fin_viaje = solicitudes[i].fin
     
-    return len(viajes)
+    return cantidad_viajes
 
 Complejidad:
 
 - Temporal: ordenar la lista es O(n log(n)) mientras que recorrerla y comparar es O(n), por lo tanto, O(n log(n)) + O(n) = O(n log(n))
 
-- Espacial: O(n) ya que en el peor de los casos se haran todos los viajes
+- Espacial: O(1) ya que usamos un contador
 
 Demostracion de optimalidad: si una solucion elige un horario de finalizacion superior al de Greedy, se estaria quedando sin tiempo libre para meter otro viaje. Por lo tanto habria que cambiar la eleccion del viaje a la de Greedy para asi aprovechar al maximo la seleccion de viajes
 
@@ -60,15 +52,8 @@ Demostracion de optimalidad: si una solucion elige un horario de finalizacion su
 EJERCICIO 2: DIVISIÓN Y CONQUISTA (El algoritmo viral)
 -----------------------------------------------------------------------------
 Enunciado:
-Una cuenta de Instagram que sube tutoriales de Excel analizó las visualizaciones 
-de un Reel a lo largo de 'N' horas. Descubrieron un patrón particular: las 
-visualizaciones subieron estrictamente hora tras hora hasta alcanzar un pico 
-máximo, y a partir de esa hora, empezaron a bajar estrictamente.
-(Es decir, el arreglo de visualizaciones es "bitónico": estrictamente 
-creciente hasta un punto, y luego estrictamente decreciente).
-
-Diseñar un algoritmo de División y Conquista con complejidad O(log N) que 
-encuentre en qué hora (índice) ocurrió el PICO MÁXIMO de visualizaciones.
+Una cuenta de Instagram que sube tutoriales de Excel analizó las visualizaciones de un Reel a lo largo de 'N' horas. Descubrieron un patrón particular: las visualizaciones subieron estrictamente hora tras hora hasta alcanzar un pico  máximo, y a partir de esa hora, empezaron a bajar estrictamente. (Es decir, el arreglo de visualizaciones es "bitónico": estrictamente creciente hasta un punto, y luego estrictamente decreciente).
+Diseñar un algoritmo de División y Conquista con complejidad  (log N) que encuentre en qué hora (índice) ocurrió el PICO MÁXIMO de visualizaciones.
 
 Se pide:
 1. Explicación (Divide, Conquista, Combina).
@@ -122,16 +107,8 @@ a vs b^k = 1 vs 2^0 = 1 vs 1 => 1 = 1 por lo tanto O(n^k * log(n)) = O(n^0 *log(
 EJERCICIO 3: PROGRAMACIÓN DINÁMICA (Entrenamiento Express)
 -----------------------------------------------------------------------------
 Enunciado:
-Para armar una rutina de gimnasio enfocada en hipertrofia teniendo muy poco 
-tiempo, se cuenta con una lista de 'N' ejercicios distintos. 
-Cada ejercicio 'i' consume una cantidad de tiempo T[i] (en minutos) y 
-otorga un beneficio de hipertrofia H[i].
-El tiempo total disponible en el gimnasio es de 'M' minutos. 
-A diferencia del problema de los perfumes, cada ejercicio de la lista 
-SOLO SE PUEDE REALIZAR UNA VEZ (no hay repeticiones del mismo ejercicio).
-
-Diseñar un algoritmo de Programación Dinámica que encuentre el beneficio de 
-hipertrofia MÁXIMO que se puede obtener sin pasarse de los M minutos.
+Para armar una rutina de gimnasio enfocada en hipertrofia teniendo muy poco tiempo, se cuenta con una lista de 'N' ejercicios distintos. Cada ejercicio 'i' consume una cantidad de tiempo T[i] (en minutos) y otorga un beneficio de hipertrofia H[i]. El tiempo total disponible en el gimnasio es de 'M' minutos. A diferencia del problema de los perfumes, cada ejercicio de la lista SOLO SE PUEDE REALIZAR UNA VEZ (no hay repeticiones del mismo ejercicio).
+Diseñar un algoritmo de Programación Dinámica que encuentre el beneficio de hipertrofia MÁXIMO que se puede obtener sin pasarse de los M minutos.
 
 Se pide:
 1. Explicación de la estructura de memoización (matriz).
@@ -141,7 +118,7 @@ Se pide:
 -----------------------------------------------------------------------------
 RESOLUCIÓN ESPERADA:
 
-Explicacion: voy a usar un arreglo unidimensional DP de tamaño M + 1, la celda DP[t] guardara el maximo beneficio posible teniendo un tiempo (t). Para calcular DP[t] iteramos sobre todos los ejercicios, y por cada uno recorremos los tiempos de mayor a menor tiempo. Si el tiempo alcanza, evaluamos si el beneficio de este ejercicio sumado al beneficio optimo (beneficio[i] + DP[t - tiempo[i]) supera al valor que ya teniamos almacenado en DP[t]. Al construirlo de mayor a menor, no existe la posibilidad de hacer un ejercicio que ya hice. 
+Explicacion: voy a usar un arreglo unidimensional DP de tamaño T + 1, la celda DP[t] guardara el maximo beneficio posible teniendo un tiempo (t). Para calcular DP[t] iteramos sobre todos los ejercicios, y por cada uno recorremos los tiempos de mayor a menor tiempo. Si el tiempo alcanza, evaluamos si el beneficio de este ejercicio sumado al beneficio optimo (beneficio[i] + DP[t - tiempo[i]) supera al valor que ya teniamos almacenado en DP[t]. Al construirlo de mayor a menor, no existe la posibilidad de hacer un ejercicio que ya hice. 
 
 Pseudocodigo:
 
@@ -168,8 +145,8 @@ Ecuacion de recurrencia:
 
 Complejidad:
 
-- Temporal: el ciclo exterior itera n veces mientras que el interior itera t veces => O(n*t)
+- Temporal: el ciclo exterior itera 'n' veces mientras que el interior itera 'T' veces => O(n*T)
 
-- Espacial: necesitamos un espacio proporcional al tiempo => O(t)
+- Espacial: necesitamos un espacio proporcional al tiempo => O(T)
 
 '''

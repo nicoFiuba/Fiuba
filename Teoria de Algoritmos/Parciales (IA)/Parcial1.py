@@ -21,26 +21,26 @@ def minimizar_refugios(posiciones, R):
     
     posiciones.sort()
     n = len(posiciones)
-    refugios = []
+    cantidad_refugios = 0
 
     i=0
     while i < n:
         posicion_refugio = posiciones[i] + R
-        refugios.append(posicion_refugio)
+        cantidad_refugios += 1
 
         maximo_alcance = posicion_refugio + R
 
         while i < n and posiciones[i] <= maximo_alcance:
             i += 1
     
-    return len(refugios)
+    return cantidad_refugios
 
 
 Complejidad:
 
 - Temporal: ordenar la lista es O(n log(n)) mientras que recorrerla es O(n) por lo tanto la complejidad temporal es O(n log(n)) + O(n) = O(n log(n))
 
-- Espacial: O(n) ya que en el peor de los casos se requiere un refugio por campamento
+- Espacial: O(1) ya que no usamos posiciones nuevas, usamos un contador.
 
 Demostracion de optimalidad: si una solucion pone un refugio antes que la solucion Greedy, estaria desperdiciando cobertura. Por lo tanto si a ese refugio lo empujo hasta el maximo alcance (es lo que hace Greedy), ahi si estaria aprovechando el refugio y dejando a todos protegidos.
 
@@ -70,31 +70,34 @@ Si mediana_a < mediana_b => la mediana global tiene que ser mayor que mediana_a 
 
 Pseudocodigo:
 
-def encontrar_mediana(A, B):
+def encontrar_mediana(A, B, inicio_a, fin_a, inicio_b, fin_b):
 
-    n = len(A)
+    n = fin_a - inicio_a + 1
 
     if n == 1:
-        return min(A[0], B[0])
+        return min(A[inicio_a], B[inicio_b])
     
     if n == 2:
-        return max(A[0], B[0])
+        return max(A[inicio_a], B[inicio_b])
 
-    mitad = n//2
-    mediana_a = A[mitad]
-    mediana_b = B[mitad]
+    mitad = n // 2
+    mitad_a = inicio_a + mitad
+    mitad_b = inicio_b + mitad
+
+    mediana_a = A[mitad_a]
+    mediana_b = B[mitad_b]
     
     if mediana_a == mediana_b:
         return mediana_a
     
     if mediana_a < mediana_b:
-        return encontrar_mediana(A[mitad:], B[:mitad])
+        return encontrar_mediana(A, B, mitad_a, fin_a, inicio_b, fin_b - mitad)
     else:
-        return encontrar_mediana(A[:mitad], B[mitad:])
+        return encontrar_mediana(A, B, inicio_a, fin_a - mitad, mitad_b, fin_b)
 
 Ecuacion de recurrencia:
 
-T(N) = a * T(n/b) + f(n)
+T(n) = a * T(n/b) + f(n)
 
 a = 1, es la llamada recursiva
 b = 2 porque partimos el problema a la mitad
@@ -123,19 +126,20 @@ Se pide:
 -----------------------------------------------------------------------------
 RESOLUCIÓN ESPERADA:
 
-Explicacion: voy usar un arreglo unidimensional DP de tamaño P + 1, la celda DP[p] guardara la satisfaccion maxima posible teniendo un presupuesto (p). Para calcular DP[p] iteramos sobre todos los perfumes, si el costo es menor a p => nos fijamos si la satisfaccion del presupuesto sobrante (DP[p - costo[i]]) supera el valor que ya teniamos almacenado en DP[p]. Al construirlo de menor a mayor, existe la posibilidad de comprar un perfume que ya tengo.
+Explicacion: voy usar un arreglo unidimensional DP de tamaño P + 1, la celda DP[p] guardara la satisfaccion maxima posible teniendo un presupuesto (p). Para calcular DP[p] iteramos sobre todos los perfumes, si el costo es menor o igual a p => nos fijamos si la satisfaccion del presupuesto sobrante (DP[p - costo[i]]) supera el valor que ya teniamos almacenado en DP[p]. Al construirlo de menor a mayor, existe la posibilidad de comprar un perfume que ya tengo.
 
 Pseudocodigo:
 
 def comprar_perfumes(costos, satisfaccion, P):
 
     n = len(costos)
-    DP = [0] * (P +1)
+    DP = [0] * (P + 1)
 
     for p in range(1, P + 1):
         for i in range(n):
             if costos[i] <= p:
                 posible_valor = DP[p - costos[i]] + satisfaccion[i]
+                
                 if posible_valor > DP[p]:
                     DP[p] = posible_valor
     
@@ -145,13 +149,13 @@ Ecuacion de recurrencia:
 
 - Caso base: DP[0] = 0
 
-- Caso recursivo: DP[p] = max{DP[p - costo[i]] + satisfaccion[i]}
+- Caso recursivo: DP[p] = max{DP[p - costos[i]] + satisfaccion[i]}
 (para todo i tal que costos[i] <= p).
 
 Complejidad:
 
-- Temporal: el ciclo exterior itera p veces mientras que el interior itera n veces => O(n*p)
+- Temporal: el ciclo exterior itera 'P' veces mientras que el interior itera 'n' veces => O(P*n)
 
-- Espacial: necesitamos un espacio proporcional al presupuesto => O(p)
+- Espacial: necesitamos un espacio proporcional al presupuesto => O(P)
 
 '''
