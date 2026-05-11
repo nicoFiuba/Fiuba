@@ -4,7 +4,6 @@ EJERCICIO 1: REDES DE FLUJO (Asignación de Guardias Médicas)
 -----------------------------------------------------------------------------
 Enunciado:
 Sos el administrador de un hospital y tenés que organizar las guardias médicas para los próximos D días. Tenés un equipo de M médicos. Cada día i requiere exactamente R_i médicos de guardia para cubrir la demanda. Además, por cuestiones sindicales, cada médico j tiene un límite máximo de K_j guardias que puede hacer en total durante este período. Para complicar las cosas, los médicos te pasaron sus disponibilidades: no todos pueden trabajar todos los días. 
-
 Se te pide diseñar un algoritmo basado en Redes de Flujo para determinar si es posible armar un cronograma válido que cubra la demanda de todos los días respetando los límites de cada médico.
 
 Se pide:
