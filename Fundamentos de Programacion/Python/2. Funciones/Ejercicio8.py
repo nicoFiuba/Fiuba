@@ -1,0 +1,285 @@
+"""
+Definiendo Funciones propias
+Para la solución de los siguientes ejercicios, no debes imprimir resultados dentro de las funciones que escribas. Los resultados deben ser devueltos mediante el return de la función. Luego de escribir cada función, probala, invocándola desde el bloque principal del programa, pasándole distintos valores para que la prueba contemple varias alternativas y así estar seguro que funciona adecuadamente.
+"""
+
+# 1) Escribir una función que reciba el número de un mes, y devuelva el nombre del mes. Por ejemplo, si la función recibe un "1", deberá devolver: "Enero" En caso que el mes recibido no sea válido, deberá devolver "Mes Inválido". No debe imprimir el nombre, sólo devolver la cadena correspondiente.
+
+def obtener_nombre_mes(mes):
+    meses = {
+        1: "Enero",
+        2: "Febrero",
+        3: "Marzo",
+        4: "Abril",
+        5: "Mayo",
+        6: "Junio",
+        7: "Julio",
+        8: "Agosto",
+        9: "Septiembre",
+        10: "Octubre",
+        11: "Noviembre",
+        12: "Diciembre"
+    }
+    return meses.get(mes, "Mes Inválido") #El método get devuelve el valor de la clave especificada, o un valor predeterminado si la clave no se encuentra en el diccionario.
+
+def main():
+    mes = int(input("Ingrese el número del mes (1-12): "))
+    nombre_mes = obtener_nombre_mes(mes)
+    print({nombre_mes})
+
+main()
+
+# 2) Escribir una función que reciba un mes y un año; y devuelva la cantidad de días del mes, considerando los años bisiestos. Tenga en cuenta que un año bisiesto es aquel divisible por 4, salvo que sea divisible por 100, en cuyo caso también debe ser divisible por 400.
+
+def calcular_dias_mes(mes, año):
+    año_bisiesto = False
+
+    if año % 4 == 0 and (año % 100 != 0 or año % 400 == 0):
+        año_bisiesto = True
+    print(f"El año {año} {'es bisiesto.' if año_bisiesto else 'no es bisiesto.'}")    
+
+    if  1 <= mes <= 12: 
+        if mes == 2:
+            dias = 29 if año_bisiesto else 28
+        elif mes == [4, 6, 9, 11]:
+            dias = 30
+        else:
+            dias = 31
+    else:
+        print("Mes inválido.")
+    return dias
+
+def main():
+    mes = int(input("Ingrese el número del mes (1-12): "))
+    año = int(input("Ingrese el año: "))
+    dias = calcular_dias_mes(mes, año)
+    print(f"El mes {mes} del año {año} tiene {dias} días.")
+main()
+
+# 3) Escribir una función que reciba un valor y calcule el factorial del mismo. Si no se puede calcular el factorial del valor recibido, la función deberá devolver 0, de lo contrario deberá devolver el valor calculado.
+
+def calcular_factorial(num):
+    if num<0:
+        factorial = 0
+    elif num == 0 or num == 1:
+        factorial = 1
+    else:
+        factorial = 1
+        for i in range(1, num + 1):
+            factorial *= i
+    return factorial
+
+def main():
+    num = int(input("Ingrese un número: "))
+    resultado = calcular_factorial(num)
+    print(resultado)
+
+main()
+
+# 4) Escribir una función que reciba un valor n, entero, y devuelva la suma de los valores entre 0 y n.
+def sumar_hasta_n(n):
+    suma = 0
+    for i in range(n + 1):
+        suma += i
+    return suma
+
+def main():
+    n = int(input("Ingrese un número entero: "))
+    resultado = sumar_hasta_n(n)
+    print(f"La suma de los valores entre 0 y {n} es: {resultado}")
+main()
+
+# 5) Escribir una función que reciba las coordenadas de dos puntos en una recta, y devuelva la pendiente de la misma. Tener en cuenta que: la pendiente ó m = (y2 – y1)/(x2 - x1), donde (x1, y1) y (x2, y2), serán las coordenadas del primer y segundo punto, respectivamente.
+
+def calcular_pendiente(x1, y1, x2, y2):
+    if x2 - x1 == 0:
+        print("No se puede dividir por cero")
+    
+    pendiente= (y2 - y1) / (x2 - x1)
+    return pendiente
+
+def main():
+    x1, y1, x2, y2 = input("Ingrese los valores de x1, y1, x2 y y2 (separados por espacios): ").split()
+    x1, y1, x2, y2 = float(x1), float(y1), float(x2), float(y2)
+    resultado = calcular_pendiente(x1, y1, x2, y2)
+    print(f"La pendiente de la recta es: {resultado}")
+main()
+
+# 6) Escribir una función que reciba un número y devuelva un valor booleano indicando si el número recibido es ó no primo.
+
+def es_primo(num):
+    num_primo = True
+    if num < 2:
+        num_primo = False
+    else:
+        for i in range(2, int(num ** 0.5) + 1):
+            if num % i == 0:
+                num_primo = False
+    return num_primo
+
+def main():
+    num = int(input("Ingrese un número: "))
+    resultado = es_primo(num)
+    print(f"El numero {num} {"es" if resultado else "no es"} primo.")
+
+main()
+
+"""
+7) Tomá la solución del ejercicio anterior y analizá si elegiste el cliclo adecuado, y si estás evitando realizar ciclos innecesarios. Por ejemplo, algunas preguntas que te podrías hacer son:
+    a) Con sólo encontrar un divisor del número a evaluar distinto a uno y a sí mismo, ya puedo afirmar que el número no es primo, tiene sentido seguir evaluando más divisores?
+    Rta: No tiene sentido seguir evaluando más divisores una vez que se encuentra un divisor distinto de 1 y del propio número, ya que esto confirma que el número no es primo.
+
+    b) Teniendo en cuenta que todo número par a excepción del 2, no es primo, tiene sentido seguir en un ciclo, si al calcular el resto de la división del número a evaluar por 2, el resultado es cero?
+    Rta: No tiene sentido continuar el ciclo si el número es par y distinto de 2, ya que esto indica que no es primo.
+
+    c) Puedo encontrar un divisor del número a evaluar que sea mayor al número a evaluar dividido 2?
+    Rta: No es necesario buscar divisores mayores que la raíz cuadrada del número, ya que si un número tiene un divisor mayor que su raíz cuadrada, necesariamente tendrá un divisor menor que esta.
+
+Modificá la función escrita en el punto anterior, para que tenga en cuenta las situaciones planteadas.
+
+Rta: No es necesario cambiar nada en la función, ya que actualmente utiliza un ciclo que evalúa divisores hasta la raíz cuadrada del número, lo cual es eficiente y evita ciclos innecesarios. Además, la función ya considera que los números menores a 2 no son primos y que un divisor encontrado confirma que el número no es primo.
+"""
+
+# 8) Escribir una función que reciba dos valores enteros, y devuelva el máximo común divisor entre ambos números. Recordemos que se define el máximo común divisor (MCD) de dos o más números enteros al mayor número entero que los divide sin dejar resto alguno. Te sugerimos que antes de programar la solución te hagas preguntas del tipo a las planteadas en en el ejercicio anterior
+
+def mcd (x,y):
+    resultado = max(x,y)
+    while x % resultado != 0 or y % resultado != 0:
+        resultado -= 1
+    return resultado
+
+def main():
+    x,y = map(int, input("Ingrese dos números enteros separados por un espacio: ").split())
+    mcd_resultado = mcd(x, y)
+    print(f"El MCD es: {mcd_resultado}.")
+
+main()
+
+# 9) Ahora toma el ejercicio anterior, pero intenta resolverlo aplicando el método de Euclides. Para poder escribir el algoritmo, quizás te ayude ver el siguiente video: https://www.youtube.com/watch?v=x6qFMSRpgpM ó consultar en el siguiente link: https://es.wikipedia.org/wiki/Algoritmo_de_Euclides
+
+def mcd(x, y):
+    while y != 0:
+        x, y = y, x % y
+    return x
+
+def main():
+    x,y = map(int, input("Ingrese dos números enteros separados por un espacio: ").split())
+    resultado = mcd(x, y)
+    print(f"El MCD de {x} y {y} es: {resultado}")
+main()
+
+# 10) El producto de Wallis es una expresión matemática, utilizada para representar el valor del número Pi, que fue descubierta por John Wallis en 1655 y que establece que: Escribir una función, que reciba por parámetro, el valor más alto a utilizar en el cálculo (n). La función debe calcular el valor de Pi utilizando la fórmula de Wallis y devolver el valor de Pi obtenido. Proba la función, utilizando al menos, como valor de n, 100, 1000 y 10000. Fuente de consulta: https://es.wikipedia.org/wiki/Producto_de_Wallis
+
+def pi_wallis(n):
+    # la formula de Wallis es pi= 2n/(2n-1)*2n/(2n+1)
+    pi = 2
+    for i in range(1, n + 1):
+        pi *= ((2*i)/(2*i - 1)) * ((2*i)/(2*i + 1))
+    return pi
+
+def main():
+    n = int(input("Ingrese el valor más alto a utilizar en el cálculo (n): "))
+    pi = pi_wallis(n)
+    print(f"El valor de Pi utilizando Wallis con n={n} es: {pi}")
+main()
+
+# 11. Un palíndromo es una palabra o frase que se puede leer de igual modo en ambos sentidos. (Por ejemplo: Oso - Ana - Oso baboso - Arriba la birra). Escribir una función que reciba una frase que podría estar compuesta por una o más palabras; y devuelva True, si se trata de un palíndromo, de lo contrario, deberá devolver False. Fuente de conulta: https://es.wikipedia.org/wiki/Palíndromo
+
+def esPalindromo(palabra):
+    palindromo = False
+    palabra = palabra.replace(" ", "").lower()
+    palabraInvertida = palabra[::-1]
+    if palabra == palabraInvertida:
+        palindromo = True
+    return palindromo
+
+def main():
+    palabra = input("Ingrese una palabra o frase: ")
+    if esPalindromo(palabra):
+        print("La palabra o frase es un palíndromo.")
+    else:
+        print("La palabra o frase no es un palíndromo.")
+        
+main()
+
+"""
+12) Tome la solución del ejercicio anterior y proceda según lo descripto a continuación:
+    a) Si en su solución no utiliza un ciclo, entonces, intente resolver el ejercicio utilizando uno y sólo uno, y luego siga con los puntos b) y c).
+    b) Si decidió utilizar un ciclo para la solución, responda lo siguiente:
+        1) Cualquiera sea la cadena recibida, el algoritmo recorrerá siempre toda la cadena?
+        2) Si la respuesta de la pregunta anterior es afirmativa, entonces, evalúe si realmente es necesario recorrer siempre toda la cadena ó podemos evitar continuar con la evaluación, si detectamos en algún momento que no es posible que la cadena sea un palíndromo.
+Genere un nuevo algoritmo teniendo en cuenta esto.
+"""
+
+def palindromo_con_ciclo(cadena):
+    palindromo = True
+    # Eliminar espacios y convertir a minúsculas
+    cadena = cadena.replace(" ", "").lower()
+    longitud = len(cadena)
+
+    # Recorrer solo hasta la mitad de la cadena
+    for i in range(longitud // 2):
+        if cadena[i] != cadena[longitud - i - 1]: # Compara caracteres desde ambos extremos, el -i -1 es para ir desde el contrario a i con paso negativo 
+            palindromo = False  # Si hay un desajuste, no es un palíndromo
+    return palindromo  # Si no hay desajustes, es un palíndromo
+
+def main():
+    cadena = input("Ingrese una palabra o frase: ")
+    if palindromo_con_ciclo(cadena):
+        print("La palabra o frase es un palíndromo.")
+    else:
+        print("La palabra o frase no es un palíndromo.")
+main()
+
+
+# 13) Escribir una función que reciba por parámetro un texto todo en mayúsculas. La función deberá devolver el texto pero respetando la regla que indica que luego de un punto la primer letra debe ser mayúscula, y el resto minúsculas.
+
+def formatear_texto(texto):
+    # Dividir el texto en oraciones usando el punto como delimitador
+    oraciones = texto.split(".")
+    # Formatear cada oración
+    for i in range(len(oraciones)):
+        oraciones[i] = oraciones[i].strip().capitalize()  # Eliminar espacios y capitalizar
+    # Unir las oraciones nuevamente con un punto
+    return oraciones
+
+def main():
+    texto = input("Ingrese un texto en mayúsculas: ")
+    resultado = formatear_texto(texto)
+    print("Texto formateado:")
+    for oracion in resultado:
+        print(oracion.strip() + ".")  # Imprimir cada oración con un punto al final
+
+main()
+
+"""
+14) Escribir una función que recibirá por parámetro, una palabra, que representa un sustantivo en singular. La función deberá devolver, el plural de dicho sustantivo, aplicando las siguientes reglas:
+    a. Agregar una “s” al final, si la palabra termina en vocal sin acento.
+    b. Agregar una “s” al final, si la palabra termina con una é (acentuada).
+    c. Si la palabra termina en “z”, la reemplazamos por “ces”.
+    d. Agregamos “es” al final, si la palabra termina en una consonante (a excepción de la “s”, la “z”, y la “x”), ó si la palabra termina con las vocales acentuadas: á, í, ó, ú.
+    e. Si el sustantivo termina en “s” ó “x”, entonces el plural es igual al singular, por lo tanto la función deberá devolver lo mismo que recibió.
+"""
+
+def convertir_a_plural(sustantivo):
+    sustantivo = sustantivo.lower()  # Convertir a minúsculas para facilitar la comparación
+    if sustantivo.endswith(("s", "x")): # Regla e
+        sustantivo = sustantivo
+    elif sustantivo.endswith(("a", "e", "i", "o", "u")):
+        sustantivo += "s"  # Regla a
+    elif sustantivo.endswith("é"):
+        sustantivo += "s"  # Regla b
+    elif sustantivo.endswith("z"):
+        sustantivo = sustantivo[:-1] + "ces"  # Regla c
+    elif not sustantivo[-1].lower() in ("s", "z", "x"):
+        sustantivo += "es"  # Regla d
+    else:
+        sustantivo = sustantivo  # Si no se cumple ninguna regla, devolver el mismo sustantivo
+    return sustantivo
+
+def main():
+    sustantivo = input("Ingrese un sustantivo en singular: ")
+    plural = convertir_a_plural(sustantivo)
+    print(f"El plural de '{sustantivo}' es: '{plural}'")
+
+main()
