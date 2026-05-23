@@ -1,0 +1,37 @@
+class Zoológico {
+    private Jaula jaula;
+
+    public Zoológico(Jaula jaula) {
+        this.jaula = jaula;
+    }
+
+    public void hacerSonidoDelAnimalEnJaula() {
+        jaula.getHabitante().hacerSonido();
+    }
+}
+
+El problema esta en que el zoologico solo puede hablar con la Jaula y esta con el animal. Lo correcto seria:
+
+class Zoológico {
+    private Jaula jaula;
+
+    public Zoológico(Jaula jaula) {
+        this.jaula = jaula;
+    }
+
+    public void hacerSonidoDelAnimalEnJaula() {
+        jaula.hacerSonidoDelAnimalEnJaula();
+    }
+}
+
+class Jaula {
+    private Animal habitante;
+
+    public Jaula(Animal habitante){
+        this.habitante = habitante;
+    }
+
+    public void hacerSonidoDelAnimalEnJaula() {
+        this.habitante.hacerSonido();
+    }
+}
