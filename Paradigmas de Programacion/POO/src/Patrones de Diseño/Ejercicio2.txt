@@ -1,0 +1,96 @@
+public class TiendaDeMuebles {
+    private Silla silla;
+    private Sofa sofa;
+    private Mesa mesa;
+
+    public TiendaDeMuebles(String tipoEstilo) {
+        if (tipoEstilo.equals("moderno")) {
+            silla = new SillaModerna();
+            sofa = new SofaModerno();
+            mesa = new MesaModerna();
+        } else if (tipoEstilo.equals("victoriano")) {
+            silla = new SillaVictoriana();
+            sofa = new SofaVictoriano();
+            mesa = new mesaVictoriana();
+        } else if (tipoEstilo.equals("artdeco")) {
+            silla = new SillaArtDeco();
+            sofa = new SofaArtDeco();
+            mesa = new MesaArtDeco();
+        } 
+    }
+}
+
+El principo que se rompe es el de OCP y para arreglarlo voy a usar un Abstract Factory
+
+interface FabricaDeMuebles {
+    Silla crearSilla();
+    Sofa crearSofa();
+    Mesa crearMesa();
+}
+
+public class FabricaModerna implements FabricaDeMuebles {
+    @Override
+    public Silla crearSilla() {
+        return new SillaModerna();
+    }
+
+    @Override
+    public Sofa crearSofa() {
+        return new SofaModerno();
+    }
+
+    @Override
+    public Mesa crearMesa() {
+        return new MesaModerna();
+    }
+}
+
+public class FabricaVictoriana implements FabricaDeMuebles {
+    @Override
+    public Silla crearSilla() {
+        return new SillaVictoriana();
+    }
+
+    @Override
+    public Sofa crearSofa() {
+        return new SofaVictoriano();
+    }
+    
+    @Override
+    public Mesa crearMesa() {
+        return new MesaVictoriana();
+    }
+}
+
+public class FabricaArtDeco implements FabricaDeMuebles {
+
+    @Override
+    public Silla crearSilla() {
+        return new SillaArtDeco();
+    }
+    
+    @Override
+    public Sofa crearSofa() {
+        return new SofaArtDeco();
+    }
+
+    
+    @Override
+    public Mesa crearMesa() {
+        return new MesaArtDeco();
+    }
+}
+
+public class TiendaDeMuebles {
+    private Silla silla;
+    private Sofa sofa;
+    private Mesa mesa;
+
+
+    public TiendaDeMuebles(FabricaDeMuebles fabricaDeMuebles) {
+        this.silla = fabricaDeMuebles.crearSilla();
+        this.sofa = fabricaDeMuebles.crearSofa();
+        this.mesa = fabricaDeMuebles.crearMesa();
+    }
+
+}

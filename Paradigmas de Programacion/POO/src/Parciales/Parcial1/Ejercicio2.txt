@@ -1,0 +1,96 @@
+public class PuertaSeguridad {
+    private String modo = "cerrada";
+    private int intentosFallidos = 0;
+
+    public void insertarTarjeta() {
+        if (modo.equals("bloqueada")) {
+            System.out.println("Acceso denegado. La puerta está bloqueada.");
+        } else if (modo.equals("cerrada")) {
+            System.out.println("Acceso concedido. Puerta abierta.");
+        } else if (modo.equals("abierta")) {
+            System.out.println("La puerta ya está abierta.");
+        }
+    }
+
+    public void cerrar() {
+        if (modo.equals("abierta")) {
+            System.out.println("Puerta cerrada.");
+            modo = "cerrada";
+        } else {
+            System.out.println("No se puede cerrar la puerta en este modo.");
+        }
+    }
+}
+
+El princiipio que se viola es el de OCPya que si el dia de mañana se quiere agregar un estado de puerta rota enemos que modificar todo el codigo. Y el patron a usar es el de State ya que asignamos estasdos.
+
+interface EstadoPuerta{
+    public void insertarTarjeta(PuertaSeguridad puerta);
+    public void cerrar(PuertaSeguridad puerta);
+}
+
+public class EstadoBloqueada implements EstadoPuerta {
+
+    @Override
+    public void insertarTarjeta(PuertaSeguridad puerta) {
+        System.out.println("Acceso denegado. La puerta está bloqueada.");
+    }
+
+    @Override
+    public void cerrar(PuertaSeguridad puerta) {
+        System.out.println("No se puede cerrar la puerta en este modo.");
+    }
+
+}
+
+public class EstadoCerrada implements EstadoPuerta {
+
+    @Override
+    public void insertarTarjeta(PuertaSeguridad puerta) {
+        System.out.println("Acceso concedido. Puerta abierta.");
+        puerta.setEstadoActual(new EstadoAbierta());
+    }
+
+    @Override
+    public void cerrar(PuertaSeguridad puerta) {
+        System.out.println("No se puede cerrar la puerta en este modo.");
+    }
+
+}
+
+public class EstadoAbierta implements EstadoPuerta {
+
+    @Override
+    public void insertarTarjeta(PuertaSeguridad puerta) {
+        System.out.println("La puerta ya está abierta.");
+    }
+
+    @Override
+    public void cerrar(PuertaSeguridad puerta) {
+        System.out.println("Puerta cerrada.");
+        puerta.setEstadoActual(new EstadoCerrada());
+    }
+
+}
+
+public class PuertaSeguridad {
+    private EstadoPuerta estadoActual;
+
+    public PuertaSeguridad(EstadoPuerta estadoActual) {
+        this.estadoActual = estadoActual;
+    }
+
+    public void setEstadoActual(EstadoPuerta nuevoEstado) {
+        this.estadoActual = nuevoEstado;
+    }
+
+    public void insertarTarjeta() {
+        this.estadoActual.insertarTarjeta(this);
+    }
+
+    public void cerrar() {
+        estadoActual.cerrar(this);
+    }
+
+}
+

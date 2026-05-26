@@ -1,0 +1,54 @@
+abstract class Vehiculo {
+    public void encenderMotor() {
+        System.out.println("Motor encendido");
+    }
+    
+    public abstract void conducir();
+}
+
+class Auto extends Vehiculo {
+    @Override
+    public void conducir() {
+        System.out.println("Conduciendo auto");
+    }
+}
+
+class Bicicleta extends Vehiculo {
+    @Override
+    public void encenderMotor() {
+        throw new UnsupportedOperationException("Una bicicleta no tiene motor");
+    }
+
+    @Override
+    public void conducir() {
+        System.out.println("Pedaleando la bicicleta");
+    }
+}
+
+El principio que se viola aca es el de Liskov ya que un hijo no puedo romper el comportamiento de un padre, en este caso la biciclieta no puede enceder motor por lo tanto se rompe el compartamiento de Vehiculo.
+
+abstract class Vehiculo {
+    public abstract void conducir();
+}
+
+public class Bicicleta extends Vehiculo {
+
+    @Override
+    public void conducir() {
+        System.out.println("Pedaleando la bicicleta");
+    }
+
+}
+
+public class Auto extends Vehiculo {
+    public void encenderMotor() {
+        System.out.println("Motor encendido");
+    }
+
+    @Override
+    public void conducir() {
+        System.out.println("Conduciendo auto");
+    }
+
+}
+

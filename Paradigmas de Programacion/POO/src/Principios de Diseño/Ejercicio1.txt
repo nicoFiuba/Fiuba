@@ -10,6 +10,7 @@ class Zoológico {
     }
 }
 
+- El principio que se rompe es la Ley de Demeter: no hables con extraños
 El problema esta en que el zoologico solo puede hablar con la Jaula y esta con el animal. Lo correcto seria:
 
 class Zoológico {

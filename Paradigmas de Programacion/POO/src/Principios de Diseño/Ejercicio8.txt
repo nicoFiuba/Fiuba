@@ -1,0 +1,53 @@
+public class Animal {
+    public void caminar() {
+        System.out.println("El animal corre");
+    }
+
+    public void volar() {
+        System.out.println("El animal vuela");
+    }
+}
+
+public class Perro extends Animal {
+    @Override
+    public void volar() {
+        throw new Exception("El perro no puede volar");
+    }
+}
+
+public class Pajaro extends Animal {
+
+}
+
+- Los principios que se rompen son el de la Sustitucion de Liskov y el de la Segregacion de Interfaces
+El problema esta en que un hijo no puede romper el comportmineto del padre, en este caso el perro al no poder volar rompe el comportamineto del animal y ademas se le esta obligando al perro a tener un metodo volar que no necesita. Lo correcto seria:
+
+interface Volar {
+    void volar();
+}
+
+interface Caminar {
+    void caminar();
+}
+
+public class Perro implements Caminar {
+    @Override
+    public void caminar() {
+        System.out.println("El perro corre");
+    }
+}
+
+public class Pajaro implements Caminar, Volar {
+    
+    @Override
+    public void caminar() {
+        System.out.println("El pajaro corre");
+    }
+    
+    @Override
+    public void volar() {
+        System.out.println("El pajaro vuela");
+    }
+    
+}
+

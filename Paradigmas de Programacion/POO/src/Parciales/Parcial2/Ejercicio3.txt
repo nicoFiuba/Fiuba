@@ -1,0 +1,59 @@
+public class PantallaLED {
+    void mostrar(Imagen imagen) {
+        /* despliega la imagen */
+    }
+}
+
+public class Televisor {
+    private PantallaLED pantalla;
+    
+    public Televisor(PantallaLED pantalla) {
+        this.pantalla = pantalla;
+    }
+    
+    public PantallaLED getPantalla() {
+        return pantalla;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        PantallaLED pantalla = new PantallaLED();
+        Televisor tele = new Televisor(pantalla);
+        Imagen ciertaImagen = new Imagen();
+        
+        //... Mas codigo
+        
+        tele.getPantalla().mostrar(ciertaImagen);
+    }
+}
+
+El principio que se viola es el de TDA ya que el televisor solamente se puede comunicar con la pantalla y esta se comunica con el contenido
+
+public class Televisor {
+    private PantallaLED pantalla;
+
+    public Televisor(PantallaLED pantalla) {
+        this.pantalla = pantalla;
+    }
+
+    public  void mostrar(Imagen imagen) {
+        this.pantalla.mostrar(imagen);
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        PantallaLED pantalla = new PantallaLED();
+        Televisor tele = new Televisor(pantalla);
+        Imagen ciertaImagen = new Imagen();
+
+        //... Mas codigo
+
+        tele.mostrar(ciertaImagen);
+    }
+
+}

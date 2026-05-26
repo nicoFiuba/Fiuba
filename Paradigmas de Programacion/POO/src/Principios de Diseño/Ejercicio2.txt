@@ -1,0 +1,55 @@
+class CuentaBancaria {
+    private double saldo;
+
+    public CuentaBancaria(double saldoInicial) { this.saldo = saldoInicial; }
+
+    public double tieneSaldoSuficiente(double monto) { return monto <= saldo; }
+
+    public void retirar(double monto) { saldo -= monto; }
+}
+
+public class Cliente {
+    public static void main(String[] args) {
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+
+        double montoSolicitado = 500;
+        if (!cuenta.tieneSaldoSuficiente(montoSolicitado)) {
+            throws MontoInsuficienteException("No se puede retirar. Fondos insuficientes.");
+        }
+
+
+        cuenta.retirar(montoSolicitado);
+    }
+}
+
+- El principio que se rompe es el Experto de Informacion: decile y no preguntes.
+El problema aca es que la logica esta en el cliente y deberia estar en la cuenta banacaria, ya que esta es la que tiene que ver si tiene saldo o no. Lo correcto seria:
+
+class CuentaBancaria {
+    private double saldo;
+
+    public CuentaBancaria(double saldoInicial) {
+        this.saldo = saldoInicial;
+    }
+
+    public void retirar(double monto) {
+        
+        if (monto > saldo) {
+            throw new MontoInsuficienteException("No se puede retirar. Fondos insuficientes.");
+        }
+
+        saldo -= monto;
+    }
+}
+
+public class Cliente {
+    
+    public static void main(String[] args) {
+        
+        CuentaBancaria cuenta = new CuentaBancaria(1000);
+
+        double montoSolicitado = 500;
+
+        cuenta.retirar(montoSolicitado);
+    }
+}

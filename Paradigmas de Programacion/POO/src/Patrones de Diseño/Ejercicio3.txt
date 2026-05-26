@@ -1,0 +1,96 @@
+class PedidoRestaurant {
+    private String principal;
+    private String entrada;
+    private String bebida;
+    private String postre;
+
+    public PedidoRestaurant(String entrada, String principal, String bebida, String postre) {
+        this.entrada = entrada;
+        this.principal = principal;
+        this.bebida = bebida;
+        this.postre = postre;
+    }
+
+    // Código asociado a responsabilidades del pedido de restaurant
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Cocina cocina = new Cocina();
+
+        PedidoRestaurant pedidoNacho = PedidoRestaurant new PedidoRestaurant(null, "Milanesa", "Coca", "Flan");
+        PedidoRestaurant pedidoMati = PedidoRestaurant new PedidoRestaurant("Empanada de Carne", "Pastel de Papa", "Agua", null);
+        PedidoRestaurant pedidoFede = PedidoRestaurant new PedidoRestaurant(null, "Asado", "Agua saborizada", null);
+
+        cocina.prepararPedido(pedidoNacho);
+        cocina.prepararPedido(pedidoMati);
+        cocina.prepararPedido(pedidoFede);
+    }
+}
+
+El principio que se rompe aca es el de KISS ya que al tener la posibilidad de no poner entrada por ejemplo, lo obligamos al usuario aponer que no quiere entrada een lugar de solamente decir que es lo que quiere y eso a la larga trae complicaciones. El patron que soluciona esto es el de Builder.
+
+public class PedidoRestaurant {
+    private String entrada;
+    private String principal;
+    private String bebida;
+    private String postre;
+
+    private PedidoRestaurant(Builder builder) {
+        this.entrada = builder.entrada;
+        this.principal = builder.principal;
+        this.bebida = builder.bebida;
+        this.postre = builder.postre;
+    }
+
+    public static class Builder {
+        private String entrada;
+        private String principal;
+        private String bebida;
+        private String postre;
+
+        public Builder conEntrada(String entrada) {
+            this.entrada = entrada;
+            return this;
+        }
+
+        public Builder conPrincipal(String principal) {
+            this.principal = principal;
+            return this;
+        }
+
+        public Builder conBebida(String bebida) {
+            this.bebida = bebida;
+            return this;
+        }
+        
+        public Builder conPostre(String postre) {
+            this.postre = postre;
+            return this;
+        }
+        
+        public PedidoRestaurant build() {
+            return new PedidoRestaurant(this);
+        }
+            
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Cocina cocina = new Cocina();
+
+        PedidoRestaurant pedidoNacho = new PedidoRestaurant.Builder().conPrincipal("Milanesa").conBebida("Coca").conPostre("Flan").build();
+
+        PedidoRestaurant pedidoMati = new PedidoRestaurant.Builder().conEntrada("Empanada de Carne").conPrincipal("Pastel de Papa").conBebida("Agua").build();
+
+        PedidoRestaurant pedidoFede = new PedidoRestaurant.Builder().conPrincipal("Asado").conBebida("Agua saborizada").build();
+
+        cocina.prepararPedido(pedidoNacho);
+        cocina.prepararPedido(pedidoMati);
+        cocina.prepararPedido(pedidoFede);
+        
+    }
+}
+

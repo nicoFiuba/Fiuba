@@ -1,0 +1,94 @@
+public class ControlRemoto {
+    private Luz luz;
+
+    public ControlRemoto(Luz luz) {
+        this.luz = luz;
+    }
+
+    public void presionarBoton(String boton) {
+        if (boton.equals("LUZ_ON")) {
+            luz.encender();
+        } else if (boton.equals("LUZ_OFF")) {
+            luz.apagar();
+        }
+    }
+}
+
+El principio que se rompe aca es el de OCP porque si el da de mañana queres agregar otro boton tenes ue modificar todo tu codigo. La solucion es usar un patron Command.
+
+public interface Comando {
+    void ejecutar();
+}
+
+class Luz {
+    public void encender() {
+        System.out.println("Luz encendida");
+    }
+
+    public void apagar() {
+        System.out.println("Luz apagada");
+    }
+
+}
+
+public class EncenderLuz implements Comando {
+    private Luz luz;
+
+    public EncenderLuz(Luz luz) {
+        this.luz = luz;
+    }
+    
+    @Override
+    public void ejecutar() {
+        luz.encender();
+    }
+
+}
+
+public class ApagarLuz implements Comando {
+    private Luz luz;
+
+    public ApagarLuz(Luz luz) {
+        this.luz = luz;
+    }
+    
+    @Override
+    public void ejecutar() {
+        luz.apagar();
+    }
+
+}
+
+public class ControlRemoto {
+    private Comando botonOn;
+    private Comando botonOff;
+
+    public ControlRemoto(Comando botonOn, Comando botonOff) {
+        this.botonOn = botonOn;
+        this.botonOff = botonOff;
+    }
+
+    public void presionarBotonOn() {
+        botonOn.ejecutar();
+    }
+
+    public void presionarBotonOff() {
+        botonOff.ejecutar();
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Luz luz = new Luz();
+        Comando botonOn = new EncenderLuz(luz);
+        Comando botonOff = new ApagarLuz(luz);
+        ControlRemoto controlRemoto = new ControlRemoto(botonOn, botonOff);
+
+        controlRemoto.presionarBotonOn();
+        controlRemoto.presionarBotonOff();
+    }
+
+}

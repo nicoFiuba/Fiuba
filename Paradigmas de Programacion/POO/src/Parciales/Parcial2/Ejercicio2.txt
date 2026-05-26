@@ -1,0 +1,109 @@
+public class PaginaWeb {
+    String theme; // puede ser "comun", "accesible" o "daltonismo"
+    
+    public List<Componentes> renderizar() {
+        List<Componentes> lista = new ArrayList<>();
+        
+        if (theme.equals("comun")) {
+            lista.add(new BotonComun("Rojo"));
+            lista.add(new MenuLateral("Naranja"));
+            lista.add(new BuscadorColapsable());
+            
+        } else if (theme.equals("accesible")) {
+            lista.add(new BotonGrande());
+            lista.add(new MenuLateral());
+            lista.add(new BuscadorFijo());
+            
+        } else if (theme.equals("daltonismo")) {
+            lista.add(new BotonComun("Violeta"));
+            lista.add(new MenuLateral("Lila"));
+            lista.add(new BuscadorColapsable());
+        }
+        
+        return lista;
+    }
+}
+
+El principio que se viola aaca es el de OCP ya que si el dia de mañana queres agregar un nuevo modo tenes que modificar todo tu codigo. La solucion es usar un patron de Abstract Factory
+
+interface FabricarWeb {
+    Componentes crearBoton();
+    Componentes crearMenu();
+    Componentes crearBuscador();
+}
+
+
+public class WebComun implements FabricarWeb {
+
+    @Override
+    public Componentes crearBoton() {
+        return new BotonComun("Rojo");
+    }
+
+    @Override
+    public Componentes crearMenu() {
+        return new MenuLateral("Naranja");
+    }
+
+    @Override
+    public Componentes crearBuscador() {
+        return new BuscadorColapsable();
+    }
+
+}
+
+public class WebAccesible implements FabricarWeb {
+
+    @Override
+    public Componentes crearBoton() {
+        return new BotonGrande();
+    }
+
+    @Override
+    public Componentes crearMenu() {
+        return new MenuLateral();
+    }
+
+    @Override
+    public Componentes crearBuscador() {
+        return new BuscadorFijo();
+    }
+
+}
+
+public class WebDaltonica implements FabricarWeb {
+
+    @Override
+    public Componentes crearBoton() {
+        return new BotonComun("Violeta");
+    }
+
+    @Override
+    public Componentes crearMenu() {
+        return new MenuLateral("Lila");
+    }
+
+    @Override
+    public Componentes crearBuscador() {
+        return new BuscadorColapsable();
+    }
+    
+}
+
+public class PaginaWeb {
+    private FabricarWeb fabricarWeb;
+
+    public PaginaWeb(FabricarWeb fabricarWeb) {
+        this.fabricarWeb = fabricarWeb;
+    }
+
+    public List<Componentes> renderizar() {
+        List<Componentes> lista = new ArrayList<>();
+
+        lista.add(fabricarWeb.crearBoton());
+        lista.add(fabricarWeb.crearMenu());
+        lista.add(fabricarWeb.crearBuscador());
+
+        return lista;
+    }
+}

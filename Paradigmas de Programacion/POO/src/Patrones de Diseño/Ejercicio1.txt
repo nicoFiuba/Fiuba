@@ -1,0 +1,62 @@
+public class Notificador {
+    public Notificacion crearNotificacion(String tipo) {
+        if (tipo.equals("email")) {
+            return new Email();
+        }
+        if (tipo.equals("sms")) {
+            return new Sms();
+        } 
+        if (tipo.equals("wh")) {
+            return new Wh();
+        }
+    }
+}
+
+El principio que se viola es el de OCP, y para arreglarlo voy a usar el patron de factory method.
+
+interface CrearNotificacion {
+
+    Notificacion crear();
+
+}
+
+public class CrearEmail implements CrearNotificacion {
+
+    @Override
+    public Notificacion crear() {
+        return new Email();
+    }
+
+}
+
+public class CrearSms implements CrearNotificacion {
+
+    @Override
+    public Notificacion crear() {
+        return new Sms();
+    }
+
+}
+
+public class CrearWh implements CrearNotificacion {
+
+    @Override
+    public Notificacion crear() {
+        return new Wh();
+    }
+
+}
+
+public class Notificador {
+    private CrearNotificacion crearNotificacion;
+
+    public Notificador(CrearNotificacion crearNotificacion) {
+        this.crearNotificacion = crearNotificacion;
+    }
+    
+    public void notificar(String mensaje) {
+        Notificacion notificacion = crearNotificacion.crear();
+        notificacion.notificar(mensaje);
+    }
+
+}

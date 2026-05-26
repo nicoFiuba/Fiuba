@@ -1,0 +1,43 @@
+public class Calculadora {
+    public int operar(String operacion, int a, int b) {
+        if (operacion.equals("suma")) {
+            return a + b;
+        } else if (operacion.equals("resta")) {
+            return a - b;
+        }
+        return 0; 
+    }
+}
+
+- El principio que se rompe es el OCP
+El problema esta en que si el dia de mañana se necesita una nueva operacion, tenemos que modificar el codigo. Lo correcto seria:
+
+interface Operacion {
+    int operar(int a, int b);
+}
+
+class Suma implements Operacion {
+    
+    @Override
+    public int operar(int a, int b) {
+        return a + b;
+    }
+
+}
+
+class Resta implements Operacion {
+    
+    @Override
+    public int operar(int a, int b) {
+        return a - b;
+    }
+
+}
+
+public class Calculadora {
+
+    public int operar(Operacion operacion, int a, int b) {
+        return operacion.operar(a,b); 
+    }
+
+}

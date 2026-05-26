@@ -1,0 +1,84 @@
+public class Semaforo {
+
+    private Color colorActual;
+
+    public Semaforo() {
+        colorActual = Color.ROJO;
+    }
+
+    public void cambiarColor() {
+        if (this.colorActual == Color.ROJO) {
+            this.colorActual = Color.VERDE;
+        } else if (this.colorActual == Color.AMARILLO) {
+            this.colorActual = Color.ROJO;
+        } else if (this.colorActual == Color.VERDE) {
+            this.colorActual = Color.AMARILLO;
+        }
+    }
+}
+
+El principio que se rompe aca es el de OCP ya que si el dia de mañana se rompe el semaforo y no puede poner ningun color tenes que modificar todo tu codigo. La solucion es usar un patron State.
+
+public interface EstadoSemaforo {
+    public void cambiarColor(Semaforo semaforo);
+}
+
+public class EstadoRojo implements EstadoSemaforo {
+
+    @Override
+    public void cambiarColor(Semaforo semaforo) {
+        semaforo.setEstadoActual(new EstadoVerde());
+    }
+
+}
+
+public class EstadoVerde implements EstadoSemaforo {
+
+    @Override
+    public void cambiarColor(Semaforo semaforo) {
+        semaforo.setEstadoActual(new EstadoAmarillo());
+    }
+
+}
+
+public class EstadoAmarillo implements EstadoSemaforo {
+
+    @Override
+    public void cambiarColor(Semaforo semaforo) {
+        semaforo.setEstadoActual(new EstadoRojo());
+    }
+
+}
+
+public class Semaforo {
+    private EstadoSemaforo estadoActual;
+
+    public Semaforo() {
+        this.estadoActual = new EstadoRojo();
+    }
+
+    public void setEstadoActual(EstadoSemaforo estadoActual) {
+        this.estadoActual = estadoActual;
+    }
+
+    public void cambiarColor() {
+        this.estadoActual.cambiarColor(this);
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Semaforo semaforo = new Semaforo();
+
+        semaforo.cambiarColor();
+        semaforo.cambiarColor();
+        semaforo.cambiarColor();
+        semaforo.cambiarColor();
+
+    }
+
+}
+

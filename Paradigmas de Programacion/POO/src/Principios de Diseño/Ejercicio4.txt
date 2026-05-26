@@ -1,0 +1,75 @@
+public class GeneradorDeReportes {
+    public void generarReporteExcel(String texto, Metadata metadata) {
+        // Crea el reporte en formato Excel en base al texto recibido
+        Excel excel = new Excel(texto);
+        // Agrega metadata al reporte
+        excel.agregarMetadata(metadata);
+        // Guarda el archivo en el sistema de archivos
+        excel.guardar();
+    }
+
+    public void generarReporteGoogleSheet(String texto, Metadata metadata) {
+        // Crea el reporte en formato GoogleSheets en base al texto recibido
+        GoogleSheet sheet = new GoogleSheet(texto);
+        // Agrega metadata al reporte
+        sheet.agregarMetadata(metadata);
+        // Guarda el archivo en Google Drive
+        sheet.guardar();
+    }
+}
+
+- El principio que se rompe es el de OCP
+El problema esta en que si el dia de mañana se necesita otro formato, tenemos que modificar el codigo. Lo correcto seria:
+
+interface Reporte {
+    void agregarMetadata(Metadata metadata);
+    void guardar();
+}
+
+class Excel implements Reporte {
+    private String texto;
+
+    public Excel(String texto) {
+        this.texto = texto;
+    }
+
+    @Override
+    public void agregarMetadata(Metadata metadata) {
+        // Agrega metadata al reporte en formato Excel
+    }
+
+    @Override
+    public void guardar() {
+        // Guarda el archivo en el sistema de archivos
+    }
+
+}
+
+class GoogleSheet implements Reporte {
+    private String texto;
+
+    public GoogleSheet(String texto) {
+        this.texto = texto;
+    }
+
+    @Override
+    public void agregarMetadata(Metadata metadata) {
+        // Agrega metadata al reporte en formato GoogleSheets
+    }
+
+    @Override
+    public void guardar() {
+        // Guarda el archivo en Google Drive
+    }
+
+}
+
+
+public class GeneradorDeReportes {
+
+    public void generarReporte(Reporte reporte, Metadata metadata) {
+        reporte.agregarMetadata(metadata);
+        reporte.guardar();
+    }
+
+}

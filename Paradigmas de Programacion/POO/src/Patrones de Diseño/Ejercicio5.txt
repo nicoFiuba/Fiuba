@@ -1,0 +1,81 @@
+public class CalculadoraDePrecio {
+    public double calcularPrecio(double precioBase, String tipoCliente) {
+        if (tipoCliente.equals("regular")) {
+            return precioBase;
+        } else if (tipoCliente.equals("estudiante")) {
+            return precioBase * 0.9;
+        } else if (tipoCliente.equals("vip")) {
+            return precioBase * 0.8;
+        } 
+    }
+}
+
+El principio que se rompe aca es el de OCP ya que si el dia de mañana queremos agregar otro tipo de cliente tendriamos que modificar todo. La solucion es usar un patron strategy.
+
+public interface EstrategiaPrecio {
+    double calcularPrecio(double precioBase);
+}
+
+public class PrecioRegular implements EstrategiaPrecio {
+
+    @Override
+    public double calcularPrecio(double precioBase) {
+        return precioBase;
+    }
+
+}
+
+public class PrecioEstudiante implements EstrategiaPrecio {
+
+    @Override
+    public double calcularPrecio(double precioBase) {
+        return precioBase * 0.9;
+    }
+
+}
+
+public class PrecioVip implements EstrategiaPrecio {
+
+    @Override
+    public double calcularPrecio(double precioBase) {
+        return precioBase * 0.8;
+    }
+
+}
+
+public class CalculadoraDePrecio {
+    private EstrategiaPrecio estrategiaPrecio;
+
+    public CalculadoraDePrecio(EstrategiaPrecio estrategiaPrecio) {
+        this.estrategiaPrecio = estrategiaPrecio;
+    }
+
+    public double calcularPrecio(double precioBase) {
+        return estrategiaPrecio.calcularPrecio(precioBase);
+    }
+
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        CalculadoraDePrecio precioRegular = new CalculadoraDePrecio(new PrecioRegular());
+
+        double precio = precioRegular.calcularPrecio(100);
+        System.out.println(precio);
+
+        CalculadoraDePrecio precioEstudiante = new CalculadoraDePrecio(new PrecioEstudiante());
+
+        precio = precioEstudiante.calcularPrecio(100);
+        System.out.println(precio);
+
+        CalculadoraDePrecio precioVip = new CalculadoraDePrecio(new PrecioVip());
+
+        precio = precioVip.calcularPrecio(100);
+        System.out.println(precio);
+        
+    }
+
+}

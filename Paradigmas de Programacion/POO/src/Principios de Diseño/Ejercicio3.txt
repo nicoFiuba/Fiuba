@@ -1,0 +1,55 @@
+public class Deposito {
+    public static void main(String[] args) {
+        Inventario inventario = new Inventario(2000);
+
+        int requerido= 50;
+        if (!inventario.hayStock(requerido)) {
+            throws StockInsuficienteException("No se puede retirar. Stock insuficiente.");
+        }
+        cuenta.retirar(requerido);
+    }
+}
+
+class Inventario {
+    private int stock;
+
+    public Inventario(int stockInicial) { this.stoc = stockInicial; }
+
+    public double hayStock(int requerido) { return requerido <= stock; }
+
+    public void retirar(int requerido) { stock -= requerido; }
+}
+
+El principio que se rompe es el Experto de Informacion: decile y no preguntes.
+El problema aca es que la logica esta en el deposito y deberia estar en el inventario, ya que esta es la que tiene que ver si tiene stock o no. Lo correcto seria:
+
+public class Deposito {
+
+    public static void main(String[] args) {
+
+        Inventario inventario = new Inventario(2000);
+
+        int requerido= 50;
+
+        cuenta.retirar(requerido);
+    }
+
+}
+
+class Inventario {
+    private int stock;
+
+    public Inventario(int stockInicial) {
+        this.stock = stockInicial;
+    }
+
+    public void retirar(int requerido) {
+
+        if (requerido > stock){
+            throw new StockInsuficienteException("No se puede retirar. Stock insuficiente.");
+        }
+
+        stock -= requerido;
+    }
+}
+

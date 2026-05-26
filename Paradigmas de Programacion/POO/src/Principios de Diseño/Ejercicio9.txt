@@ -1,0 +1,54 @@
+public interface Estacionamiento {
+	void aparcarCoche(); 
+	void sacarCoche(); 
+	void getCapacidad();
+	double calcularTarifa(Coche coche); 
+	void hacerPago(Coche coche);
+}
+
+public class EstacionamientoGratis implements Estacionamiento {
+    @Override
+    public void aparcarCoche() {
+        System.out.println("Aparcando coche");
+    }
+    @Override
+    public void sacarCoche() {
+        System.out.println("Sacando coche");
+    }
+    @Override
+    public void getCapacidad() {
+        System.out.println("Capacidad del estacionamiento...");
+    }
+    @Override
+    public double calcularTarifa(Coche coche) {
+        return 0;
+    }
+    @Override
+    public void hacerPago(Coche coche) {
+        throw new Exception("El estacionamiento es gratis");
+    }
+}
+
+Lo que sucede aca es que el diseño esta mal modelado, no tiene sentido que un estacionamiento sepa manejar, es como que diga la casa sabe pintar. Lo correcto seria:
+
+interface Estacionamiento {
+    void getCapacidad();
+    double calcularTarifa(Coche coche);
+}
+
+public class EstacionamientoGratis implements Estacionamiento {
+
+    @Override
+    public void getCapacidad() {
+        System.out.println("Capacidad del estacionamiento...");
+    }
+
+    @Override
+    public double calcularTarifa(Coche coche) {
+        return 0;
+    }
+
+}
+
+Este es el modelado correcto del estacionamiento y con este nos aseguramos de no romper ningun principio de diseño. En este modelado no puese las acciones de aparcar, sacar y hacer un pago ya que estas son cosas que hace un conductor y no un estacionamiento.
+

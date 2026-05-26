@@ -1,0 +1,54 @@
+public class Usuario {
+    private String nombre;
+
+    public void guardarEnBaseDeDatos() {
+        System.out.println("Guardando usuario...");
+    }
+
+    public void enviarCorreoBienvenida() {
+        System.out.println("Enviando correo de bienvenida...");
+    }
+
+    public void validarEmail() {
+        System.out.println("Validando email...");
+    }
+}
+
+- El principio que se rompe es el de Responsabilidad Unica
+el problema esta en que el usuario esta haciendo cosas que no le correspónden. Lo correcto seria:
+
+class Usuario {
+    private String nombre;
+    private String email;
+
+    public Usuario(String nombre, String email) {
+        this.nombre = nombre;
+        this.email = email;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+}
+
+public class RegistroUsuario {
+
+    public void guardarEnBaseDeDatos(Usuario usuario) {
+        System.out.println("Guardando usuario...");
+    }
+
+    public void enviarCorreoBienvenida(Usuario usuario) {
+        System.out.println("Enviando correo de bienvenida...");
+    }
+
+    public void validarEmail(Usuario usuario) {
+        System.out.println("Validando email...");
+    }
+
+}
+

@@ -1,0 +1,21 @@
+public class Juego {
+    public void saludar() {
+        System.out.println("Iniciando Juego...");
+        // logica de juego
+    }
+}
+
+- El principio que se rompe el de Responsabilidad Unica
+El problema esta en que el metodo esta saludando y programando la logica del juego. Lo correcto seria:
+
+public class Juego {
+
+    public void saludar() {
+        System.out.println("Hola");
+    }
+
+    public void logicaDeJuego() {
+        // logica de juego
+    }
+
+}

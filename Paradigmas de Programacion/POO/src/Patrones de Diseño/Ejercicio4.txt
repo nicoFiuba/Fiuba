@@ -1,0 +1,126 @@
+public class Bebida {
+    private boolean conAzucar;
+    private boolean conLeche;
+    private boolean conCrema;
+
+    public Bebida(boolean conAzucar, boolean conLeche, boolean conCrema) {
+        this.conAzucar = conAzucar;
+        this.conLeche = conLeche;
+        this.conCrema = conCrema;
+    }
+
+    public String descripcion() {
+        String desc = "Café";
+        if (conAzucar) desc += " con azúcar";
+        if (conLeche) desc += " con leche";
+        if (conCrema) desc += " con crema";
+        return desc;
+    }
+
+    public double costo() {
+        double precio = 10;
+        if (conAzucar) precio += 1;
+        if (conLeche) precio += 2;
+        if (conCrema) precio += 3;
+        return precio;
+    }
+}
+
+El principio que se rompe aca es el de OCP ya que si en un futuro queres agregar una nueva opcion al cafe necesitarias modificar todo tu codigo. La solucion es usar un patron decorator.
+
+public interface Bebida {
+    String descripcion();
+    double costo();
+}
+
+public class Cafe implements Bebida {
+
+    @Override
+    public String descripcion() {
+        return "Café";
+    }
+
+    @Override
+    public double costo() {
+        return 10;
+    }
+
+}
+
+public abstract class Decorator implements Bebida {
+    protected Bebida bebida;
+
+    public Decorator(Bebida bebida) {
+        this.bebida = bebida;
+    }
+}
+
+public class ConAzucar extends Decorator {
+
+    public ConAzucar(Bebida bebida) {
+        super(bebida);
+    }
+
+    @Override
+    public String descripcion() {
+        return bebida.descripcion() + " con azúcar";
+    }
+    
+    @Override
+    public double costo() {
+        return bebida.costo() + 1;
+    }
+
+}
+
+public class ConLeche extends Decorator {
+
+    public ConLeche(Bebida bebida) {
+        super(bebida);
+    }
+
+    @Override
+    public String descripcion() {
+        return bebida.descripcion() + " con leche";
+    }
+    
+    @Override
+    public double costo() {
+        return bebida.costo() + 2;
+    }
+
+}
+
+public class ConCrema extends Decorator {
+    
+    public ConCrema(Bebida bebida) {
+        super(bebida);
+    }
+
+    @Override
+    public String descripcion() {
+        return bebida.descripcion() + " con crema";
+    }
+
+    @Override
+    public double costo() {
+        return bebida.costo() + 3;
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Bebida cafe = new Cafe();
+        cafe = new ConAzucar(cafe);
+        cafe = new ConLeche(cafe);
+        cafe = new ConCrema(cafe);
+
+        System.out.println(cafe.descripcion());
+        System.out.println(cafe.costo());
+
+    }
+
+}
