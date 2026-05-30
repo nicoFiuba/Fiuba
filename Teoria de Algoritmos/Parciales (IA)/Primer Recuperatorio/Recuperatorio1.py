@@ -80,7 +80,7 @@ Aristas hacias T: conectamos a cada base de datos 'j' con el sumidero T con capa
 
 Pseudocodigo:
 
-def es_posible_asignar_servidores(servidores, bases_de_datos, restricciones):
+def es_posible_asignar_servidores(servidores, bases_de_datos, restricciones, datacenter_sur, X):
 
     # Primero armamos la red
     red = GrafoDirigido()
