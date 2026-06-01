@@ -216,44 +216,41 @@ Diagrama de estados:
 - Estado inicial: (0, 0, Ø) ninguna antena fue procesada
 
 - Decision en el nivel 'k': al evaluar la antena 'k', tenemos hasta dos opciones de ramificacion:
-1) Incluir a k siempre y cuando el vertice 'v' escogido este libre
+1) Incluir a k (esta opcion siempre es valida)
 2) No incluir a k (esta opcion siempre es valida)
 
 Pseudocodigo:
 
 MEJOR_GLOBAL = float('inf')
 
-def branch_and_bound(k, antenas, vertices_ocupados, costo_parcial):
-
+def branch_and_bound(k, antenas, V, vertices_cubiertos, costo_parcial):
+    
     global MEJOR_GLOBAL
-    n = len(antenas)
-
-    if k == n:
+    n = len(vertices_cubiertos)
+    
+    if n == V:
         if costo_parcial < MEJOR_GLOBAL:
             MEJOR_GLOBAL = costo_parcial
         return
     
-    cota_inferior = costo_parcial + estimar_costo_min_restante(k, antenas)
-
+    l = len(antenas)
+    if l == k:
+        return
+        
+    cota_inferior = costo_parcial + estimar_costo_min(k, antenas)
     if cota_inferior >= MEJOR_GLOBAL:
         return
-    
+        
     antena_actual = antenas[k]
     
-    # Rama izquierda
-    vertice_libre = esta_libre(antena_actual, vertices_ocupados)
-
-    if vertice_libre != None:
-        vertices_ocupados.add(vertice_libre)
-
-        nuevo_costo = costo_parcial + antena_actual.costo
-
-        branch_and_bound(k + 1, antenas, vertices_ocupados, nuevo_costo)
-
-        vertices_ocupados.remove(vertice_libre)
+    # Rama Izquierda
+    nuevos_vertices = vertices_cubiertos.union(antena_actual.cobertura)
+    nuevo_costo = costo_parcial + antena_actual.costo
     
-    # Rama derecha
-    branch_and_bound(k + 1, antenas, vertices_ocupados, costo_parcial)
+    branch_and_bound(k + 1, antenas, V, nuevos_vertices, nuevo_costo)
+    
+    # Rama Derecha
+    branch_and_bound(k + 1, antenas, V, vertices_cubiertos, costo_parcial)
 
 Complejidad:
 

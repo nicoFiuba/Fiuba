@@ -189,7 +189,7 @@ Explicacion:
 
 - Solucion Parcial: es el valor acumulado actualmente
 
-- Cota Inferior: es la estimacion del costo minimo de la rama y como queremos minimizar, sumamos el costom parcial mas el costo minimo de las caamaras restantes
+- Cota Inferior: es la estimacion del costo minimo de la rama y como queremos minimizar, sumamos el costo parcial mas el costo minimo de las camaras restantes
 
 - Cota Superior: es la mejor solucion global valida hasta el momento. Se actualiza cada vez que encontramos una solucion mas barata que nuestro record
 
@@ -197,12 +197,12 @@ Explicacion:
 
 Diagrama de estados:
 
-- Definicion: se considerqa el estado (k, costo_acumulado, zonas_cbiertas)
+- Definicion: se considera el estado (k, costo_acumulado, zonas_cubiertas)
 
 - Estado Inicial: (0, 0, Ø) ninguna camara fue procesada
 
 - Decision en el nivel k: al evaluar la camara 'k', tenemos hasta dos opciones de ramificacion
-1) Incluir a k siempre y cuando la zona 'z' escogida este disponible
+1) Incluir a k (esta opcion siempre es valida)
 2) No incluir a k (esta opcion siempre es valida)
 
 Pseudocodigo:
@@ -220,7 +220,6 @@ def branch_and_bound(k, camaras, C, zonas_cubiertas, costo_parcial):
       return
    
    l = len(camaras)
-
    if l == k:
       return
    
