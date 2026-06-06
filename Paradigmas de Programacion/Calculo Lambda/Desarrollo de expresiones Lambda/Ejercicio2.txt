@@ -1,0 +1,36 @@
+1) λx.λy.x y; (λb.b F T) F; (λb.b T F) T
+
+Caso 1: (λx.λy.x y) (λb.b F T) F = (λy.(λb.b F T) y) F = (λb.b F T) F = (F F T)
+
+Caso 2: (λx.λy.x y) (λb.b T F) T = (λy.(λb.b T F) y) T = (λb.b T F) T = (T T F)
+
+2) λx.λy.λw. w y x;	T T (λp.λq.p q p); (λb.b) (λf.f) z
+
+Caso 1: (λx.λy.λw. w y x) T T (λp.λq.p q p) = (λy.λw. w y T) T (λp.λq.p q p) = (λw. w T T) (λp.λq.p q p)
+= (λp.λq.p q p) T T = (λq.T q T) T = (T T T)
+
+Caso 2: (λx.λy.λw. w y x) (λb.b) (λf.f) z = (λy.λw. w y (λb.b)) (λf.f) z = (λw. w (λf.f) (λb.b)) z
+= z (λf.f) (λb.b)
+
+3) λw.λf.λx.f x f w w; T (λy.λx.x) T; T (λy.λx.y) F
+
+Caso 1: (λw.λf.λx.f x f w w) T (λy.λx.x) T = (λf.λx.f x f T T) (λy.λx.x) T = (λx.(λy.λx.x) x (λy.λx.x) T T) T
+= (λy.λx.x) T (λy.λx.x) T T = (λx.x) (λy.λx.x) T T = (λy.λx.x) T T = (λx.x) T = T 
+
+Caso 2: (λw.λf.λx.f x f w w) T (λy.λx.y) F = (λf.λx.f x f T T) (λy.λx.y) F = (λx.(λy.λx.y) x (λy.λx.y) T T) F
+= (λy.λx.y) F (λy.λx.y) T T = (λx.F) (λy.λx.y) T T = (F) T T = F T T
+
+4) λn.λf.λx.f (n f x); (λf.λx.x); (λf.λx.f(f x))
+
+Caso 1: λn.λf.λx.f (n f x) (λf.λx.x) = λf.λx.f ((λf.λx.x) f x) = λf.λx.f ((λx.x) x) = λf.λx.f (x)
+
+Caso 2: λn.λf.λx.f (n f x) (λf.λx.f(f x)) = λf.λx.f ((λf.λx.f(f x)) f x) = λf.λx.f ((λx.f(f x)) x)
+= λf.λx.f ((f(f x)))
+
+5) λp.λq.p p q; (λx.λy.x) (λx.λy.y); (λx.λy.y) (λx.λy.y)
+
+Caso 1: (λp.λq.p p q) (λx.λy.x) (λx.λy.y) = (λq.(λx.λy.x) (λx.λy.x) q) (λx.λy.y) = (λx.λy.x) (λx.λy.x) (λx.λy.y)
+= (λy.(λx.λy.x)) (λx.λy.y) = (λx.λy.x)
+
+Caso 2: (λp.λq.p p q) (λx.λy.y) (λx.λy.y) = (λq.(λx.λy.y) (λx.λy.y) q) (λx.λy.y) = (λx.λy.y) (λx.λy.y) (λx.λy.y)
+= (λy.y) (λx.λy.y) = (λx.λy.y)

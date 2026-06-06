@@ -1,0 +1,51 @@
+1) (λg.g 5) (λx.(add x 3))
+
+Call-by-name: (λg.g 5) (λx.(add x 3)) = (λx.(add x 3)) 5 = (add 5 3) = 8
+
+Call-by-value: (λg.g 5) (λx.(add x 3)) = (λx.(add x 3)) 5 = (add 5 3) = 8
+
+2) (λx.x x x) (λx.x x x)
+
+Call-by-name: (λx.x x x) (λx.x x x) = ((λx.x x x) (λx.x x x) (λx.x x x))
+= (((λx.x x x) (λx.x x x) (λx.x x x)) (λx.x x x))  -> es un bucle infinito
+
+Call-by-value: (λx.x x x) (λx.x x x) = ((λx.x x x) (λx.x x x) (λx.x x x))
+= (((λx.x x x) (λx.x x x) (λx.x x x)) (λx.x x x))  -> es un bucle infinito
+
+3) (λc.c (λa.λb.b)) ((λa.λb.λf.f a b) p q)
+
+Call-by-name: (λc.c (λa.λb.b)) ((λa.λb.λf.f a b) p q) = ((λa.λb.λf.f a b) p q) (λa.λb.b)
+= (λb.λf.f p b) q (λa.λb.b) = (λf.f p q) (λa.λb.b) = (λa.λb.b) p q = (λb.b) q = q    
+
+Call-by-value: (λc.c (λa.λb.b)) ((λa.λb.λf.f a b) p q) = (λc.c (λa.λb.b)) ((λb.λf.f p b) q)
+= (λc.c (λa.λb.b)) (λf.f p q) = (λa.λb.b) p q = (λb.b) q = q
+
+4) (λf.f add (f mul (f add 5))) (λg.λx.g x x)
+
+Call-by-name: (λf.f add (f mul (f add 5))) (λg.λx.g x x) = ((λg.λx.g x x) add ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= ((λx.add x x) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((λx.mul x x) ((λg.λx.g x x) add 5)) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul ((λg.λx.g x x) add 5) ((λg.λx.g x x) add 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul ((λx.add x x) 5) ((λg.λx.g x x) add 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul (add 5 5) ((λg.λx.g x x) add 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul 10 ((λg.λx.g x x) add 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul 10 ((λx.add x x) 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul 10 (add 5 5))) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add ((mul 10 10)) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add (100) ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= (add 100 ((λx.mul x x) ((λg.λx.g x x) add 5)))
+= (add 100 ((mul ((λg.λx.g x x) add 5) ((λg.λx.g x x) add 5))))
+= (add 100 ((mul ((λx.add x x) 5) ((λg.λx.g x x) add 5))))
+= (add 100 ((mul (add 5 5) ((λg.λx.g x x) add 5))))
+= (add 100 ((mul 10 ((λg.λx.g x x) add 5))))
+= (add 100 ((mul 10 ((λx.add x x) 5))))
+= (add 100 ((mul 10 (add 5 5))))
+= (add 100 (mul 10 10))
+= (add 100 100)
+= 200
+
+Call-by-value: (λf.f add (f mul (f add 5))) (λg.λx.g x x) = ((λg.λx.g x x) add ((λg.λx.g x x) mul ((λg.λx.g x x) add 5)))
+= ((λg.λx.g x x) add ((λg.λx.g x x) mul ((λx.add x x) 5))) = ((λg.λx.g x x) add ((λg.λx.g x x) mul (add 5 5)))
+= ((λg.λx.g x x) add ((λg.λx.g x x) mul 10)) = ((λg.λx.g x x) add ((λx.mul x x) 10)) = ((λg.λx.g x x) add (mul 10 10))
+= ((λg.λx.g x x) add 100) = ((λx.add x x) 100) = (add 100 100) = 200

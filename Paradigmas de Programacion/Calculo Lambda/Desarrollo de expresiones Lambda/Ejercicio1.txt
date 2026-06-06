@@ -1,0 +1,7 @@
+1) (f (λx.x y) λz.x y z)[x→g] => (f (λx.x y) λz.g y z)
+
+2) (λx.λy.f x y)[y→x] => (λx.λy.f x y)
+
+3) ((λx.f x) λf.f x)[f→(g x)] => ((λa.(g x) a) λf.f x)
+
+4) (λf.λy.f x y)[x→(f y)] => (λa.λb.a (f y) b)

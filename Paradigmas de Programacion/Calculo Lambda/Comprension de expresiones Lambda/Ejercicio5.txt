@@ -1,0 +1,5 @@
+1) 5) f (λx.x y) λy.y x => ((f (λx.(x y))) (λy.(y x)))
+Aplico la conversion alpha y por lo tanto ((f (λa.(a y))) (λb.(b x)))
+
+2) 6) (λw.λz.z (λx.w x)) x y => (((λw.(λz.(z (λx.(w x))))) x) y)
+Aplico la conversion alpha y por lo tanto (((λw.(λz.(z (λa.(w a))))) x) y)

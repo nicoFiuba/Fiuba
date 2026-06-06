@@ -1,0 +1,153 @@
+1) λx.x y λz.x z => (λx.((x y) (λz.(x z))))
+
+FV(λx.((x y) (λz.(x z)))) = FV(x y) U (FV(λz.(x z))) - {x} = FV(x) U FV(y) U (FV((x z) - {z})) - {x} = {x, y} U (FV(x) U FV(z) - {z}) - {x}
+= {x, y} U ({x, z} - {z}) - {x} = {x, y} U {x} - {x} = {y}
+
+Por lo tanto la variable libre es: 'y' mientras que las ligadas son 'x' por λx  y 'z' por λz.
+
+2) (λx.x y) λz.w λw.w z y x => ((λx.(x y)) (λz.(w (λw.(((w z) y) x)))))
+
+FV((λx.(x y)) (λz.(w (λw.(((w z) y) x)))))
+= (FV((x y)) - {x}) U (FV((λz.(w (λw.(((w z) y) x))))))
+= (FV(x) U FV(y) - {x}) U (FV(w (λw.(((w z) y) x))) - {z})
+= ({x, y} - {x}) U ((FV(w) U (FV((λw.(((w z) y) x))) - {z}))) 
+= ({y}) U ({w} U (FV((((w z) y) x)) - {w}) - {z})
+= {y} U ({w} U ((FV(w) U FV(z)) U (FV(y) x) - {w}) - {z}) 
+= {y} U ({w} U ({w, z} U ({y} U FV(x)) - {w})- {z})
+= {y} U ({w} U ({w, z} U ({y} U {x}) - {w}) - {z})
+= {y} U ({w} U (({w, z} U ({y, x})) - {w}) - {z})
+= {y} U ({w} U (({w, z} U {y, x}) - {w}) - {z}) 
+= {y} U ({w} U ({w, z, y, x} - {w}) - {z}) 
+= {y} U ({w} U ({z, x, y}) - {z})
+= {y} U ({w} U {z, x, y} - {z})
+= {y} U ({w, z, x, y} - {z})
+= {y} U ({w, x, y})
+= {y} U {w, x, y}
+= {y, w, x}
+
+Por lo tanto las variables libres son 'y','w' e 'x' mientras que las ligadas son 'x' por λx, 'z' por λz y 'w' por λw.
+
+3) x λz.x λw.w z y => (x (λz.(x (λw.((w z) y)))))
+
+FV(x (λz.(x (λw.((w z) y)))))
+= (FV(x) U (FV(λz.(x (λw.((w z) y))))))
+= ({x} U (FV((x (λw.((w z) y)) - {z}))))
+= ({x} U (FV(x) U (FV((λw.((w z) y)) - {z}))))
+= ({x} U ({x} U (FV(((w z) y)) - {w}) - {z}))
+= ({x} U ({x} U (FV(w) U FV(z) U (FV(y)) - {w}) - {z}))
+= ({x} U ({x} U (({w, z} U {y})) - {w}) - {z})
+= ({x} U ({x} U ({w, z, y}) - {w}) - {z})
+= ({x} U ({x} U ({z, y}) - {z}))
+= ({x} U ({x} U {z, y}) - {z})
+= ({x} U ({x, z, y} - {z}))
+= ({x} U {x, y})
+= {x, y}
+
+Por lo tanto las variables libres son 'x' e 'y' mientras que las ligadas son 'z' por λz y 'w' por λw.
+
+4) λx.x y λx.y x => (λx.((x y) (λx.(y x))))
+
+FV((λx.((x y) (λx.(y x)))))
+= (FV(((x y) (λx.(y x)))) - {x})
+= ((FV(x) U FV(y)) U FV(λx.(y x)) - {x})
+= (({x} U {y}) U (FV((y x)) - {x}) - {x})
+= (({x, y}) U ((FV(y) U FV(x)) - {x}) - {x})
+= ({x, y} U (({y} U {x}) - {x}) - {x})
+= ({x, y} U (({y, x}) - {x}) - {x})
+= ({x, y} U ({y, x} - {x}) - {x})
+= ({x, y} U ({y}) - {x})
+= ({x, y} U {y} - {x})
+= ({x, y} - {x})
+= {y}
+
+Por lo tanto la variable libres es 'y' mientras que la ligada es 'x' por λx.
+
+5) f (λx.x y) λy.y x => ((f (λx.(x y))) (λy.(y x)))
+FV(((f (λx.(x y))) (λy.(y x))))
+= (FV((f (λx.(x y))) U FV((λy.(y x)))))
+= (FV(f (λx.(x y))) U FV((y x) - {y}))
+= ((FV(f) U FV((λx.(x y)))) U ((FV(y) U FV(x)) - {y}))
+= (({f} U FV((x y) - {x})) U ({y} U {x}) - {y})
+= (({f} U (FV(x) U FV(y)) - {x}) U ({y, x}) - {y})
+= (({f} U ({x} U {y}) - {x}) U ({x}))
+= (({f} U ({x, y}) - {x}) U {x})
+= (({f, x, y} - {x}) U {x})
+= ({f, y} U {x})
+= ({f, y, x})
+= {f, y, x}
+
+Por lo tanto las variables libres son 'f', 'x' e 'y' mientras que las ligadas son 'x' e 'y' por λx y por λy
+
+6) (λw.λz.z (λx.w x)) x y => (((λw.(λz.(z (λx.(w x))))) x) y)
+
+FV(((λw.(λz.(z (λx.(w x))))) x) y)
+= (FV((λw.(λz.(z (λx.(w x))))) x) U FV(y))
+= ((FV(λw.(λz.(z (λx.(w x))))) U FV(x)) U {y})
+= (((FV(λz.(z (λx.(w x)))) - {w}) U {x}) U {y})
+= ((((FV(z (λx.(w x))) - {z}) - {w}) U {x}) U {y})
+= (((((FV(z) U FV(λx.(w x))) - {z}) - {w}) U {x}) U {y})
+= (((({z} U (FV(w x) - {x}) - {z}) - {w}) U {x}) U {y})
+= (((({z} U ((FV(w) U FV(x)) - {x}) - {z}) - {w}) U {x}) U {y})
+= (((({z} U (({w} U {x}) - {x}) - {z}) - {w}) U {x}) U {y})
+= (((({z} U ({w, x} - {x}) - {z}) - {w}) U {x}) U {y})
+= ((((({z} U {w}) - {z}) - {w}) U {x}) U {y})
+= (((({z, w} - {z}) - {w}) U {x}) U {y})
+= ((({w} - {w}) U {x}) U {y})
+= (({} U {x}) U {y})
+= ({x} U {y})
+= ({x, y})
+= {x, y}
+
+Por lo tanto las variables libres son 'x' e 'y' mientras que las ligadas son 'w', 'z' y 'x' por λw, λz y λx
+
+7) (λf.((λx.(f (x x))) (λx.(f (x x))))) (λx.x) => ((λf.(((λx.((f (x x)))) (λx.((f (x x))))))) (λx.(x)))
+
+FV((λf.(((λx.((f (x x)))) (λx.((f (x x))))))) (λx.(x)))
+= (FV(λf.(((λx.((f (x x)))) (λx.((f (x x))))))) U FV(λx.(x)))
+= ((FV(((λx.((f (x x)))) (λx.((f (x x)))))) - {f}) U (FV(x) - {x}))
+= ((FV((λx.((f (x x)))) (λx.((f (x x))))) - {f}) U ({x} - {x}))
+= ((FV(λx.((f (x x)))) U FV(λx.((f (x x)))) - {f}) U ({}))
+= (((FV((f (x x))) - {x}) U (FV((f (x x))) - {x}) - {f}) U {})
+= (((FV(f (x x)) - {x}) U (FV(f (x x)) - {x}) - {f}) U {})
+= ((((FV(f) U FV(x x)) - {x}) U ((FV(f) U FV(x x)) - {x}) - {f}) U {})
+= ((({f} U (FV(x) U FV(x)) - {x}) U (({f} U (FV(x) U FV(x))) - {x}) - {f}) U {})
+= (((({f} U ({x} U {x})) - {x}) U (({f} U ({x} U {x})) - {x}) - {f}) U {})
+= (((({f} U {x}) - {x}) U (({f} U {x}) - {x}) - {f}) U {})
+= ((({f, x} - {x}) U ({f, x} - {x}) - {f}) U {})
+= ((({f} U {f}) - {f}) U {})
+= (({f} - {f}) U {})
+= ({} U {})
+= ({})
+= {}
+
+Por lo tanto no hay ninguna variable libre mientras que las variables ligadas son 'f', 'x' por λf y λx
+
+8) (λu.λf.λx. u ((λu.λx.x (u f)) (λu. x) (λf. f))) (λf.λx.f(f x)) = > 
+((λu.(λf.(λx. (u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))))) (λf.(λx.(f(f x)))))
+
+FV((λu.(λf.(λx. (u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))))) (λf.(λx.(f(f x)))))
+= (FV(λu.(λf.(λx. (u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))))) U FV(λf.(λx.(f(f x)))))
+= ((FV(λf.(λx. (u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f)))))) - {u}) U (FV(λx.(f(f x))) - {f}))
+= (((FV(λx. (u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))) - {f}) - {u}) U ((FV(f(f x)) - {x}) - {f}))
+= ((((FV(u (((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))) - {f}) - {u}) U (((FV(f) U FV(f x)) - {x}) - {f}))
+= (((((FV(u) U FV(((λu.(λx.(x (u f)))) (λu. (x))) (λf. (f))))) - {f}) - {u}) U ((({f} U (FV(f) U FV(x))) - {x}) - {f}))
+= ((((({u} U (FV((λu.(λx.(x (u f)))) (λu. (x))) U FV(λf. (f))))) - {f}) - {u}) U ((({f} U ({f} U {x})) - {x}) - {f}))
+= ((((({u} U ((FV(λu.(λx.(x (u f)))) U FV(λu. (x))) U (FV(f) - {f})))) - {f}) - {u}) U ((({f} U ({f, x})) - {x}) - {f}))
+= ((((({u} U (((FV(λx.(x (u f))) - {u}) U (FV(x) - {u})) U ({f} - {f})))) - {f}) - {u}) U ((({f, x}) - {x}) - {f}))
+= ((((({u} U ((((FV(x (u f)) - {x}) - {u}) U ({x} - {u})) U ({})))) - {f}) - {u}) U (({f}) - {f}))
+= ((((({u} U (((((FV(X) U FV(u f)) - {x}) - {u}) U {x}) U {}))) - {f}) - {u}) U ({}))
+= ((((({u} U ((((({x} U (FV(u) U FV(f))) - {x}) - {u}) U {})))) - {f}) - {u}) U {})
+= ((((({u} U ((((({x} U ({u} U {f})) - {x}) - {u}) U {})))) - {f}) - {u}) U {})
+= ((((({u} U ((((({x} U ({u, f})) - {x}) - {u}) U {})))) - {f}) - {u}) U {})
+= ((((({u} U ((((({x, u, f}) - {x}) - {u}) U {})))) - {f}) - {u}) U {})
+= ((((({u} U ((({u, f}) - {u}) U {}))) - {f}) - {u}) U {})
+= ((((({u} U (({f}) U {}))) - {f}) - {u}) U {})
+= ((((({u} U ({f}))) - {f}) - {u}) U {})
+= ((((({u, f})) - {f}) - {u}) U {}) 
+= ((({u} - {f}) - {u}) U {})
+= ((({u}) - {u}) U {})
+= (({}) U {})
+= ({})
+= {}
+
+Por lo tanto no hay ninguna variable libre mientras que las ligadas son 'u', 'f' y 'x' por λu, λf y λx
