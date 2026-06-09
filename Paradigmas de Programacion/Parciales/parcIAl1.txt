@@ -1,0 +1,57 @@
+PROGRAMACION LOGICA
+
+potencia(Base, Exp, Resultado) :- potencia(Base, Exp, 1, Resultado).
+potencia(_, 0, Acumulador, Acumulador).
+
+potencia(Base, Exp, Acumulador, Resultado) :- 
+    Exp > 0,
+    Exp1 is Exp - 1,
+    NuevoAcumulador is Acumulador * Base,
+    potencia(Base, Exp1, NuevoAcumulador, Resultado).
+
+PROGRAMACION FUNCIONAL SCALA
+
+def esSolvente(consumos: List[List[(String, String, Int)]], tiposCambio: Map[String, Int], saldo: Int): Boolean = {
+    
+    val gastoTotal = consumos.flatten.filter{
+        case(_, _, valor) => valor >= 0
+    }.map {
+        case(_, moneda, valor) => valor * tiposCambio(moneda)
+        }.sum
+
+    saldo >= gastoTotal
+}
+
+CALCULO LAMBDA
+
+(λx.(λy.y x)(λz.z w)) a => ((λx.((λy.(y x))(λz.(z w)))) a)
+
+1)
+Arbol
+                                app
+                               /   \
+                             app    a
+                            /   \
+                           λ    app
+                          /    /   \
+                         x    λ     λ
+                             /\     /\
+                            y app  z app
+                              / \    / \
+                             y   x  z   w
+
+2)
+FV((λx.((λy.(y x))(λz.(z w)))) a)
+= (FV(λx.((λy.(y x))(λz.(z w)))) U FV(a))
+= ((FV((λy.(y x))(λz.(z w))) - {x}) U {a})
+= (((FV(λy.(y x)) U FV(λz.(z w))) - {x}) U {a})
+= ((((FV(y x) - {y}) U (FV(z w) - {z})) - {x}) U {a})
+= (((((FV(y) U FV(x)) - {y}) U ((FV(z) U FV(w)) - {z})) - {x}) U {a})
+= ((((({y} U {x}) - {y}) U (({z} U {w}) - {z})) - {x}) U {a})
+= (((({y, x} - {y}) U ({z, w} - {z})) - {x}) U {a})
+= ((({x} U {w}) - {x}) U {a})
+= (({x, w} - {x}) U {a})
+= ({w} U {a})
+= {w, a}
+
+Por lo tanto las variables libres son 'w' y 'a' mientras que las ligadas son 'x', 'y', 'z' por λx, λy y λz

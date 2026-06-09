@@ -1,0 +1,102 @@
+PROGRAMACION LOGICA
+
+1)
+Base de conocimientos con hechos:
+
+    Personajes con rango
+        rango(personaje1, rango1)
+        rango(personaje2, rango2)
+        rango(personaje3, rango3)
+        
+    Jerarquia de rangos
+    hereda_de(rango1, rango2)
+    hereda_de(rango2, rango3)
+
+    Sistemas con rango de acceso directo
+    acceso_directo(sistema1, rango1)
+    acceso_directo(sistema2, rango2)
+   
+2)
+Regla [puede_acceder(Persona, Sistema)]
+
+puede_acceder(Persona, Sistema) :-
+    rango(Persona, Rango),
+    tiene_acceso(Rango, Sistema).
+
+tiene_acceso(Rango, Sistema) :-
+    acceso_directo(Sistema, Rango).
+
+tiene_acceso(Rango, Sistema) :-
+    hereda_de(Rango, NuevoRango),
+    tiene_acceso(NuevoRango, Sistema).
+
+
+PROGRAMACION FUNCIONAL SCALA
+
+def reporteEquipos(participantes: List[(String, String, Int, List[String])]): Map[String, Int] = {
+
+    participantes
+        
+        // Nos quedamos con los eventos "10k_1_Marzo" y "21k_6_Junio"
+        .filter(participante => participante._2 == "10k_1_Marzo" || participante._2 == "21k_6_Junio")
+
+        // Creamos una tupla (Equipo, Tiempo) para cada participante
+        .flatMap(participante => participante._4.map(equipo => (equipo, participante._3)))
+        
+        // Agrupamos por equipo
+        .groupBy(registro => registro._1)
+        
+        // Sumamos los tiempos de cada equipo
+        .map {
+            case (equipo, listaTiempos) => equipo -> listaTiempos.map(registro => registro._2).sum
+        }
+}
+
+CALCULO LAMBDA
+
+(λs.λe.s e s) (λp.λq.q) (λd.rex) raptor => ((((λs.(λe.((s e) s))) (λp.(λq.q))) (λd.rex)) raptor)
+
+1)
+                                         app
+                                        /   \
+                                       /     \
+                                     app    raptor
+                                    /   \
+                                   /     \
+                                 app      λ
+                                /   \    / \
+                               /     \  d   rex
+                              /       \
+                             λ         λ
+                            / \       / \
+                           s   λ     p   λ
+                              / \       / \
+                             e  app    q   q
+                               /   \
+                             app    s
+                            /   \
+                           s     e
+
+2) 
+FV((((λs.(λe.((s e) s))) (λp.(λq.q))) (λd.rex)) raptor)
+= (FV(((λs.(λe.((s e) s))) (λp.(λq.q))) (λd.rex)) U FV(raptor))
+= ((FV((λs.(λe.((s e) s))) (λp.(λq.q))) U FV(λd.rex)) U {raptor})
+= (((FV(λs.(λe.((s e) s))) U FV(λp.(λq.q))) U (FV(rex) - {d})) U {raptor})
+= ((((FV(λe.((s e) s)) - {s}) U (FV(λq.q) - {p})) U ({rex} - {d})) U {raptor})
+= (((((FV((s e) s) - {e}) - {s}) U ((FV(q) - {q}) - {p})) U ({rex})) U {raptor})
+= ((((((FV(s e) U FV(s)) - {e}) - {s}) U (({q} - {q}) - {p})) U {rex}) U {raptor})
+= ((((((FV(s) U FV(e)) U {s}) - {e}) - {s}) U (({}) - {p}) U {rex}) U {raptor})
+= (((((({s} U {e}) U {s}) - {e}) - {s}) U ({}) U {rex}) U {raptor})
+= (((((({s, e}) U {s}) - {e}) - {s}) U {} U {rex}) U {raptor})
+= (((({s, e} - {e}) - {s}) U {} U {rex}) U {raptor})
+= ((({s} - {s}) U {} U {rex}) U {raptor})
+= (({} U {} U {rex}) U {raptor})
+= ({rex} U {raptor})
+= {rex, raptor}
+
+Por lo tanto las variables libres son 'rex' y 'raptor' mientras que las ligadas son 's', 'e', 'p', 'q' y 'd' por λs, λe, λp, λq y λd.
+
+3) Utilizo call-by-value
+
+(((λs.(λe.((s e) s))) (λp.(λq.q))) (λd.rex)) raptor = ((λe.(((λp.(λq.q)) e) (λp.(λq.q)))) (λd.rex)) raptor = (((λp.(λq.q)) (λd.rex)) (λp.(λq.q))) raptor = ((λq.q) (λp.(λq.q))) raptor
+= (λp.(λq.q)) raptor = λq.q
