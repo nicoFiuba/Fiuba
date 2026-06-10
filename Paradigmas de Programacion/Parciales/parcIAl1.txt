@@ -30,15 +30,15 @@ CALCULO LAMBDA
 Arbol
                                 app
                                /   \
-                             app    a
+                              λ     a
                             /   \
-                           λ    app
-                          /    /   \
-                         x    λ     λ
-                             /\     /\
-                            y app  z app
-                              / \    / \
-                             y   x  z   w
+                           x    app
+                               /   \
+                              λ     λ
+                             / \    /\
+                            y  app z app
+                               / \    /\
+                              y   x  z  w
 
 2)
 FV((λx.((λy.(y x))(λz.(z w)))) a)
@@ -55,3 +55,8 @@ FV((λx.((λy.(y x))(λz.(z w)))) a)
 = {w, a}
 
 Por lo tanto las variables libres son 'w' y 'a' mientras que las ligadas son 'x', 'y', 'z' por λx, λy y λz
+
+3) Uso call by name
+
+(λx.((λy.(y x))(λz.(z w)))) a = ((λy.(y a))(λz.(z w)))
+= (((λz.(z w)) a)) = a w
