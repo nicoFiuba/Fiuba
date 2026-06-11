@@ -1,0 +1,89 @@
+PROGRAMACION LOGICA
+
+% Base de conocimientos con hechos:
+    viaje(buenosAires, rosario, 100).
+    viaje(rosario, cordoba, 100).
+
+% Reglas:
+    % Caso Base
+    puede_viajar(Origen, Destino, Presupuesto) :-
+        viaje(Origen, Destino, Costo),
+        Costo =< Presupuesto.
+
+    % Recursion
+    puede_viajar(Origen, Destino, Presupuesto) :-
+        viaje(Origen, Escala, CostoTramo),
+        CostoTramo =< Presupuesto,
+        PresupuestoRestante is Presupuesto - CostoTramo,
+        puede_viajar(Escala, Destino, PresupuestoRestante).
+
+PROGRAMACION FUNCIONAL SCALA
+
+def campeon(partidos: List[(String, String, String)]): String = {
+    val ganadores: List[String] = partidos.map {
+        case(equipo1, _, "Equipo1") => equipo1
+        case(_, equipo2, "Equipo2") => equipo2
+    }
+
+    val tablaPosiciones: Map[String, Int] = ganadores.groupBy(identity).map {
+        case(equipo, victorias) => (equipo, victorias.length)
+    }
+
+    val equipoCampeon = tablaPosiciones.maxBy {
+        case(equipo, puntos) => puntos
+    }
+
+    equipoCampeon._1
+}
+
+CALCULO LAMBDA
+
+(λp.λq.p p q) (λx.λy.x) (λx.λy.y) a => ((((λp.(λq.((p p) q))) (λx.(λy.(x)))) (λx.(λy.(y)))) a)
+
+1) Arbol
+
+                                    app
+                                   /   \
+                                 app    a
+                                /   \
+                              app    λ
+                             /   \   /\
+                            λ     λ x  λ
+                           / \    /\   /\
+                          p   λ  x  λ y  y
+                             / \    /\
+                            q  app y  x
+                              /   \
+                            app    q
+                           /   \
+                          p     p
+
+2)
+FV((((λp.(λq.((p p) q))) (λx.(λy.(x)))) (λx.(λy.(y)))) a)
+= (FV(((λp.(λq.((p p) q))) (λx.(λy.(x)))) (λx.(λy.(y)))) U FV(a))
+= ((FV((λp.(λq.((p p) q))) (λx.(λy.(x)))) U FV(λx.(λy.(y)))) U {a})
+= (((FV(λp.(λq.((p p) q))) U FV(λx.(λy.(x)))) U (FV(λy.(y)) - {x})) U {a})
+= ((((FV(λq.((p p) q)) - {p}) U (FV(λy.(x)) - {x})) U (FV(y) - {y})) U {a})
+= (((((FV((p p) q) - {q}) - {p}) U ((FV(x) - {y}) - {x})) U ({y} - {y})) U {a})
+= ((((((FV(p p) U FV(q)) - {q}) - {p}) U (({x} - {y}) - {x})) U {}) U {a})
+= (((((((FV(p) U FV(p)) U {q}) - {q}) - {p}) U ({x} - {x})) U {}) U {a})
+= ((((((({p} U {p}) U {q}) - {q}) - {p}) U {}) U {}) U {a})
+= (((((({p} U {q}) - {q}) - {p}) U {}) U {}) U {a})
+= ((((({p, q} - {q}) - {p}) U {}) U {}) U {a})
+= (((({p} - {p}) U {}) U {}) U {a})
+= ((({} U {}) U {}) U {a})
+= (({} U {}) U {a})
+= ({} U {a})
+= {a}
+
+Por lo tanto la variable libre es a mientras que las variables ligadas son 'p', 'q', 'x' e 'y' por λp, λq, λx y λy
+
+3) Utilizo call-by-name
+
+(((λp.(λq.((p p) q))) (λx.(λy.(x)))) (λx.(λy.(y)))) a => [p <-- (λx.(λy.(x)))]
+= ((λq.(((λx.(λy.(x))) (λx.(λy.(x)))) q)) (λx.(λy.(y)))) a => [q <-- (λx.(λy.(y)))]
+= (((λx.(λy.(x))) (λx.(λy.(x)))) (λx.(λy.(y)))) a => [x <-- (λx.(λy.(x)))]
+= (((λy.((λx.(λy.(x))))) (λx.(λy.(y))))) a => [y <-- (λx.(λy.(y)))]
+= ((((λx.(λy.(x)))))) a => [x <-- a]
+= (((((λy.(a))))))
+= λy.(a)

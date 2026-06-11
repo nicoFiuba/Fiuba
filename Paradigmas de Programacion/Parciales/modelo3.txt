@@ -1,0 +1,118 @@
+PROGRAMACION LOGICA
+
+% Base de conocimientos:
+    socio(hernan, atlanta).
+    socio(juan, ferro).
+
+    asistio(hernan, atlanta, almagro, 6).
+    asistio(juan, ferro, brown, 5).
+    asistio(juan, chacarita, chicago, 8).
+
+% Regla:
+    puedeComprar(X, C1, _C2, _F) :-
+        socio(X, C1).
+    
+    puedeComprar(X, _C1, C2, _F) :-
+        socio(X, C2).
+
+    puedeComprar(X, _C1, _C2, F) :-
+        F1 is F - 1,
+        asistio(X, _, _, F1).
+
+    puedeComprar(X, _C1, _C2, F) :-
+        F2 is F - 2,
+        asistio(X, _, _, F2).
+
+PROGRAMACION FUNCIONAL SCALA
+
+def mejoresVendedores(ventas: List[(String, Int)]): List[String] = {
+
+    /* Ejemplo
+        
+        List(("Lucía", 1000),
+            ("Pedro", 500),
+            ("Lucía", 2000),
+            ("Sofía", 500),
+            ("Pedro", 1500),
+            ("Lucía", 500),
+            ("Mario", 2100)
+        )
+
+    */
+    
+    ventas.groupBy(_._1)
+    /* 
+        Map("Lucía" -> List(("Lucia", 1000), ("Lucia", 2000), ("Lucia", 500)),
+            "Pedro" -> List(("Pedro", 500), ("Pedro", 1500)),
+            "Sofia" -> List(("Sofia", 500)),
+            "Mario" -> List(("Mario", 2100))
+        )
+    */
+    
+    .map { 
+        case(nombre, vendido) => (nombre, vendido.map(_._2).sum)
+    } // Map("Lucia" -> 3500, "Pedro" -> 2000, "Sofia" -> 500, "Mario" -> 2100)
+    
+    .filter {
+        case(_, total) => total >= 2000
+    } // Map("Lucia" -> 3500, "Pedro" -> 2000, "Mario" -> 2100)
+    
+    .toList // List(("Lucia", 3500), ("Pedro", 2000), ("Mario", 2100))
+    
+    .sortBy {
+        case(_, total) => -total
+    } // List(("Lucia", 3500), ("Mario", 2100), ("Pedro", 2000))
+    
+    .map {
+        case(nombre, _) => nombre
+    } // List(Lucia, Mario, Pedro)
+}
+
+CALCULO LAMBDA
+
+(λp.λq.q (p r)) (λx.x) (λy.y) => (((λp.(λq.(q (p r)))) (λx.(x))) (λy.(y)))
+
+1) Arbol
+                                app
+                               /   \
+                             app    λ
+                            /   \   /\
+                           λ     λ y  y
+                           /\    /\
+                          p  λ  x  x
+                             /\
+                            q app
+                             /   \
+                            q    app
+                                /   \
+                               p     r
+
+2) FV(((λp.(λq.(q (p r)))) (λx.(x))) (λy.(y)))
+= (FV((λp.(λq.(q (p r)))) (λx.(x))) U FV(λy.(y)))
+= ((FV(λp.(λq.(q (p r)))) U FV(λx.(x))) U (FV(y) - {y}))
+= (((FV(λq.(q (p r))) - {p}) U (FV(x) - {x})) U ({y} - {y}))
+= ((((FV(q (p r)) - {q}) - {p}) U ({x} - {x})) U ({}))
+= (((((FV(q) U FV(p r)) - {q}) - {p}) U ({})) U {})
+= ((((({q} U (FV(p) U FV(r))) - {q}) - {p}) U {}) U {})
+= ((((({q} U ({p} U {r})) - {q}) - {p}) U {}) U {})
+= ((((({q} U ({p, r})) - {q}) - {p}) U {}) U {})
+= ((((({q} U {p, r}) - {q}) - {p}) U {}) U {})
+= ((((({q, p, r}) - {q}) - {p}) U {}) U {})
+= (((({q, p, r} - {q}) - {p}) U {}) U {})
+= (((({p, r}) - {p}) U {}) U {})
+= ((({p, r} - {p}) U {}) U {})
+= ((({r}) U {}) U {})
+= (({r} U {}) U {})
+= (({r}) U {})
+= ({r} U {})
+= ({r})
+= {r}
+
+Por lo tanto la variable libre es 'r' mientras que las variables ligadas son 'p', 'q', 'x' e 'y' por λp, λq, λx y λy
+
+3) Uso call by name
+((λp.(λq.(q (p r)))) (λx.(x))) (λy.(y)) => [p <-- (λx.(x))]
+= ((λq.(q ((λx.(x)) r)))) (λy.(y)) => [q <-- (λy.(y))]
+= (((λy.(y)) ((λx.(x)) r))) => [y <-- ((λx.(x)) r)]
+= ((((λx.(x)) r))) => [x <-- r]
+= (((r))) = r

@@ -58,5 +58,7 @@ Por lo tanto las variables libres son 'w' y 'a' mientras que las ligadas son 'x'
 
 3) Uso call by name
 
-(λx.((λy.(y x))(λz.(z w)))) a = ((λy.(y a))(λz.(z w)))
-= (((λz.(z w)) a)) = a w
+(λx.((λy.(y x))(λz.(z w)))) a => [x <-- a]
+= ((λy.(y a))(λz.(z w))) => [y <-- (λz.(z w))]
+= (((λz.(z w)) a)) => [z <-- a]
+= (((a w))) = a w
