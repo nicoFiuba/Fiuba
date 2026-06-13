@@ -11,15 +11,104 @@ potencia(Base, Exp, Acumulador, Resultado) :-
 
 PROGRAMACION FUNCIONAL SCALA
 
+/* Ejemplo
+
+    val consumos1 = [[(“Rappi”, “Peso”, 7700)], [(“Jumbo”, “Peso”, 10300)]] // Suman 18000 pesos
+    val consumos2 = [[(“Steam”, “Dolar”, 20)], [(“KLM”, “Euro”, 100), (“Apple”, “Euro”, -70)]] // Suman 170000 pesos
+
+    val tiposCambio = { “Peso”: 1, “Dolar”: 1000, “Euro”: 1500 }
+    
+    esSolvente(consumos1, tiposCambio, 10000) ⇒ False
+    esSolvente(consumos2, tiposCambio, 5000000) ⇒ True
+
+*/
+
 def esSolvente(consumos: List[List[(String, String, Int)]], tiposCambio: Map[String, Int], saldo: Int): Boolean = {
     
-    val gastoTotal = consumos.flatten.filter{
+    val gastoTotal = consumos.flatten
+    
+    /* Consumos1
+        
+        List(("Rappi", "Peso", 7700),
+            ("Jumbo", "Peso", 10300),
+        )
+
+    */
+
+    /* Consumos2
+        
+        List(("Steam", "Dolar", 20),
+            ("KLM", "Euro", 100),
+            ("Apple", "Euro", -70)
+        )
+
+    */
+    
+    .filter{
         case(_, _, valor) => valor >= 0
-    }.map {
+    
+        /* Consumos1
+            
+            List(("Rappi", "Peso", 7700),
+                ("Jumbo", "Peso", 10300)
+            )
+
+        */
+
+        /* Consumos2
+            
+            List(("Steam", "Dolar", 20),
+                ("KLM", "Euro", 100)
+            )
+
+        */
+
+    }
+    .map {
         case(_, moneda, valor) => valor * tiposCambio(moneda)
-        }.sum
+
+        /* Consumos1
+            
+            List(1 * 7700, 1 * 10300) = List(7700, 10300)
+
+        */
+
+        /* Consumos2
+            
+            List(20 * 1000, 100 * 1500) = List(20000, 150000)
+
+        */
+
+    }
+    
+    .sum
+
+    /* Consumos1
+    
+        7700 + 10300 = 18000
+        
+    */
+
+    /* Consumos2
+    
+        20000 + 150000 = 170000
+    
+    */
+
 
     saldo >= gastoTotal
+
+    /* Consumos1
+    
+        10000 >= 18000 => False
+        
+    */
+
+    /* Consumos2
+    
+        5000000 >= 170000 => True
+    
+    */
 }
 
 CALCULO LAMBDA
@@ -28,17 +117,18 @@ CALCULO LAMBDA
 
 1)
 Arbol
-                                app
-                               /   \
-                              λ     a
-                            /   \
-                           x    app
-                               /   \
-                              λ     λ
-                             / \    /\
-                            y  app z app
-                               / \    /\
-                              y   x  z  w
+
+       app
+      /   \
+     λ     a
+   /   \
+  x    app
+      /   \
+     λ     λ
+    / \    /\
+   y  app z app
+      / \    /\
+     y   x  z  w
 
 2)
 FV((λx.((λy.(y x))(λz.(z w)))) a)

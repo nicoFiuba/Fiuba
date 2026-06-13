@@ -33,6 +33,18 @@ tiene_acceso(Rango, Sistema) :-
 
 PROGRAMACION FUNCIONAL SCALA
 
+/* Ejemplo
+       
+       List(
+           ("Mickey", "10k_1_Marzo", 55, List("EPCOT", "Magic Kingdom")),
+           ("Minnie", "21k_6_Junio", 125, List("Animal Kingdom", "Magic Kingdom", "EPCOT")),
+           ("Goofy", "10k_1_Marzo", 68, List("EPCOT")),
+           ("Donald", "5k_Invierno", 28, List("Hollywood Studios")),
+           ("Daisy", "21k_6_Junio", 110, List("Hollywood Studios", "Magic Kingdom"))
+        )
+
+    */
+
 def reporteEquipos(participantes: List[(String, String, Int, List[String])]): Map[String, Int] = {
 
     participantes
@@ -40,15 +52,49 @@ def reporteEquipos(participantes: List[(String, String, Int, List[String])]): Ma
         // Nos quedamos con los eventos "10k_1_Marzo" y "21k_6_Junio"
         .filter(participante => participante._2 == "10k_1_Marzo" || participante._2 == "21k_6_Junio")
 
+        /*
+           List(
+               ("Mickey", "10k_1_Marzo", 55, List("EPCOT", "Magic Kingdom")),
+               ("Minnie", "21k_6_Junio", 125, List("Animal Kingdom", "Magic Kingdom", "EPCOT")),
+               ("Goofy", "10k_1_Marzo", 68, List("EPCOT")),
+               ("Daisy", "21k_6_Junio", 110, List("Hollywood Studios", "Magic Kingdom"))
+            )
+        */
+
         // Creamos una tupla (Equipo, Tiempo) para cada participante
         .flatMap(participante => participante._4.map(equipo => (equipo, participante._3)))
+
+        /*
+           List(("EPCOT", 55), ("Magic Kingdom", 55),                             // Tiempos de Mickey
+               ("Animal Kingdom", 125), ("Magic Kingdom", 125), ("EPCOT", 125),  // Tiempos de Minnie
+               ("EPCOT", 68),                                                   // Tiempos de Goofy
+               ("Hollywood Studios", 110), ("Magic Kingdom", 110)              // Tiempos de Daisy
+            )
+        */
         
         // Agrupamos por equipo
         .groupBy(registro => registro._1)
+
+        /*
+           Map("EPCOT" -> List(("EPCOT", 55), ("EPCOT", 125), ("EPCOT", 68)),
+                "Magic Kingdom" -> List(("Magic Kingdom", 55), ("Magic Kingdom", 125), ("Magic Kingdom", 110)),
+                "Animal Kingdom" -> List(("Animal Kingdom", 125)),
+                "Hollywood Studios" -> List(("Hollywood Studios", 110))
+            )
+        */
         
         // Sumamos los tiempos de cada equipo
         .map {
             case (equipo, listaTiempos) => equipo -> listaTiempos.map(registro => registro._2).sum
+
+            /*
+                Map("EPCOT" -> 55 + 125 + 68 = 248,
+                    "Magic Kingdom" -> 55 + 125 + 110 = 290,
+                    "Animal Kingdom" -> 125 = 125,
+                    "Hollywood Studios" -> 110 = 110
+                )
+            */
+
         }
 }
 
@@ -56,26 +102,27 @@ CALCULO LAMBDA
 
 (λs.λe.s e s) (λp.λq.q) (λd.rex) raptor => ((((λs.(λe.((s e) s))) (λp.(λq.(q)))) (λd.(rex))) raptor)
 
-1)
-                                         app
-                                        /   \
-                                       /     \
-                                     app    raptor
-                                    /   \
-                                   /     \
-                                 app      λ
-                                /   \    / \
-                               /     \  d   rex
-                              /       \
-                             λ         λ
-                            / \       / \
-                           s   λ     p   λ
-                              / \       / \
-                             e  app    q   q
-                               /   \
-                             app    s
-                            /   \
-                           s     e
+1) Arbol
+
+                app
+               /   \
+              /     \
+            app    raptor
+           /   \
+          /     \
+        app      λ
+       /   \    / \
+      /     \  d   rex
+     /       \
+    λ         λ
+   / \       / \
+  s   λ     p   λ
+     / \       / \
+    e  app    q   q
+      /   \
+    app    s
+   /   \
+  s     e
 
 2) 
 FV((((λs.(λe.((s e) s))) (λp.(λq.(q)))) (λd.(rex))) raptor)

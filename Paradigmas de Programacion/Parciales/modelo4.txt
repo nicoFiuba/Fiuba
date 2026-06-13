@@ -1,0 +1,95 @@
+PROGRAMACION LOGICA
+
+toca(musico1, instrumento1).
+toca(musico2, instrumento2).
+toca(musico3, instrumento1).
+toca(musico4, instrumento2).
+
+graban(musico1, cancion1).
+graban(musico2, cancion2).
+
+forman(cancion1, disco1).
+forman(cancion2, disco2).
+
+hay_instrumento(Instrumento, Disco) :-
+    toca(Musico, Instrumento),
+    graban(Musico, Cancion),
+    forman(Cancion, Disco).
+
+PROGRAMACION FUNCIONAL SCALA
+
+/* Ejemplo
+    
+    List("Nacho", "Che", "Pelota", "Apostar", "Hey", "Apostar", "Che")
+
+*/
+
+def adaptar(palabras: List[String]): List[String] = {
+    palabras.flatMap {
+        case "Pelota" => List("Balon")
+        case "Che" => List("Hey")
+        case "Apostar" => Nil
+        case otraPalabra => List(otraPalabra)
+    } // List("Nacho", "Hey", "Balón", "Hey", "Hey")
+}
+
+CALCULO LAMBDA
+
+(λx.(λy.λu.u y x) b (λz.z)) a => ((λx.(((λy.(λu.((u y) x))) b) (λz.(z)))) a)
+
+1) Arbol
+
+          app
+         /   \
+        λ     a
+       / \
+      x  app
+        /   \
+      app    λ
+     /   \   /\
+    λ     b z  z
+   / \
+  y   λ
+     / \
+    u  app
+      /   \
+    app    x
+   /   \
+  u     y
+
+2) FV((λx.(((λy.(λu.((u y) x))) b) (λz.(z)))) a)
+= (FV(λx.(((λy.(λu.((u y) x))) b) (λz.(z)))) U FV(a))
+= ((FV(((λy.(λu.((u y) x))) b) (λz.(z))) - {x}) U {a})
+= (((FV((λy.(λu.((u y) x))) b) U FV(λz.(z))) - {x}) U {a})
+= ((((FV(λy.(λu.((u y) x))) U FV(b)) U (FV(z) - {z})) - {x}) U {a})
+= (((((FV(λu.((u y) x)) - {y}) U {b}) U ({z} - {z})) - {x}) U {a})
+= ((((((FV((u y) x) - {u}) - {y}) U {b}) U ({})) - {x}) U {a})
+= (((((((FV(u y) U FV(x)) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= ((((((((FV(u) U FV(y)) U {x}) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= (((((((({u} U {y}) U {x}) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= (((((((({u, y}) U {x}) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= ((((((({u, y} U {x}) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= ((((((({u, y,  x}) - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= (((((({u, y, x} - {u}) - {y}) U {b}) U {}) - {x}) U {a})
+= (((((({y, x}) - {y}) U {b}) U {}) - {x}) U {a})
+= ((((({y, x} - {y}) U {b}) U {}) - {x}) U {a})
+= ((((({x}) U {b}) U {}) - {x}) U {a})
+= (((({x} U {b}) U {}) - {x}) U {a})
+= (((({x, b}) U {}) - {x}) U {a})
+= ((({x, b} U {}) - {x}) U {a})
+= ((({x, b}) - {x}) U {a})
+= (({x, b} - {x}) U {a})
+= (({b}) U {a})
+= ({b} U {a})
+= ({b, a})
+= {b, a}
+
+Por lo tanto las variables libres son 'b' y 'a' mentras que las ligadas son 'x', 'y', 'u' y 'z' por λx, λy, λu, y λz
+
+3 Uso call bay name
+(λx.(((λy.(λu.((u y) x))) b) (λz.(z)))) a => [x <-- a]
+= (((λy.(λu.((u y) a))) b) (λz.(z))) => [y <-- b]
+= (((λu.((u b) a))) (λz.(z))) => [u <-- (λz.(z))]
+= (((((λz.(z)) b) a))) => [z <-- b]
+= (((((b)) a))) = b a
+

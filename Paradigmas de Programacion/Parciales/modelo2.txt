@@ -19,21 +19,43 @@ PROGRAMACION LOGICA
 
 PROGRAMACION FUNCIONAL SCALA
 
+/* Ejemplo
+
+    List(("Argentina", "Uruguay", "Equipo1"), // Gana Argentina (Equipo 1)
+        ("Brasil", "Argentina", "Equipo2"),  // Gana Argentina (Equipo 2)
+        ("Uruguay", "Paraguay", "Equipo2")   // Gana Paraguay (Equipo 2)
+    )
+
+*/
+
 def campeon(partidos: List[(String, String, String)]): String = {
     val ganadores: List[String] = partidos.map {
         case(equipo1, _, "Equipo1") => equipo1
         case(_, equipo2, "Equipo2") => equipo2
-    }
+    } // List("Argentina", "Argentina", "Paraguay")
 
-    val tablaPosiciones: Map[String, Int] = ganadores.groupBy(identity).map {
+    val tablaPosiciones: Map[String, Int] = ganadores.groupBy(identity)
+    /*
+        Map("Argentina" -> List("Argentina", "Argentina"),
+            "Paraguay" -> List("Paraguay")
+        )
+    */
+    
+    .map {
         case(equipo, victorias) => (equipo, victorias.length)
-    }
+
+        /*
+            Map("Argentina" -> 2,
+                "Paraguay" -> 1
+            )
+        */
+    } 
 
     val equipoCampeon = tablaPosiciones.maxBy {
         case(equipo, puntos) => puntos
-    }
+    } // ("Argentina", 2)
 
-    equipoCampeon._1
+    equipoCampeon._1 // "Argentina"
 }
 
 CALCULO LAMBDA
@@ -42,21 +64,21 @@ CALCULO LAMBDA
 
 1) Arbol
 
-                                    app
-                                   /   \
-                                 app    a
-                                /   \
-                              app    λ
-                             /   \   /\
-                            λ     λ x  λ
-                           / \    /\   /\
-                          p   λ  x  λ y  y
-                             / \    /\
-                            q  app y  x
-                              /   \
-                            app    q
-                           /   \
-                          p     p
+            app
+           /   \
+         app    a
+        /   \
+      app    λ
+     /   \   /\
+    λ     λ x  λ
+   / \    /\   /\
+  p   λ  x  λ y  y
+     / \    /\
+    q  app y  x
+      /   \
+    app    q
+   /   \
+  p     p
 
 2)
 FV((((λp.(λq.((p p) q))) (λx.(λy.(x)))) (λx.(λy.(y)))) a)

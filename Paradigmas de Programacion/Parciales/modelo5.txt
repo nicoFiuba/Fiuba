@@ -1,0 +1,122 @@
+PROGRAMACION FUNCIONAL SCALA
+
+/* Ejemplo
+    
+    apariciones(“Esto es una esto frase con frase con repeticiones frase”, 4) => 17
+
+*/
+
+def apariciones(frase: String, n: Int): Int = {
+    frase.split(" ").toList
+
+    /*
+        List(“Esto", "es", "una", "esto", "frase", "con", "frase", "con", "repeticiones", "frase”)
+    */
+    
+    .filter(palabra => palabra.length > n)
+    
+    /*
+        List("frase", "frase",  "repeticiones", "frase")
+    */
+
+    .foldLeft(List.empty[String]) {
+        case(unicas, palabra) if (unicas.contains(palabra)) => unicas
+        case(unicas, palabra) => palabra :: unicas
+
+        /*
+            List("repeticiones", "frase")
+        */
+
+    }
+
+    .foldLeft(0) {
+        (total, palabra) => total + palabra.length
+    }
+
+    /*
+        total = 0,
+        0 + "repeticiones".length = 0 + 12 = 12
+        12 + "frase".length = 12 + 5 = 17
+    */
+
+}
+
+CALCULO LAMBDA
+
+(λy.λz.(λx.y z x)(λa.a b)) c => ((λy.(λz.((λx.((y z) x))(λa.(a b))))) c)
+
+1) ARBOL
+
+            app
+           /   \
+          λ     c
+         / \
+        y   λ
+           / \
+          z  app
+            /   \
+           λ     λ
+          / \   / \
+         x app a  app
+          /   \   / \
+        app    x a   b
+       /   \
+      y     z
+
+2) FV((λy.(λz.((λx.((y z) x))(λa.(a b))))) c)
+= (FV(λy.(λz.((λx.((y z) x))(λa.(a b))))) U FV(c))
+= ((FV(λz.((λx.((y z) x))(λa.(a b)))) - {y}) U {c})
+= (((FV((λx.((y z) x))(λa.(a b))) - {z}) - {y}) U {c})
+= ((((FV(λx.((y z) x)) U FV(λa.(a b))) - {z}) - {y}) U {c})
+= (((((FV((y z) x) - {x}) U (FV(a b) - {a})) - {z}) - {y}) U {c})
+= ((((((FV(y z) U FV(x)) - {x}) U ((FV(a) U FV(b)) - {a})) - {z}) - {y}) U {c})
+= (((((((FV(y) U FV(z)) U {x}) - {x}) U (({a} U {b}) - {a})) - {z}) - {y}) U {c})
+= ((((((({y} U {z}) U {x}) - {x}) U (({a, b}) - {a})) - {z}) - {y}) U {c})
+= ((((((({y, z}) U {x}) - {x}) U ({a, b} - {a})) - {z}) - {y}) U {c})
+= (((((({y, z} U {x}) - {x}) U ({b})) - {z}) - {y}) U {c})
+= (((((({y, z, x}) - {x}) U {b}) - {z}) - {y}) U {c})
+= ((((({y, z, x} - {x}) U {b}) - {z}) - {y}) U {c})
+= ((((({y, z}) U {b}) - {z}) - {y}) U {c})
+= (((({y, z} U {b}) - {z}) - {y}) U {c})
+= (((({y, z, b}) - {z}) - {y}) U {c})
+= ((({y, z, b} - {z}) - {y}) U {c})
+= ((({y, b}) - {y}) U {c})
+= (({y, b} - {y}) U {c})
+= (({b}) U {c})
+= ({b} U {c})
+= ({b, c})
+= {b, c}
+
+Por lo tanto las variables libres son 'b' y 'c' mientras que las ligadas son 'y', 'z', 'x' y 'a' por λy, λz, λx y λa
+
+3) Uso call by name
+
+(λy.(λz.((λx.((y z) x))(λa.(a b))))) c => [y <-- c]
+= (λz.((λx.((c z) x))(λa.(a b)))) => [x <-- (λa.(a b))]
+= (λz.(((c z) (λa.(a b))))) = λz.(c z) (λa.(a b))
+
+PROGRAMACION LOGICA (IA)
+
+1) % Base de conocimientos
+persona(nombre1, rol1).
+persona(nombre2, rol2).
+persona(nombre3, rol3).
+
+hereda(rol1, rol2).
+hereda(rol2, rol3).
+
+acceso_directo(sector1, rol2).
+acceso_directo(sector2, rol3).
+
+2) % Regla
+puede_ingresar(Persona, Sector) :-
+    persona(Persona, Rol),
+    tiene_acceso(Rol, Sector).
+
+tiene_acceso(Rol, Sector) :-
+    acceso_directo(Sector, Rol).
+
+tiene_acceso(Rol, Sector) :-
+    hereda(Rol, NuevoRol),
+    tiene_acceso(NuevoRol, Sector).
+

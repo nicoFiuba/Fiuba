@@ -73,19 +73,20 @@ CALCULO LAMBDA
 (λp.λq.q (p r)) (λx.x) (λy.y) => (((λp.(λq.(q (p r)))) (λx.(x))) (λy.(y)))
 
 1) Arbol
-                                app
-                               /   \
-                             app    λ
-                            /   \   /\
-                           λ     λ y  y
-                           /\    /\
-                          p  λ  x  x
-                             /\
-                            q app
-                             /   \
-                            q    app
-                                /   \
-                               p     r
+
+        app
+       /   \
+     app    λ
+    /   \   /\
+   λ     λ y  y
+   /\    /\
+  p  λ  x  x
+     /\
+    q app
+     /   \
+    q    app
+        /   \
+      p     r
 
 2) FV(((λp.(λq.(q (p r)))) (λx.(x))) (λy.(y)))
 = (FV((λp.(λq.(q (p r)))) (λx.(x))) U FV(λy.(y)))
