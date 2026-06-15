@@ -1,0 +1,133 @@
+PROGRAMACION LOGICA
+
+% Base de conocimiento
+
+ojeador_base(ojeador1).
+ojeador_base(ojeador2).
+
+descubirmiento(jugador1, ojeador1).
+descubirmiento(jugador2, ojeador2).
+descubirmiento(jugador3, ojeador1).
+
+reporta(ojeador1, coordinador).
+reporta(ojeador2, coordinador).
+reporta(coordinador, director).
+
+
+% Regla
+
+llega_informe(Directivo, Jugador) :-
+    ojeador_base(Directivo),
+    descubirmiento(Jugador, Directivo).
+
+llega_informe(Directivo, Jugador) :-
+    reporta(NuevoDirectivo, Directivo),
+    llega_informe(NuevoDirectivo, Jugador).
+
+PROGRAMACION FUNCIONAL SCALA
+
+/* Ejemplo
+
+    val viajes = List(
+        ("Mateo", "Buenos Aires", List(("Madrid", "Roma", 50), ("Roma", "Napoles", 30))),
+        ("Sofia", "Cordoba", List(("Praga", "Berlin", 40), ("Berlin", "Amsterdam", 60))),
+        ("Lucas", "Buenos Aires", List(("Londres", "Manchester", 80), ("Manchester", "Roma", 45))),
+        ("Ana", "Rosario", List(("Roma", "Napoles", 35)))
+    )
+
+Resultado esperado para destino "Roma": 
+Map("Buenos Aires" -> 95, "Cordoba" -> 0, "Rosario" -> 0)
+(Nota: Mateo gastó 50 hacia Roma, Lucas gastó 45 hacia Roma.
+Total BA = 95).
+
+*/
+
+def gastoPorDestino(viajes: List[(String, String, List[(String, String, Int)])], destinoBuscado: String): Map[String, Int] = {
+    
+    viajes.foldLeft(Map.empty[String, Int]) {
+        case(mapaAcumulado, (nombre, ciudadOrigen, vuelos)) => val gastoMochilero = vuelos.foldLeft(0) {
+            case(totalVuelos, (origenVuelo, destinoVuelo, precio)) if (destinoVuelo == destinoBuscado) => totalVuelos + precio
+            case(totalVuelos, _) => totalVuelos
+        }
+        
+        val gastoAnterior = mapaAcumulado.getOrElse(ciudadOrigen, 0)
+        mapaAcumulado + (ciudadOrigen -> (gastoAnterior + gastoMochilero))
+
+        /*
+            --- TRAZA DE MEMORIA ("Roma") ---
+        
+            Vuelta 1 (Mateo, "Buenos Aires"):
+                gastoMochilero = 50 (Solo suma el Madrid -> Roma)
+                mapaAcumulado = Map("Buenos Aires" -> 50)
+
+            Vuelta 2 (Sofia, "Cordoba"):
+                gastoMochilero = 0 (Ningún vuelo va hacia Roma)
+                mapaAcumulado = Map("Buenos Aires" -> 50, "Cordoba" -> 0)
+
+            Vuelta 3 (Lucas, "Buenos Aires"):
+                gastoMochilero = 45 (Suma el Manchester -> Roma)
+                gastoAnterior = 50 (Lo recupera del Map con getOrElse)
+                mapaAcumulado = Map("Buenos Aires" -> 95, "Cordoba" -> 0)
+
+            Vuelta 4 (Ana, "Rosario"):
+                gastoMochilero = 0 (Su vuelo sale de Roma hacia Napoles, no cuenta)
+                mapaAcumulado = Map("Buenos Aires" -> 95, "Cordoba" -> 0, "Rosario" -> 0)
+            
+        */
+    
+    }
+}
+
+CALCULO LAMBDA
+
+λm.λn.(λp.m n p)(λq.q r) k => (λm.(λn.(((λp.((m n) p))(λq.(q r))) k)))
+
+1) ARBOL
+
+           λ
+          / \
+         m   λ
+            / \
+           n  app
+             /   \
+           app    k
+          /   \
+         λ     λ
+        / \   / \
+       p app q  app
+         / \    / \
+        app p  q   r
+        / \
+       m   n
+
+
+2) FV(λm.(λn.(((λp.((m n) p))(λq.(q r))) k)))
+= (FV(λn.(((λp.((m n) p))(λq.(q r))) k)) - {m})
+= ((FV(((λp.((m n) p))(λq.(q r))) k) - {n}) - {m})
+= (((FV((λp.((m n) p))(λq.(q r))) U FV(k)) - {n}) - {m})
+= ((((FV(λp.((m n) p)) U FV(λq.(q r))) U {k}) - {n}) - {m})
+= (((((FV((m n) p) - {p}) U (FV(q r) - {q})) U {k}) - {n}) - {m})
+= ((((((FV(m n) U FV(p)) - {p}) U ((FV(q) U FV(r)) - {q})) U {k}) - {n}) - {m})
+= (((((((FV(m) U FV(n)) U {p}) - {p}) U (({q} U {r}) - {q})) U {k}) - {n}) - {m})
+= ((((((({m} U {n}) U {p}) - {p}) U (({q, r}) - {q})) U {k}) - {n}) - {m})
+= ((((((({m, n}) U {p}) - {p}) U ({q, r} - {q})) U {k}) - {n}) - {m})
+= (((((({m, n} U {p}) - {p}) U ({r})) U {k}) - {n}) - {m})
+= (((((({m, n, p}) - {p}) U {r}) U {k}) - {n}) - {m})
+= ((((({m, n, p} - {p}) U {r}) U {k}) - {n}) - {m})
+= ((((({m, n}) U {r}) U {k}) - {n}) - {m})
+= (((({m, n} U {r}) U {k}) - {n}) - {m})
+= (((({m, n, r}) U {k}) - {n}) - {m})
+= ((({m, n, r} U {k}) - {n}) - {m})
+= ((({m, n, r, k}) - {n}) - {m})
+= (({m, n, r, k} - {n}) - {m})
+= (({m, r, k}) - {m})
+= ({m, r, k} - {m})
+= ({r, k})
+= {r, k}
+
+Por lo tanto las variables libres son 'r' y 'k' mientras que las ligadas son 'm', 'n', 'p' y 'q' por λm, λn, λp y λq
+
+(3) Uso call by name
+
+λm.(λn.(((λp.((m n) p))(λq.(q r))) k)) => [p <-- (λq.(q r))]
+= λm.(λn.((((m n) (λq.(q r)))) k)) = λm.λn.m n (λq.q r) k

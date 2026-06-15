@@ -1,1 +1,52 @@
-Son arboles, luego los agrego.
+1) λx. λy.x => (λx. (λy.x))
+
+    λ
+   / \
+  x   λ
+     / \
+    y   x
+
+2) (λx. λy. x) 1 2 => (((λx. (λy. x)) 1) 2)
+
+         app
+        /   \
+      app    2
+     /   \
+    λ     1
+   / \
+  x   λ
+     / \
+    y   x
+
+3) λx. λy. x => (λx. (λy. x))
+
+    λ
+   / \
+  x   λ
+     / \
+    y   x
+
+4) λf. λx. f x => (λf. (λx. (f x)))
+
+    λ
+   / \
+  f   λ
+     / \
+    x  app
+      /   \
+     f     x
+
+5) (λx. λy. λz. xy) z => ((λx. (λy. (λz. (x y)))) z)
+
+      app
+     /   \
+    λ     z
+   / \
+  x   λ
+     / \
+    y   λ
+       / \
+      z  app
+        /   \
+       x     y
+
