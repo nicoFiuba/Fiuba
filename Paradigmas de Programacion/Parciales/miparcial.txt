@@ -98,6 +98,45 @@ def reporteEquipos(participantes: List[(String, String, Int, List[String])]): Ma
         }
 }
 
+def reporteEquipos2(participantes: List[(String, String, Int, List[String])]): Map[String, Int] = {
+
+    participantes.foldLeft(Map.empty[String, Int]) {
+        case(mapaAcumulado, (_, evento, tiempo, equipos)) if (evento == "10k_1_Marzo" || evento == "21k_6_Junio") => equipos.foldLeft(mapaAcumulado) {
+            case(mapaActualizado, equipo) => val tiempoAnterior = mapaActualizado.getOrElse(equipo, 0)
+            mapaActualizado + (equipo -> (tiempoAnterior + tiempo))
+        }
+
+        case (mapaAcumulado, _) => mapaAcumulado
+
+        /*
+            --- TRAZA DE MEMORIA ---
+            
+            Estado Inicial: Map()
+            Vuelta 1 (Mickey, "10k_1_Marzo", 55, List("EPCOT", "Magic Kingdom")):
+                ¡Cumple la condición! El fold interno suma 55 a sus parques.
+                mapaAcumulado = Map("EPCOT" -> 55, "Magic Kingdom" -> 55)
+
+            Vuelta 2 (Minnie, "21k_6_Junio", 125, List("Animal Kingdom", "Magic Kingdom", "EPCOT")):
+                ¡Cumple la condición! El fold interno suma 125. "Magic Kingdom" y "EPCOT" ya existían, así que se acumulan.
+                mapaAcumulado = Map("EPCOT" -> 180, "Magic Kingdom" -> 180, "Animal Kingdom" -> 125)
+
+            Vuelta 3 (Goofy, "10k_1_Marzo", 68, List("EPCOT")):
+                ¡Cumple la condición! Suma 68 solo a EPCOT.
+                mapaAcumulado = Map("EPCOT" -> 248, "Magic Kingdom" -> 180, "Animal Kingdom" -> 125)
+
+            Vuelta 4 (Donald, "5k_Invierno", 28, List("Hollywood Studios")):
+                ¡No cumple la condición! Cae en el 'case (mapaAcumulado, _)' y devuelve el mapa intacto.
+                mapaAcumulado = Map("EPCOT" -> 248, "Magic Kingdom" -> 180, "Animal Kingdom" -> 125)
+
+            Vuelta 5 (Daisy, "21k_6_Junio", 110, List("Hollywood Studios", "Magic Kingdom")):
+                ¡Cumple la condición! Crea Hollywood Studios y le suma a Magic Kingdom.
+                mapaAcumulado = Map("EPCOT" -> 248, "Magic Kingdom" -> 290, "Animal Kingdom" -> 125, "Hollywood Studios" -> 110)
+        
+        */
+
+    }
+}
+
 CALCULO LAMBDA
 
 (λs.λe.s e s) (λp.λq.q) (λd.rex) raptor => ((((λs.(λe.((s e) s))) (λp.(λq.(q)))) (λd.(rex))) raptor)

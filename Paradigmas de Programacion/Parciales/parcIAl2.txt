@@ -1,0 +1,127 @@
+PROGRAMACION LOGICA
+
+% Base de conocimiento
+
+delantero(delantero1).
+delantero(delantero2).
+
+jugador(defensor).
+jugador(mediocampista).
+
+pases(defensor, delantero1).
+pases(defensor, delantero2).
+pases(defensor, mediocampista).
+pases(mediocampista, delantero1).
+pases(mediocampista, delantero2).
+
+% Regla
+
+jugada_peligrosa(Jugador) :-
+    delantero(Jugador).
+
+jugada_peligrosa(Jugador) :-
+    pases(Jugador, NuevoJugador),
+    jugada_peligrosa(NuevoJugador).
+
+
+PROGRAMACION FUNCIONAL SCALA
+
+/* Ejemplo
+
+    val compras = List(
+        ("Nico", "Ezeiza", List(("Viktor&Rolf", 120), ("Natura", 40))),
+        ("Matias", "Miami", List(("Hugo Boss", 90), ("Natura", 35), ("Avon", 15))),
+        ("Lucas", "Bariloche", List(("Natura", 50), ("Avon", 20))),
+        ("Tomas", "Ezeiza", List(("Hugo Boss", 110)))
+    )
+
+*/
+
+def gastoPorMarca(compras: List[(String, String, List[(String, Int)])], marcaBuscada: String): Map[String, Int] = {
+
+    compras.foldLeft(Map.empty[String, Int]) {
+        case (mapaAcumulado, (nombre, _, perfumes)) => val gastoPerfume = perfumes.foldLeft(0) {
+            case(totalPerfumes, (perfume, precio)) if (perfume == marcaBuscada) => totalPerfumes + precio
+            case(totalPerfumes, _) => totalPerfumes
+        }
+
+        val gastoAnterior = mapaAcumulado.getOrElse(nombre, 0)
+        mapaAcumulado + (nombre -> (gastoAnterior + gastoPerfume))
+
+        /*
+            --- TRAZA DE MEMORIA ("Natura") ---
+            
+            Estado Inicial: Map()
+            Vuelta 1 (Nico):
+                gastoPerfume = 40
+                mapaAcumulado = Map("Nico" -> 40)
+                    
+            Vuelta 2 (Matias):
+                gastoPerfume = 35 
+                mapaAcumulado = Map("Nico" -> 40, "Matias" -> 35)
+                    
+            Vuelta 3 (Lucas):
+                gastoPerfume = 50
+                mapaAcumulado = Map("Nico" -> 40, "Matias" -> 35, "Lucas" -> 50)
+                    
+            Vuelta 4 (Tomas):
+                gastoPerfume = 0 (Solo compró Hugo Boss)
+                mapaAcumulado = Map("Nico" -> 40, "Matias" -> 35, "Lucas" -> 50, "Tomas" -> 0)
+
+        */
+
+    }
+}
+
+CALCULO LAMBDA
+
+λx.λy.(λz.x y z)(λw.w k) j => (λx.(λy.(((λz.((x y) z))(λw.(w k))) j)))
+
+1) ARBOL
+
+         λ
+        / \
+       x   λ
+          / \
+         y  app
+           /   \
+         app    j
+        /   \
+       λ     λ
+      / \   / \
+     z app w   app
+      /   \   /   \
+    app    z w     k
+   /   \
+  x     y
+
+2) FV(λx.(λy.(((λz.((x y) z))(λw.(w k))) j)))
+= (FV(λy.(((λz.((x y) z))(λw.(w k))) j)) - {x})
+= ((FV(((λz.((x y) z))(λw.(w k))) j) - {y}) - {x})
+= (((FV((λz.((x y) z))(λw.(w k))) U FV(j)) - {y}) - {x})
+= ((((FV(λz.((x y) z)) U FV(λw.(w k))) U {j}) - {y}) - {x})
+= (((((FV((x y) z) - {z}) U (FV(w k) - {w})) U {j}) - {y}) - {x})
+= ((((((FV(x y) U FV(z)) - {z}) U ((FV(w) U FV(k)) - {w})) U {j}) - {y}) - {x})
+= (((((((FV(x) U FV(y)) U {z}) - {z}) U (({w} U {k}) - {w})) U {j}) - {y}) - {x})
+= ((((((({x} U {y}) U {z}) - {z}) U (({w, k}) - {w})) U {j}) - {y}) - {x})
+= ((((((({x, y}) U {z}) - {z}) U ({w, k} - {w})) U {j}) - {y}) - {x})
+= (((((({x, y} U {z}) - {z}) U ({k})) U {j}) - {y}) - {x})
+= (((((({x, y, z}) - {z}) U {k}) U {j}) - {y}) - {x})
+= ((((({x, y, z} - {z}) U {k}) U {j}) - {y}) - {x})
+= ((((({x, y}) U {k}) U {j}) - {y}) - {x})
+= (((({x, y} U {k}) U {j}) - {y}) - {x})
+= (((({x, y, k}) U {j}) - {y}) - {x})
+= ((({x, y, k} U {j}) - {y}) - {x})
+= ((({x, y, k, j}) - {y}) - {x})
+= (({x, y, k, j} - {y}) - {x})
+= (({x, k, j}) - {x})
+= ({x, k, j} - {x})
+= ({k, j})
+= {k, j}
+
+Por lo tanto las variables libres son 'k' y 'j' mientras que las ligadas son 'x', 'y', 'z' y 'w' por λx, λy, λz y λw
+
+3) Uso call by name
+
+λx.(λy.(((λz.((x y) z))(λw.(w k))) j)) => [z <-- (λw.(w k))]
+= λx.(λy.((((x y) (λw.(w k)))) j)) = λx.λy.x y (λw.(w k)) j

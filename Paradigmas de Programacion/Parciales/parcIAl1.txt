@@ -56,6 +56,7 @@ def gastoPorDestino(viajes: List[(String, String, List[(String, String, Int)])],
         /*
             --- TRAZA DE MEMORIA ("Roma") ---
         
+            Estado Inicial: Map()
             Vuelta 1 (Mateo, "Buenos Aires"):
                 gastoMochilero = 50 (Solo suma el Madrid -> Roma)
                 mapaAcumulado = Map("Buenos Aires" -> 50)

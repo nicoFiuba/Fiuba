@@ -25,20 +25,21 @@ PROGRAMACION LOGICA
 
 PROGRAMACION FUNCIONAL SCALA
 
+/* Ejemplo
+
+    List(("Lucía", 1000),
+        ("Pedro", 500),
+        ("Lucía", 2000),
+        ("Sofía", 500),
+        ("Pedro", 1500),
+        ("Lucía", 500),
+        ("Mario", 2100)
+    )
+
+*/
+
 def mejoresVendedores(ventas: List[(String, Int)]): List[String] = {
 
-    /* Ejemplo
-        
-        List(("Lucía", 1000),
-            ("Pedro", 500),
-            ("Lucía", 2000),
-            ("Sofía", 500),
-            ("Pedro", 1500),
-            ("Lucía", 500),
-            ("Mario", 2100)
-        )
-
-    */
     
     ventas.groupBy(_._1)
     /* 
@@ -66,6 +67,44 @@ def mejoresVendedores(ventas: List[(String, Int)]): List[String] = {
     .map {
         case(nombre, _) => nombre
     } // List(Lucia, Mario, Pedro)
+}
+
+def mejoresVendedores2(ventas: List[(String, Int)]) : List[String] = {
+
+    val totalesPorVendedor = ventas.foldLeft(Map.empty[String, Int]) {
+        case(mapaAcumulado, (nombre, monto)) => val totalAnterior = mapaAcumulado.getOrElse(nombre, 0)
+        mapaAcumulado + (nombre -> (totalAnterior + monto))
+
+        /* --- TRAZA DE MEMORIA ---
+           Vuelta 1: Map("Lucía" -> 1000)
+           Vuelta 2: Map("Lucía" -> 1000, "Pedro" -> 500)
+           Vuelta 3: Map("Lucía" -> 3000, "Pedro" -> 500)
+           Vuelta 4: Map("Lucía" -> 3000, "Pedro" -> 500, "Sofia" -> 500)
+           Vuelta 5: Map("Lucía" -> 3000, "Pedro" -> 2000, "Sofia" -> 500)
+           Vuelta 6: Map("Lucía" -> 3500, "Pedro" -> 2000, "Sofia" -> 500)
+           Vuelta 7: Map("Lucía" -> 3500, "Pedro" -> 2000, "Sofia" -> 500, "Mario" -> 2100)
+        */
+
+    }
+
+    totalesPorVendedor.filter {
+        case(_, total) => total >= 2000
+
+        // Map("Lucía" -> 3500, "Pedro" -> 2000, "Mario" -> 2100)
+    
+    }.toList // List(("Lucía", 3500), ("Pedro", 2000), ("Mario", 2100))
+
+    .sortBy {
+        case(_, total) => -total
+
+        // List(("Lucía", 3500), ("Mario", 2100), ("Pedro", 2000))
+    
+    }.map {
+        case(nombre, _) => nombre
+
+        // List("Lucía", "Mario", "Pedro")
+
+    }
 }
 
 CALCULO LAMBDA

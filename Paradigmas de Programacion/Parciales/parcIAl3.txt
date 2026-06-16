@@ -1,0 +1,140 @@
+PROGRAMACION LOGICA
+
+% Base de conocimientos
+
+club_europeo(club1).
+club_europeo(club2).
+
+club(local).
+club(intermedio).
+
+traspasos(local, club1).
+traspasos(local, club2).
+traspasos(local, intermedio).
+traspasos(intermedio, club1).
+traspasos(intermedio, club2).
+
+canterano(jugador1, local).
+
+% Reglas
+
+llega_a_europa(Club) :-
+    club_europeo(Club).
+
+llega_a_europa(Club) :-
+    traspasos(Club, NuevoClub),
+    llega_a_europa(NuevoClub).
+
+jugador_exitoso(Jugador) :-
+    canterano(Jugador, ClubInicial),
+    llega_a_europa(ClubInicial).
+
+PROGRAMACION FUNCIONAL SCALA
+
+/* Ejemplo
+
+    val videos = List(
+        ("Reel_Linux", "Instagram", List(("Views", 15000), ("Likes", 1200))),
+        ("TikTok_Scala", "TikTok", List(("Views", 50000), ("Likes", 4500), ("Shares", 800))),
+        ("Reel_Prolog", "Instagram", List(("Views", 8000), ("Likes", 500))),
+        ("Short_C", "YouTube", List(("Views", 12000)))
+    )
+
+*/
+
+def totalMetricaPorPlataforma(videos: List[(String, String, List[(String, Int)])], metricaBuscada: String): Map[String, Int] = {
+
+    videos.foldLeft(Map.empty[String, Int]) {
+        case(mapaAcumulado, (_, plataforma, metricas)) => val totalAcumulado = metricas.foldLeft(0) {
+            case(acumulador, (nombreMetrica, cantidad)) if (nombreMetrica == metricaBuscada) => acumulador + cantidad
+            case(acumulador, _) => acumulador
+        }
+
+        val totalAnterior = mapaAcumulado.getOrElse(plataforma, 0)
+        mapaAcumulado + (plataforma -> (totalAnterior + totalAcumulado))
+
+        /*
+            --- TRAZA DE MEMORIA ("Likes") ---
+            
+            Estado Inicial: Map()
+            Vuelta 1 (Reel_Linux, "Instagram"):
+                totalAcumulado = 1200 (Encuentra la métrica "Likes")
+                mapaAcumulado = Map("Instagram" -> 1200)
+
+            Vuelta 2 (TikTok_Scala, "TikTok"):
+                totalAcumulado = 4500 (Encuentra la métrica "Likes")
+                mapaAcumulado = Map("Instagram" -> 1200, "TikTok" -> 4500)
+
+            Vuelta 3 (Reel_Prolog, "Instagram"):
+                totalAcumulado = 500 (Encuentra la métrica "Likes")
+                totalAnterior = 1200 (Lo recupera del Map con getOrElse)
+                mapaAcumulado = Map("Instagram" -> 1700, "TikTok" -> 4500)
+
+            Vuelta 4 (Short_C, "YouTube"):
+                totalAcumulado = 0 (No tiene la métrica "Likes", el fold interno devuelve 0)
+                mapaAcumulado = Map("Instagram" -> 1700, "TikTok" -> 4500, "YouTube" -> 0)
+                
+        */
+    
+    }
+}
+
+CALCULO LAMBDA
+
+(λa.λb.a(λc.b c d))(λe.e) f => (((λa.(λb.(a(λc.((b c) d)))))(λe.(e))) f)
+
+1) ARBOL
+
+         app
+        /   \
+      app    f
+     /   \
+    λ     λ
+   / \   / \
+  a   λ e   e
+     / \
+    b  app
+      /   \
+     a     λ
+          / \
+         c  app
+           /   \
+         app    d
+        /   \
+       b     c
+
+2) FV(((λa.(λb.(a(λc.((b c) d)))))(λe.(e))) f)
+= (FV((λa.(λb.(a(λc.((b c) d)))))(λe.(e))) U FV(f))
+= ((FV(λa.(λb.(a(λc.((b c) d))))) U FV(λe.(e))) U {f})
+= (((FV(λb.(a(λc.((b c) d)))) - {a}) U (FV(e) - {e})) U {f})
+= ((((FV(a(λc.((b c) d))) - {b}) - {a}) U ({e} - {e})) U {f})
+= (((((FV(a) U FV(λc.((b c) d))) - {b}) - {a}) U ({})) U {f})
+= ((((({a} U (FV((b c) d) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U ((FV(b c) U FV(d)) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U (((FV(b) U FV(c)) U {d}) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U ((({b} U {c}) U {d}) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U ((({b, c}) U {d}) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U (({b, c} U {d}) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U (({b, c, d}) - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U ({b, c, d} - {c})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U ({b, d})) - {b}) - {a}) U {}) U {f})
+= ((((({a} U {b, d}) - {b}) - {a}) U {}) U {f})
+= ((((({a, b, d}) - {b}) - {a}) U {}) U {f})
+= (((({a, b, d} - {b}) - {a}) U {}) U {f})
+= (((({a, d}) - {a}) U {}) U {f})
+= ((({a, d} - {a}) U {}) U {f})
+= ((({d}) U {}) U {f})
+= (({d} U {}) U {f})
+= (({d}) U {f})
+= ({d} U {f})
+= ({d, f})
+= {d, f}
+
+Por lo tanto las variables libres son 'd' y 'f' mientras que las ligadas son 'a', 'b', 'c' y 'e' por λa, λb, λc y λe
+
+3) Uso call by name
+
+((λa.(λb.(a(λc.((b c) d)))))(λe.(e))) f => [a <-- (λe.(e))]
+= ((λb.((λe.(e))(λc.((b c) d))))) f => [b <-- f]
+= (((λe.(e))(λc.((f c) d)))) => [e <-- (λc.((f c) d))]
+= ((((λc.((f c) d))))) = λc.(f c d)

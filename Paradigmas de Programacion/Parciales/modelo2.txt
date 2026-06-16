@@ -32,7 +32,10 @@ def campeon(partidos: List[(String, String, String)]): String = {
     val ganadores: List[String] = partidos.map {
         case(equipo1, _, "Equipo1") => equipo1
         case(_, equipo2, "Equipo2") => equipo2
-    } // List("Argentina", "Argentina", "Paraguay")
+
+        // List("Argentina", "Argentina", "Paraguay")
+
+    } 
 
     val tablaPosiciones: Map[String, Int] = ganadores.groupBy(identity)
     /*
@@ -53,9 +56,59 @@ def campeon(partidos: List[(String, String, String)]): String = {
 
     val equipoCampeon = tablaPosiciones.maxBy {
         case(equipo, puntos) => puntos
-    } // ("Argentina", 2)
+
+        // ("Argentina", 2)
+    } 
 
     equipoCampeon._1 // "Argentina"
+}
+
+def campeon2(partidos: List[(String, String, String)]): String = {
+
+    val tablaPosiciones = partidos.foldLeft(Map.empty[String, Int]) {
+        case(mapaAcumulado, (equipo1, _, "Equipo1")) => val victoriasAnteriores = mapaAcumulado.getOrElse(equipo1, 0)
+        mapaAcumulado + (equipo1 -> (victoriasAnteriores + 1))
+
+        case(mapaAcumulado, (_, equipo2, "Equipo2")) => val victoriasAnteriores = mapaAcumulado.getOrElse(equipo2, 0)
+        mapaAcumulado + (equipo2  -> (victoriasAnteriores + 1))
+
+        case (mapaAcumulado, _) => mapaAcumulado
+
+        /*
+            --- TRAZA DE MEMORIA ---
+            
+            Estado Inicial: Map()  
+            Vuelta 1 ("Argentina", "Uruguay", "Equipo1"):
+                Gana Equipo1 ("Argentina"). 
+                victoriasAnteriores = 0
+                mapaAcumulado = Map("Argentina" -> 1)
+
+            Vuelta 2 ("Brasil", "Argentina", "Equipo2"):
+                Gana Equipo2 ("Argentina").
+                victoriasAnteriores = 1
+                mapaAcumulado = Map("Argentina" -> 2)
+
+            Vuelta 3 ("Uruguay", "Paraguay", "Equipo2"):
+                Gana Equipo2 ("Paraguay").
+                victoriasAnteriores = 0
+                mapaAcumulado = Map("Argentina" -> 2, "Paraguay" -> 1)
+        
+        */
+
+    }
+
+    val equipoCampeon = tablaPosiciones.maxBy {
+        case(equipo, puntos) => puntos
+
+        /*
+            maxBy evalúa el mapa final: Map("Argentina" -> 2, "Paraguay" -> 1)
+            El máximo valor es 2.
+            Devuelve la tupla completa: ("Argentina", 2)
+        */
+    }
+
+    equipoCampeon._1 // "Argentina"
+    
 }
 
 CALCULO LAMBDA

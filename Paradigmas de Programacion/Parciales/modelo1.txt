@@ -111,6 +111,44 @@ def esSolvente(consumos: List[List[(String, String, Int)]], tiposCambio: Map[Str
     */
 }
 
+def esSolvente2(consumos: List[List[(String, String, Int)]], tiposCambio: Map[String, Int], saldo: Int): Boolean = {
+
+    val gastoTotal = consumos.foldLeft(0) {
+        case(acumuladorTotal, subListaConsumos) => subListaConsumos.foldLeft(acumuladorTotal) {
+            case(acumuladorParcial, (_, moneda, valor)) if (valor >= 0) => acumuladorParcial + (valor * tiposCambio(moneda))
+            case(acumuladorParcial, _) => acumuladorParcial
+
+            /*
+                --- TRAZA DE MEMORIA ---
+                
+                Estado Inicial: acumuladorTotal = 0
+                tiposCambio = Map("Peso" -> 1, "Dolar" -> 1000, "Euro" -> 1500)
+                
+                Vuelta Exterior 1 (Sublista Internacional):
+                    - Steam (Dolar, 20): acumuladorParcial = 0 + (20 * 1000) = 20000
+                    - KLM (Euro, 100): acumuladorParcial = 20000 + (100 * 1500) = 170000
+                    - Apple (Euro, -70): ¡Ignorado por ser negativo!
+                -> El acumuladorTotal sale de esta sublista valiendo 170000.
+                
+                Vuelta Exterior 2 (Sublista Nacional):
+                -> Arranca con acumuladorTotal = 170000
+                    - Rappi (Peso, 7700): acumuladorParcial = 170000 + (7700 * 1) = 177700
+                    - Jumbo (Peso, 10300): acumuladorParcial = 177700 + (10300 * 1) = 188000
+                -> El acumuladorTotal finaliza en 188000.
+        */
+
+        }
+    }
+
+    saldo >= gastoTotal
+
+    /*
+        Evaluación Final:
+        Si saldo = 100000 => 100000 >= 188000 => False
+        Si saldo = 5000000 => 5000000 >= 188000 => True
+    */
+}
+
 CALCULO LAMBDA
 
 (λx.(λy.y x)(λz.z w)) a => ((λx.((λy.(y x))(λz.(z w)))) a)

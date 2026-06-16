@@ -7,17 +7,24 @@ PROGRAMACION FUNCIONAL SCALA
 */
 
 def apariciones(frase: String, n: Int): Int = {
-    frase.split(" ").toList
 
-    /*
-        List(“Esto", "es", "una", "esto", "frase", "con", "frase", "con", "repeticiones", "frase”)
-    */
+    frase.split(" ").toList // List(“Esto", "es", "una", "esto", "frase", "con", "frase", "con", "repeticiones", "frase”)
+
+    .filter(palabra => palabra.length > n) // List("frase", "frase",  "repeticiones", "frase")
+
+    .distinct // List("frase", "repeticiones")
+
+    .map(palabra => palabra.length) //Map("frase" -> 5, "repeticiones" -> 12)
+
+    .sum // 5 + 12 = 17
+
+}
+
+def apariciones1(frase: String, n: Int): Int = {
     
-    .filter(palabra => palabra.length > n)
+    frase.split(" ").toList // List(“Esto", "es", "una", "esto", "frase", "con", "frase", "con", "repeticiones", "frase”)
     
-    /*
-        List("frase", "frase",  "repeticiones", "frase")
-    */
+    .filter(palabra => palabra.length > n) // List("frase", "frase",  "repeticiones", "frase")
 
     .foldLeft(List.empty[String]) {
         case(unicas, palabra) if (unicas.contains(palabra)) => unicas
@@ -39,6 +46,36 @@ def apariciones(frase: String, n: Int): Int = {
         12 + "frase".length = 12 + 5 = 17
     */
 
+}
+
+def apariciones2(frase: String, n: Int): Int = {
+
+    val (_, totalFinal) = frase.split(" ").toList.foldLeft((List.empty[String], 0)) {
+        case ((vistas, total), palabra) if palabra.length > n && !vistas.contains(palabra) => (palabra :: vistas, total + palabra.length)
+        case (acumulador, _) => acumulador
+
+        /*
+            --- TRAZA DE MEMORIA ---
+            
+            frase = "Esto es una esto frase con frase con repeticiones frase"
+            n = 4
+            
+            Estado Inicial: (List(), 0)
+            Vuelta 1 ("Esto"): Ignorada (longitud 4) -> (List(), 0)
+            Vuelta 2 ("es"): Ignorada (longitud 2) -> (List(), 0)
+            Vuelta 3 ("una"): Ignorada (longitud 3) -> (List(), 0)
+            Vuelta 4 ("esto"): Ignorada (longitud 4) -> (List(), 0)
+            Vuelta 5 ("frase"): ¡Cumple! (longitud 5) -> (List("frase"), 5)
+            Vuelta 6 ("con"): Ignorada (longitud 3) -> (List("frase"), 5)
+            Vuelta 7 ("frase"): Ignorada ("frase" ya esta en la lista) -> (List("frase"), 5)
+            Vuelta 8 ("con"): Ignorada (longitud 3) -> (List("frase"), 5)
+            Vuelta 9 ("repeticiones"): ¡Cumple! (longitud 12) -> (List("repeticiones", "frase"), 17)
+            Vuelta 10 ("frase"): Ignorada ("frase" ya esta en la lista) -> (List("repeticiones", "frase"), 17)
+        
+        */
+    }
+
+    totalFinal
 }
 
 CALCULO LAMBDA
