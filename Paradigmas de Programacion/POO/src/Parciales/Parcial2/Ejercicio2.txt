@@ -26,14 +26,14 @@ public class PaginaWeb {
 
 El principio que se viola aaca es el de OCP ya que si el dia de mañana queres agregar un nuevo modo tenes que modificar todo tu codigo. La solucion es usar un patron de Abstract Factory
 
-interface FabricarWeb {
+interface ThemeFactory {
     Componentes crearBoton();
     Componentes crearMenu();
     Componentes crearBuscador();
 }
 
 
-public class WebComun implements FabricarWeb {
+public class WebComun implements ThemeFactory {
 
     @Override
     public Componentes crearBoton() {
@@ -52,7 +52,7 @@ public class WebComun implements FabricarWeb {
 
 }
 
-public class WebAccesible implements FabricarWeb {
+public class WebAccesible implements ThemeFactory {
 
     @Override
     public Componentes crearBoton() {
@@ -71,7 +71,7 @@ public class WebAccesible implements FabricarWeb {
 
 }
 
-public class WebDaltonica implements FabricarWeb {
+public class WebDaltonica implements ThemeFactory {
 
     @Override
     public Componentes crearBoton() {
@@ -91,18 +91,18 @@ public class WebDaltonica implements FabricarWeb {
 }
 
 public class PaginaWeb {
-    private FabricarWeb fabricarWeb;
+    private ThemeFactory theme;
 
-    public PaginaWeb(FabricarWeb fabricarWeb) {
-        this.fabricarWeb = fabricarWeb;
+    public PaginaWeb(ThemeFactory theme) {
+        this.theme = theme;
     }
 
     public List<Componentes> renderizar() {
         List<Componentes> lista = new ArrayList<>();
 
-        lista.add(fabricarWeb.crearBoton());
-        lista.add(fabricarWeb.crearMenu());
-        lista.add(fabricarWeb.crearBuscador());
+        lista.add(theme.crearBoton());
+        lista.add(theme.crearMenu());
+        lista.add(theme.crearBuscador());
 
         return lista;
     }
