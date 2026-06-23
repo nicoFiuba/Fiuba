@@ -5,5 +5,7 @@
 def palabraMasFrecuente(texto: String): String = {
     texto.split("\\s+").filterNot(palabra => palabra == "y").groupBy(identity).maxBy {
         case (palabra, ocurrencias) => ocurrencias.length
-    }._1
+    } match {
+        case (palabra, _) => palabra
+    }
 }

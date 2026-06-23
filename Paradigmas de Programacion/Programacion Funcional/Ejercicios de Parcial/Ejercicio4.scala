@@ -19,19 +19,14 @@
 // esSolvente(consumos1, tiposCambio, 10000)    // => false
 // esSolvente(consumos2, tiposCambio, 5000000)  // => true
 
-def esSolvente(
-    consumos: List[List[(String, String, Int)]],
-    tiposCambio: Map[String, Int],
-    saldo: Int
-    ): Boolean = {
-        
-        // 1. Calculamos el gasto total en pesos
-        val gastoTotal = consumos.flatten.filter { // .Rompemos la lista de listas. Nos quedamos solo con valores positivos 
-            case (_, _, valor) => valor > 0
-            }.map { // Calculamos el valor en pesos
-                case (_, moneda, valor) => valor * tiposCambio(moneda)
-                }.sum // Sumamos todos los gastos
-        
-        // 2. Evaluamos si nos alcanza la plata
-        saldo >= gastoTotal
+def esSolvente(consumos: List[List[(String, String, Int)]], tiposCambio: Map[String, Int], saldo: Int): Boolean = {
+    // 1. Calculamos el gasto total en pesos
+    val gastoTotal = consumos.flatten.filter { // .Rompemos la lista de listas. Nos quedamos solo con valores positivos 
+        case (_, _, valor) => valor > 0
+    }.map { // Calculamos el valor en pesos
+        case (_, moneda, valor) => valor * tiposCambio(moneda)
+    }.sum // Sumamos todos los gastos
+
+    // 2. Evaluamos si nos alcanza la plata
+    saldo >= gastoTotal
 }
