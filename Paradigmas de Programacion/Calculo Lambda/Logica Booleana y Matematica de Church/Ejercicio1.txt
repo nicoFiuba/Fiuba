@@ -1,0 +1,8 @@
+1) AND = λx.λy.x y x
+2) OR = λx.λy.x x y
+3) NOT = λx.x False True
+4) NAND = λx.λy.NOT (AND x y)
+5) NOR = λx.λy.NOT (OR x y)
+6) IF = λb.λt.λf.b t f
+7) XOR = λx.λy.x (NOT y) y
+8) EQ = λx.λy.x y (NOT y)
