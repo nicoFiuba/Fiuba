@@ -1,0 +1,14 @@
+TRUE = λx.λy.x
+FALSE = λx.λy.y
+SUMA = λx.λy.λf.λz.x f (y f x)
+MULTIPLICACION = λx.λy.λf.x (y f)
+4 = λf.λx.f (f (f (f x)))
+
+1) f(x) = x * 4 => f(x) = λx.MULTIPLICACION x 4
+2) f(x) = x * x => f(x) = λx.MULTIPLICACION x x
+3) f(x, y) = x + y => f(x) = λx.λy.SUMA x y
+4) f(x, y) = x * y => f(x) = λx.λy.MULTIPLICACION x y
+5) f(x, y, z) = x + y + z => f(x) = λx.λy.λz.SUMA (SUMA x y) z
+6) f(x, y, z) = x * y * z => f(x) = λx.λy.λz.MULTIPLICACION (MULTIPLICACION x y) z
+7) f(x, y, z) = (x + y) * z => f(x) = λx.λy.λz.MULTIPLICACION (SUMA x y) z
+8) isZero == f(n) = n == 0 => isZero = λn.n (λx.FALSE) TRUE
