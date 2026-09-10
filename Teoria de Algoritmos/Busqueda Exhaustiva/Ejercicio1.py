@@ -29,6 +29,8 @@ def naive (puntos):
 
 """
 ANÁLISIS DE COMPLEJIDAD
+
 - TEMPORAL: O(N²) ya que estamos en fuerza bruta
+
 - ESPACIAL: O(1) ya que no importa cuántos puntos tenga, se almacenan únicamente 3 puntos
 """

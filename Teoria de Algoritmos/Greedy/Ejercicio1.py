@@ -11,6 +11,7 @@ def ubicar_patrullas(bifurcaciones):
 
     n = len(bifurcaciones)
     patrulleros = []
+    
     i = 0
     while i < n:
         alcance_patrulla = bifurcaciones[i].kilometro + 50
