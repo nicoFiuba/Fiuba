@@ -12,15 +12,15 @@ Si el valor en la mitad != índice + 1 => El vector tiene un desfase, por lo tan
 PSEUDOCÓDIGO
 """
 
-def encontrar_al_no_incluido(vector, inicio, fin):
+def encontrar_al_no_incluido(vector, inicio, final):
 
-    if inicio == fin:
+    if inicio == final:
         return inicio + 1
 
-    mitad = (inicio + fin) // 2
+    mitad = (inicio + final) // 2
 
     if vector[mitad] == mitad + 1:
-        return encontrar_al_no_incluido(vector, mitad + 1, fin)
+        return encontrar_al_no_incluido(vector, mitad + 1, final)
     else:
         return encontrar_al_no_incluido(vector, inicio, mitad)
 
