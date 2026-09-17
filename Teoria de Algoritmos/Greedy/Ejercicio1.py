@@ -34,7 +34,7 @@ def ubicar_patrullas(bifurcaciones):
 """
 ANÁLISIS DE COMPLEJIDAD
 
-- TEMPORAL: Ordenar la lista toma O(N * log(N)) y recorrerla toma O(N). Por lo tanto, la complejidad es O(N * log(N)).
+- TEMPORAL: ordenar la lista toma O(N * log(N)) y recorrerla toma O(N). Por lo tanto, la complejidad es O(N * log(N)).
 
 - ESPACIAL: O(N) para almacenar a las patrullas.
 

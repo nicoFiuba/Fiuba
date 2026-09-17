@@ -37,11 +37,7 @@ def backtracking(tablero, fila_actual, N):
 """
 ANÁLISIS DE COMPLEJIDAD
 
-- TEMPORAL: Al modelear el problema como permutaciones, en el peor de los casos, el algoritmo explora todas las cambinaciones posiles. Por lo tanto, la complejidad es O(N!)
+- TEMPORAL: al modelear el problema como permutaciones, en el peor de los casos, el algoritmo explora todas las cambinaciones posiles. Por lo tanto, la complejidad es O(N!)
 
 - ESPACIAL: O(N) ya que es el call stack de la recursión
 """
-    
-
-
-
