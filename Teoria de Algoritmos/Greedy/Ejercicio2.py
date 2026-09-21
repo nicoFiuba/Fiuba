@@ -1,6 +1,9 @@
 """
 
-EXPLICACIÓN: la estrategia consiste en ordenar las aristas de mayor a menor según su peso. Esta estrategia es Greedy porque en cada iteración opta por evaluar a la arista más pesada, realizando una elección que es localmente óptima, factible (si al eliminarla, no se desconecta) e irrevocable (una vez eliminada, no se considera para posteriores elecciones del algoritmo).
+EXPLICACIÓN: la estrategia consiste en ordenar las aristas de mayor a menor según su peso y, en cada iteración, evaluar la arista más pesada para decidir si se la descarta o no. Esta estrategia es Greedy porque realiza una elección:
+    - Localmente óptima porque en cada iteración opta por evaluar a la arista más pesada
+    - Factible ya que cumple con las restricciones del problema
+    - Irrevocable ya que una vez tomada la decisión, no permite ser removida en posteriores elecciones del algoritmo.
 
 PSEUDOCÓDIGO
 """

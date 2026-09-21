@@ -30,7 +30,7 @@ def naive (puntos):
 """
 ANÁLISIS DE COMPLEJIDAD
 
-- TEMPORAL: O(N²) ya que estamos en fuerza bruta
+- TEMPORAL: O(N²) por el doble for
 
-- ESPACIAL: O(1) ya que no importa cuántos puntos tenga, se almacenan únicamente 3 puntos
+- ESPACIAL: O(1) ya que no importa cuántos puntos tenga, se almacenan únicamente 3 pares depuntos
 """

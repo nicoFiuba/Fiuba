@@ -3,21 +3,22 @@
 EXPLICACIÓN: la estrategia consiste en aplicar una restricción y si no la cumple, volvemos para atrás y buscamos otra alternativa.
 
 ESTRUCTURA DEL ÁRBOL DE ESTADOS
-- NODO: Es el estado del tablero, representado por un vector donde el índice es la fila y el valor es la columna elegida.
+
+- NODO: es el estado del tablero, representado por un vector donde el índice es la fila y el valor es la columna elegida.
 
 - RAMAS: son las columnas posibles para colocar a la reina en la siguiente fila
 
 - HOJA: todas las reinas están ubicadas en el tablero sin atacarse entre sí.
 
-- PODA: no se puede ubicar una reina en el tablero sin que se ataque con otra
+- PODA (Por validez): no se puede ubicar una reina en el tablero sin que se ataque con otra ya ubicada
 
 PSEUDOCÓDIGO
 """
 
 def backtracking(tablero, fila_actual, N):
 
-    if fila_actual <= N:
-        return "EXITO"
+    if fila_actual == N:
+        return True
 
     for columna in range(N):
 
@@ -25,14 +26,14 @@ def backtracking(tablero, fila_actual, N):
 
         if es_valido(tablero):
 
-            resultado = backtracking(fila_actual + 1, tablero, N)
+            resultado = backtracking(tablero, fila_actual + 1, N)
 
-            if resultado == "EXITO":
-                return "EXITO"
+            if resultado == True:
+                return True
 
         tablero.pop()
 
-    return "FRACASO"
+    return False
 
 """
 ANÁLISIS DE COMPLEJIDAD

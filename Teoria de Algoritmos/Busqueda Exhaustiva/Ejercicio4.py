@@ -3,7 +3,8 @@
 EXPLICACIÓN: la estrategia consiste en aplicar una restricción y si no la cumple, volvemos para atrás y buscamos otra alternativa.
 
 ESTRUCTURA DEL ÁRBOL DE ESTADOS
-- NODO: Es el estado del tablero y la posicion actual, representado con la tupla (fila, columna) 
+
+- NODO: es el estado del tablero y la posicion actual, representado con la tupla (fila, columna) 
 
 - RAMAS: son los saltos posibles que puede dar el caballo
 
@@ -18,30 +19,31 @@ def backtracking(estado_actual, casillas_visitadas, inicio):
 
     if len(casillas_visitadas) == 64:
         if salto_valido(estado_actual, inicio):
-            return "Exito"
+            return True
 
-        return "Fracaso"
+        return False
 
     posibles_saltos = mover_caballo(estado_actual)
 
     for salto in posibles_saltos:
 
         if existe(salto) and salto not in casillas_visitadas:
+
             casillas_visitadas.add(salto)
 
             resultado = backtracking(salto, casillas_visitadas, inicio)
 
-            if resultado != "Fracaso":
-                return resultado
+            if resultado == True:
+                return True
 
-        casillas_visitadas.remove(salto)
+            casillas_visitadas.remove(salto)
 
-    return "Fracaso"
+    return False
 
 """
 ANÁLISIS DE COMPLEJIDAD
 
-- TEMPORAL: En el peor de los casos, gracias a que llevamos un registro, el algoritmo explora un máximo de 8 posibles movimientos en cada salto. Por lo tanto, la complejidad es O(8^N²).
+- TEMPORAL: en el peor de los casos, gracias a que llevamos un registro, el algoritmo explora un máximo de 8 posibles movimientos en cada salto. Por lo tanto, la complejidad es O(8^N²).
 
-- ESPACIAL: O(N²), ya que es el call stack de la recursión
+- ESPACIAL: O(N²) ya que es el call stack de la recursión
 """
