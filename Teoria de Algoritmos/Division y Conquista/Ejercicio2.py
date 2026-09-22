@@ -1,6 +1,7 @@
 """
 
-EXPLICACIÓN: 
+EXPLICACIÓN
+
 - Divide: dividimos al vector a la mitad
 
 - Conquista:

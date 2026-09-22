@@ -1,6 +1,7 @@
 """
 
-EXPLICACIÓN: 
+EXPLICACIÓN
+
 - Divide: dividimos al exponente "n" a la mitad
 
 - Conquista: resolvemos un único subproblema recursivamente

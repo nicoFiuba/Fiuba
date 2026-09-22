@@ -35,5 +35,5 @@ ANÁLISIS DE COMPLEJIDAD
 
 - ESPACIAL: O(N) para almacenar el orden.
 
-ANÁLISIS DE OPTIMALIDAD: Se demuestra mediante el argumento de la sustitución, ya que si una solución ordena diferente a la de Greedy, significa que un competidor va a tardar más en terminar la carrera y por ende se va a alargar la duración del triatlón. Por lo tanto, tendríamos que cambiar el orden para poder minimizar la duración del torneo (es lo que hace Greedy).
+ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el argumento de la sustitución, ya que si una solución ordena diferente a la de Greedy, significa que un competidor va a tardar más en terminar la carrera y por ende se va a alargar la duración del triatlón. Por lo tanto, tendríamos que cambiar el orden para poder minimizar la duración del torneo (es lo que hace Greedy).
 """

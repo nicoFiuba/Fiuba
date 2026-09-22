@@ -1,6 +1,7 @@
 """
 
-EXPLICACIÓN: 
+EXPLICACIÓN
+
 - Divide: dividimos a las matrices en bloques de tamaño n/4
 
 - Conquista: resolvemos los S subproblemas recursivamente

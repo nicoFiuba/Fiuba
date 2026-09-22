@@ -60,7 +60,8 @@ ANÁLISIS DE COMPLEJIDAD
 - Espacial: O(1) porque solamente comparamos
 
 
-EXPLICACIÓN C: 
+EXPLICACIÓN C
+
 - Divide: dividimos al vector a la mitad
 
 - Conquista: resolvemos los subproblemas recursivamente
@@ -88,7 +89,6 @@ def procesoC(lote):
             return candidato
 
     return "Lote inválido"
-
 
 ECUACIÓN DE RECURRENCIA
 T(N) = a * T(N/b) + c * f(N)
