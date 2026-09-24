@@ -11,22 +11,22 @@ EXPLICACIÓN
 PSEUDOCÓDIGO
 """
 
-def buscar_extremo(coordenadas, indice_izquierdo, indice_derecho):
+def contornear(edificios, inicio, final):
 
-    if (indice_derecho - indice_izquierdo) <= 2:
-        return usar_fuerza_bruta(coordenadas, indice_izquierdo, indice_derecho)
+    if (final -inicio) <= 2:
+        return usar_fuerza_bruta(edificios, inicio, final)
     
-    mitad = (indice_izquierdo + indice_derecho) // 2
-    punto_izquierdo = coordenadas[mitad - 1].punto
-    punto_medio = coordenadas[mitad].punto
-    punto_derecho = coordenadas[mitad + 1].punto
+    mitad = (inicio + final) // 2
+    inicio_edificio = edificios[mitad - 1].valor
+    altura_edificio = edificios[mitad].valor
+    fin_edificio = edificios[mitad + 1].valor
 
-    if es_extremo(punto_izquierdo, punto_medio, punto_derecho):
-        return punto_medio
-    elif punto_izquierdo < punto_medio < punto_derecho:
-        return buscar_extremo(coordenadas, mitad, indice_derecho)
+    if es_pico(inicio_edificio, altura_edificio, fin_edificio):
+            return altura_edificio
+    elif inicio_edificio < altura_edificio < fin_edificio:
+        return contornear(edificios, mitad, final)
     else:
-        return buscar_extremo(coordenadas, indice_izquierdo, mitad)
+        return contornear(edificios, inicio, mitad)
 
 """
 ECUACIÓN DE RECURRENCIA
