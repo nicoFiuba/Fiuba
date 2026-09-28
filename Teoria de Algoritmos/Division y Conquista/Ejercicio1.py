@@ -40,5 +40,5 @@ ANÁLISIS DE COMPLEJIDAD
 
 - Temporal: T(N) = 48 * T(N/4) + O(N²) => O(N^log_b(a)) = O(N^log_4(48))
 
-- Espacial: O(N²) porque es el call stack de la recursión
+- Espacial: O(log(N)) porque es el call stack de la recursión
 """
