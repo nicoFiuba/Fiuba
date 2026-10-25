@@ -25,7 +25,7 @@ def max_ganancia(terrenos):
     return max(OPT)
 
 """
-ANÁLISIS DE COMPLEJIDAD:
+ANÁLISIS DE COMPLEJIDAD
 - Temporal: O(N) porque recorremos el arreglo de terrenos una sola vez.
 
 - Espacial: O(N) porque usamos un arreglo adicional OPT de tamaño N.
