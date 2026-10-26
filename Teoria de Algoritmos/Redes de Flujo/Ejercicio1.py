@@ -34,12 +34,31 @@ ANÁLISIS DE COMPLEJIDAD
 
 - Temporal:
     - Armar la red toma O(M + F) donde M es el número de médicos y F es el número de feriados.
-    - V' tiene 2 + M + F nodos, por lo tanto, O(M + F)
-    - E' tiene M + F + (M * F) aristas, por lo tanto, O(M * F)
+    - V' tiene 2 (fuente y sumidero) + M + F nodos, por lo tanto, O(M + F)
+    - E' tiene M + F + M * F (disponibilidad) aristas, por lo tanto, O(M * F)
     - Al usar Edmonds-Karp, la complejidad teorica es O(V' * E'^2), aunque en ese caso como todas las capacidades son 1, la complejidad se reduce a O(E' * Raiz(V')) por lo tanto trayendolo a nuestra red, nos queda O((M * F * Raiz(M + F)))
 
 - Espacial: O(V' + E') para almacenar el grafo, por lo tanto O(M + F + M * F) = O(M * F)
 
-ANÁLISIS DE OPTIMALIDAD: el algortimo es optimo gracias al teorema de flujo máximo - corte mínimo, el cual asegura que, al terminar el algoritmo, la cantidad de emparejamientos encontrada es matemáticamente insuperable. Y al teorema de integralidad el cual, como las capacidades son enteras, garantiza que no se asignen "fracciones de médicos" a un feriado
+EJEMPLO
+
+Medicos = ['M1', 'M2']
+Feriados = ['F1', 'F2']
+Disponibilidad = [('M1', 'F1'), ('M1', 'F2'), ('M2', 'F1')]
+
+Red
+S -> M1 (capacidad 1)
+S -> M2 (capacidad 1)
+M1 -> F1 (capacidad 1)
+M1 -> F2 (capacidad 1)
+M2 -> F1 (capacidad 1)
+F1 -> T (capacidad 1)
+F2 -> T (capacidad 1)
+
+Camino
+1) S -> M2 -> F1 -> T
+2) S -> M1 -> F2 -> T
+
+Como el flujo máximo es 2, y la cantidad de feriados es 2, entonces se puede cubrir todos los feriados.
 
 """

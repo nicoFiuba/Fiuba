@@ -30,9 +30,6 @@ ANÁLISIS DE COMPLEJIDAD
 
 - Espacial: O(N) porque usamos un arreglo adicional OPT de tamaño N.
 
-ANÁLISIS DE OPTIMALIDAD:
-El algoritmo es óptimo porque en cada paso usamos max(), lo que garantiza que se guarde la mejor decisión local. Al final, el máximo de OPT nos dará la ganancia máxima posible.
-
 EJEMPLO:
 
 terrenos = [-2, 3, -3, 4, -1, 2]
