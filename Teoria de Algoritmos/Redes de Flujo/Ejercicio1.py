@@ -36,7 +36,7 @@ ANÁLISIS DE COMPLEJIDAD
     - Armar la red toma O(M + F) donde M es el número de médicos y F es el número de feriados.
     - V' tiene 2 (fuente y sumidero) + M + F nodos, por lo tanto, O(M + F)
     - E' tiene M + F + M * F (disponibilidad) aristas, por lo tanto, O(M * F)
-    - Al usar Edmonds-Karp, la complejidad teorica es O(V' * E'^2), aunque en ese caso como todas las capacidades son 1, la complejidad se reduce a O(E' * Raiz(V')) por lo tanto trayendolo a nuestra red, nos queda O((M * F * Raiz(M + F)))
+    - Al usar Edmonds-Karp, la complejidad teorica es O(V' * E'^2), aunque en este caso como todas las capacidades son 1, la complejidad se reduce a O(E' * Raiz(V')) por lo tanto trayendolo a nuestra red, nos queda O((M * F * Raiz(M + F)))
 
 - Espacial: O(V' + E') para almacenar el grafo, por lo tanto O(M + F + M * F) = O(M * F)
 
