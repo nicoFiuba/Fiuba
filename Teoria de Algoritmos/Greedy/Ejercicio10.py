@@ -15,9 +15,9 @@ def minimizar_costo(fragancias, volumen_maximo):
 
     for fragancia in fragancias:
         volumen_perfume += fragancia.minimo
-        costo_total += fragancia.minimo * fragancia.costo_por_m³
+        costo_total += fragancia.minimo * fragancia.costo_por_m3
 
-    fragancias.sort(key=lambda x: x.costo_por_m³)
+    fragancias.sort(key=lambda x: x.costo_por_m3)
 
     i = 0
     while volumen_perfume < volumen_maximo and i < len(fragancias):
@@ -28,7 +28,7 @@ def minimizar_costo(fragancias, volumen_maximo):
         if posible_agregado > 0:
             cantidad_a_agregar = min(posible_agregado, volumen_disponible)
             volumen_perfume += cantidad_a_agregar
-            costo_total += cantidad_a_agregar * fragancia_actual.costo_por_m³
+            costo_total += cantidad_a_agregar * fragancia_actual.costo_por_m3
         
         i += 1
 

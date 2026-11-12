@@ -17,4 +17,11 @@ def existe_camino_hamiltoniano(grafo):
 ANÁLISIS DE COMPLEJIDAD
 - Temporal: la transformación toma O(1) ya que solo calculamos k = |V| - 1. Traducir la respuesta de la única llamada a la caja negra toma O(1). Como la reducción toma tiempo estrictamente polinomial y CML pertenece a NP, queda demostrado formalmente que el problema es NP-Completo.
 
+- Espacial: O(1) ya que no se crean estructuras adicionales.
+
+EJEMPLO
+- Entrada Original: grafo G con 4 nodos y queremos saber si tiene Camino Hamiltoniano
+- Reducción: K = |V| - 1 = 4 - 1 = 3.
+- Llamada: existe_camino_mas_largo(G, 3)
+- Resultado: si la caja negra devuelve True, significa que existe un camino simple de longitud 3 que visita los 4 nodos (Camino Hamiltoniano).
 """
