@@ -42,4 +42,13 @@ ANÁLISIS DE COMPLEJIDAD
 - ESPACIAL: O(N) para almacenar a las patrullas.
 
 ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el argumento de stays ahead, ya que al poner la patrulla lo más a la derecha posible en cada iteración, Greedy cubre la misma o mayor distancia que cualquier otra alternativa. Por lo tanto, por inducción, podemos decir que al nunca quedarse atrás en la cobertura, garantiza usar la menor cantidad de patrullas en total.
+
+EJEMPLO
+- Entrada: Pueblos en los kilómetros [10, 40, 70].
+- Ejecución: 
+    - El primer pueblo sin cobertura es el de km 10. 
+    - Podemos alejar la patrulla hasta 10 + 50 = 60. 
+    - El último pueblo en ese rango es el de km 40. Ubicamos la patrulla ahí.
+    - La cobertura de esta patrulla llega hasta 40 + 50 = 90, cubriendo también gratis al pueblo de km 70.
+- Resultado: 1 sola patrulla ubicada en el km 40.
 """

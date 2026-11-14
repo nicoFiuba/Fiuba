@@ -59,4 +59,12 @@ ANÁLISIS DE COMPLEJIDAD
 - Temporal: en el peor de los casos, la cota no logra podar ninguna rama, por lo tanto O(2^N). Ademas por cada nodo tenemos que calcular la cota que toma O(N), por lo tanto tenemos una complejidad de O(N * 2^N)
 
 - Espacial: O(N) ya que es el call stack de la recursion
+
+EJEMPLO
+- Entrada: 3 clases para dar. Clase 1 = (8 a 9hs, $10), Clase 2 = (8 a 10hs, $50), Clase 3 = (10 a 11hs, $20). RECORD inicial = -infinito.
+- Ejecución:
+    - Rama 1 (Solución inicial): Incluimos a la Clase 1 = $10. Intentamos incluir a la Clase 2, pero se superponen los horarios y por ende se poda. Incluimos a la Clase 3 = $20. Llegamos a la hoja con ganancia total = 30. Actualizamos RECORD = 30.
+    - Rama 2 (Nueva mejor solución): excluimos a la Clase 1 (ganancia = 0). Incluimos a la Clase 2 y  3 ya que no se pisan, entonces 50 + 20. Llegamos a la hoja con ganancia = 70. Actualizamos RECORD = 70.
+    - Rama 3 (Poda por cota): Intentamos una rama excluyendo a la Clase 1 y 2 (ganancia actual = $0). Solo queda la Clase 3. Calculamos la cota: ganancia actual (0) + ganancia máxima restante (20) = 20. Como nuestra cota de 20 es menor que el RECORD actual (70), podamos la rama inmediatamente porque es imposible mejorar.
+- Resultado: finaliza la exploración y retorna la inclusión de Clase 2 y 3 con una ganancia máxima de $70.
 """

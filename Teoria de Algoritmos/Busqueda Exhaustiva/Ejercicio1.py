@@ -33,4 +33,13 @@ ANÁLISIS DE COMPLEJIDAD
 - TEMPORAL: O(N²) por el doble for
 
 - ESPACIAL: O(1) ya que no importa cuántos puntos tenga, se almacenan únicamente 3 pares depuntos
+
+EJEMPLO
+- Entrada: 4 puntos sobre una línea: A=(0,0), B=(1,0), C=(3,0), D=(6,0).
+- Ejecución:
+    - Se evalúan los primeros pares y se llena la lista: (A,B)=1, (A,C)=3, (A,D)=6.
+    - Al calcular (B,C)=2, el algoritmo detecta que 2 es menor que el peor guardado (6). Por lo tanto, (B,C) reemplaza a (A,D) y la lista se reordena.
+    - La lista actual queda: (A,B)=1, (B,C)=2, (A,C)=3.
+    - Los pares restantes, como (B,D)=5, se ignoran por no ser menores que 3.
+- Resultado: Retorna el top 3 de pares más cercanos: (A,B), (B,C) y (A,C).
 """

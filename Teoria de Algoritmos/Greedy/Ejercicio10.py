@@ -43,4 +43,12 @@ ANÁLISIS DE COMPLEJIDAD
 
 ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el argumento de la sustitución, ya que si una solución ordena diferente a la de Greedy, significa que en algún momento se va a poner más cantidad de una fragancia más cara. Por lo tanto, tendríamos que cambiar el orden para poder evitar que esto suceda y así minimizar el costo (es lo que hace Greedy).
 
+EJEMPLO
+- Entrada: Volumen máximo = 10. Dos fragancias: F1(min 2, max 5, costo 10) y F2(min 1, max 6, costo 20).
+- Ejecución:
+    - Fase inicial (Mínimos): Agregamos 2 de F1 y 1 de F2. Volumen = 3. Costo = 40. Faltan 7.
+    - Fase greedy: Ordenamos por costo de menor a mayor (F1 primero, luego F2).
+    - Evaluamos F1: Podemos sumar 3 más (máx 5 - mín 2). Agregamos 3. Volumen = 6. Costo = 40 + 30 = 70. Faltan 4.
+    - Evaluamos F2: Podemos sumar hasta 5 más (máx 6 - mín 1). Agregamos solo los 4 que faltan. Volumen = 10. Costo = 70 + 80 = 150.
+- Resultado: Retorna un costo total de 150.
 """

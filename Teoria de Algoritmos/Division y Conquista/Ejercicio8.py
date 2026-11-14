@@ -42,4 +42,13 @@ ANÁLISIS DE COMPLEJIDAD
 a vs b^k = 4 vs 2^0 = 4 vs 1 => 4 > 1 por lo tanto O(N^log_b(a)) = O(N^log_2(4)) = O(N^log_2(2^2)) = O(N^(2 * log_2(2))) = O(N^(2 * 1)) = O(N^2)
 
 - Espacial: O(log (N)) porque es el call stack de la recursión
+
+EJEMPLO
+- Entrada: patio 4x4 (n = 4). Sumidero original en el cuadrante Superior-Izquierdo.
+- Ejecución:
+    1. Divide: se divide el patio en 4 sub_patios de 2x2.
+    2. Conquista (centro): se coloca una baldosa en "L" en el centro del 4x4 (ocupando una casilla de los 3 cuadrantes que no tenían sumidero). Ahora los 4 sub_patios tienen exactamente 1 casilla ocupada ("sumidero").
+    3. Llamadas recursivas: se resuelve el caso base (n = 2) para los 4 cuadrantes por separado.
+    4. Combina: se unen los 4 sub_patios resueltos.
+- Resultado: patio_final completamente embaldosado.
 """

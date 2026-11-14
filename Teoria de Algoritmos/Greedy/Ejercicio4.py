@@ -35,4 +35,12 @@ ANÁLISIS DE COMPLEJIDAD
 - ESPACIAL: O(N) para almacenar a las salas.
 
 ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el absurdo, ya que si el algoritmo se ve obligado a habilitar K salas, es porque en determinado momento hay K charlas ocurriendo a la vez. Por lo tanto, como es imposible dar K charlas en menos de K salas, el algoritmo es óptimo.
+
+EJEMPLO
+- Entrada: Charlas con (inicio, fin): Charla 1 = (1, 4), Charla 2 = (2, 5), Charla 3 = (4, 6). (Ya ordenadas por inicio).
+- Ejecución:
+    - C1(1, 4): heap vacío. Se habilita sala 1. Heap = [4].
+    - C2(2, 5): inicio (2) < Heap[0] (4). Sala ocupada. Se habilita sala 2. Heap = [4, 5].
+    - C3(4, 6): inicio (4) >= Heap[0] (4). Hay sala libre. Se extrae el 4 y se inserta el 6. Heap = [5, 6].
+- Resultado: Se utilizan 2 salas en total.
 """

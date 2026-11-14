@@ -39,4 +39,12 @@ ANÁLISIS DE COMPLEJIDAD
 a vs b^k = 1 vs 2^0 = 1 vs 1 => 1 = 1 por lo tanto O(N^k * log(N)) = O(N^0 * log(N)) = O(1 * log(N)) = O(log(N))
 
 - Espacial: O(log(N)) porque es el call stack de la recursión
+
+EJEMPLO
+- Entrada: vector = [1, 2, 4, 5], inicio = 0, final = 3.
+- Ejecución:
+    1. mitad = (inicio + final) // 2 = (0 + 3) // 2 = 3 // 2 = 1 => vector[1] es 2, por lo tanto 2 == (mitad + 1)? => 2 == 1 + 1 ->  2 == 2, como son iguales descartamos la izquierda y seguimos evaluando
+    2. inicio = mitad + 1 = 1 + 1 = 2, final = 3, mitad = (inicio + final) // 2 = (2 + 3) // 2 = 5 // 2 = 2 => vector[2] es 4, por lo tanto, 4 == (mitad + 1)? => 4 == 2 + 1 -> 4 == 3, como son distintos descartamos la derecha y seguimos evaluando.
+    3. inicio = 2, final = mitad = 2, como inicio == final devolvemos inicio + 1 = 2 + 1 = 3. 
+- Resultado: El número faltante es el 3.
 """

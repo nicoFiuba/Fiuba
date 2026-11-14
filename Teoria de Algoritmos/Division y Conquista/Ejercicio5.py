@@ -103,4 +103,8 @@ ANÁLISIS DE COMPLEJIDAD
 a vs b^k = 2 vs 2^1 = 2 vs 2 => 2 = 2 por lo tanto O(N^k * log(N)) = O(N^1 * log(N)) = O(N * log(N))
 
 - Espacial: O(log(N)) porque es el call stack de la recursión
+
+EJEMPLO CONCEPTUAL (Aplica a las 3 lógicas)
+- Entrada: lote = [V1, V2, V1, V1, V3]. Total N = 5. Mitad = 2.
+- Resultado: "Lote válido", ya que el volumen V1 aparece 3 veces (3 > 2).
 """

@@ -55,4 +55,12 @@ ANÁLISIS DE COMPLEJIDAD
 - Temporal: en el peor de los casos, evaluamos si agregar o no agregar a cada elemento, por lo tanto O(2^N). Ademas calcular la cota toma O(N), por lo tanto tenemos una complejidad de O(N * 2^N)
 
 - Espacial: O(N) ya que es el call stack de la recursion
+
+EJEMPLO
+- Entrada: Mochila de capacidad k = 10. Tres objetos: A (peso 5, $10), B (peso 6, $15) y C (peso 4, $10). Regla: A y B son incompatibles. RECORD_VALOR = -infinito.
+- Ejecución:
+    - Rama 1 (Solución inicial): incluimos A (peso=5, valor=10). Intentamos incluir B, pero se poda por factibilidad (son incompatibles y el peso sumaría 11 > 10). Incluimos C. Llegamos a la hoja con valor 20 y peso 9. Actualizamos RECORD_VALOR = 20 y RECORD_PESO = 9.
+    - Rama 2 (Nueva mejor solución): excluimos A. Incluimos B y C. Llegamos a la hoja con valor 25 y peso 10. Como 25 es mayor al RECORD_VALOR actual (20), actualizamos RECORD_VALOR = 25 y RECORD_PESO = 10.
+    - Rama 3 (Poda por cota): en otra exploración excluimos A y B (valor actual = 0). Solo queda C disponible. Calculamos la cota: valor actual (0) + valor restante estimado (10) = 10. Como la cota 10 es menor que el RECORD_VALOR actual (25), podamos la rama inmediatamente sin seguir bajando.
+- Resultado: finaliza la exploración y retorna la asignación con los objetos B y C.
 """

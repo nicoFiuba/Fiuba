@@ -55,4 +55,12 @@ ANÁLISIS DE COMPLEJIDAD
 - Temporal: en el peor de los casos, la cota no logra podar ninguna rama, por lo tanto O(N!). Ademas por cada nodo tenemos que calcular la cota que toma O(N), por lo tanto tenemos una complejidad de O(N * N!)
 
 - Espacial: O(N) ya que es el call stack de la recursion
+
+EJEMPLO
+- Entrada: 2 trabajos (Limpiar, Pintar) y 2 contratistas (Ana, Luis). Ana cobra [10, 100] y Luis cobra [100, 10]. RECORD inicial = infinito.
+- Ejecución:
+    - Rama 1 (Solución): asignamos Limpiar a Ana (costo 10) y Pintar a Luis (costo 10). Llegamos a la hoja con un costo total de 20. Actualizamos RECORD = 20 y guardamos la asignación.
+    - Rama 2 (Poda por validez): asignamos Limpiar a Ana. Intentamos asignarle Pintar a Ana también, pero como ya está ocupada, se poda la rama.
+    - Rama 3 (Poda por cota): asignamos Limpiar a Luis (costo = 100). Calculamos la cota: costo actual (100) + costo mínimo de los trabajos restantes (10) = 110. Como 110 es mayor que nuestro RECORD (20), se poda la rama.
+- Resultado: finaliza la exploración y la respuesta es Limpiar para Ana y Pintar para Luis, con un costo total de 20.
 """

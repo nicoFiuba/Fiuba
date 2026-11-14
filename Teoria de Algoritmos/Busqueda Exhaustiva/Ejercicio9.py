@@ -39,4 +39,12 @@ ANÁLISIS DE COMPLEJIDAD
 - TEMPORAL: en el peor de los casos, el algoritmo explora dos opciones por celda, lo que toma O(2^N); ademas la cuadricula es de N*N = N². Por lo tanto, la complejidad es O(2^N²)
 
 - ESPACIAL: O(N²) ya que es el call stack de la recursión
+
+EJEMPLO
+- Entrada: Cuadrícula de 2x2 (N=2). Límite: exactamente 1 celda negra por fila y columna.
+- Ejecución:
+    - Celda (0, 0) - Rama 1: pintamos de "Negro". Como es válido (llevamos 1 negra en la fila 0 y columna 0), avanzamos a la celda (0, 1).
+    - Celda (0, 1) - Rama 1.a: pintamos de "Negro". Se incumple la restricción (habría 2 negras en la fila 0), por ende se poda la rama.
+    - Celda (0, 1) - Rama 1.b: pintamos de "Blanco". La restricción se mantiene intacta, seguimos explorando hacia la fila siguiente.
+- Resultado: El algoritmo avanza y retrocede hasta completar la cuadrícula con una configuración válida y la guarda en soluciones.
 """

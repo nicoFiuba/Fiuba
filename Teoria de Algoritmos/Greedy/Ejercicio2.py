@@ -28,4 +28,12 @@ ANÁLISIS DE COMPLEJIDAD
 - ESPACIAL: O(V + E) para almacenar el grafo.
 
 ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el absurdo, ya que si la arista más pesada del ciclo analizado formara parte del MST, significa que podríamos reemplazarla por otra más barata para abaratar costos. Por lo tanto, al eliminar siempre la arista más pesada sin que se rompa la conexión, nos asegura que vamos a alcanzar la solución óptima global.
+
+EJEMPLO
+- Entrada: Grafo triangular con nodos A, B, C. Aristas: (A,B) peso 5, (B,C) peso 3, (A,C) peso 1.
+- Ejecución:
+    - Ordenamos descendentemente: (A,B), (B,C), (A,C).
+    - Evaluamos (A,B) peso 5: la removemos. El grafo sigue conexo (A llega a B vía C). Se descarta definitivamente.
+    - Evaluamos (B,C) y (A,C): al intentar remover cualquiera de las dos, un nodo queda aislado (no conexo), por lo que se mantienen en el grafo.
+- Resultado: MST compuesto por las aristas (B,C) y (A,C) con peso total 4.
 """

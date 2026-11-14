@@ -38,4 +38,13 @@ ANÁLISIS DE COMPLEJIDAD
 - ESPACIAL: O(V + E) para almacenar el grafo
 
 ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el absurdo, ya que si una persona no tiene 4 desconocidos en el grupo actual, es matemáticamente imposible que los encuentre en la lista final. Por lo tanto, eliminar siempre al invitado que tiene menos de 4 desconocidos nos asegura que vamos a alcanzar la solución óptima global.
+
+EJEMPLO
+- Entrada: Grafo de "desconocidos" con 6 invitados (A, B, C, D, E, F) donde todos son desconocidos entre sí (cada uno tiene 5 desconocidos). Un invitado extra (G) es desconocido solo de A, B y C (tiene 3 desconocidos).
+- Ejecución: 
+    - Condición inicial: G tiene menos de 4 desconocidos. cola_eliminacion = [G].
+    - Evaluamos G: se extrae de la cola y se lo elimina de los invitados. 
+    - Actualizamos conexiones: A, B y C pierden a G. Pasan de tener 5 desconocidos a tener 4. Como su cantidad de desconocidos no baja a 3, no entran a la cola de eliminación.
+    - La cola queda vacía.
+- Resultado: Retorna la lista [A, B, C, D, E, F].
 """

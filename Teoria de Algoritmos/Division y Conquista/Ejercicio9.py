@@ -46,4 +46,13 @@ ANÁLISIS DE COMPLEJIDAD
 a vs b^k = 3 vs 2^0 = 3 vs 1 => 3 > 1 por lo tanto O(N^log_b(a)) = O(N^log_2(3))
 
 - Espacial: O(log (N)) porque es el call stack de la recursión
+
+EJEMPLO
+- Entrada: matriz de 4x4 (n=4). Número buscado = 2.
+- Ejecución: 
+    1. Divide: la matriz se divide en 4 submatrices de 2x2.
+    2. Conquista: se evalúa el elemento central de la matriz 4x4 (supongamos que vale 8). 
+    3. Como 8 > 2, sabemos que todos los números en el cuadrante inferior-derecho son mayores a 8 y, por lo tanto, mayores a 2. 
+    4. Se descarta ese cuadrante entero y se hacen 3 llamadas recursivas con los cuadrantes restantes.
+- Resultado: retorna la posición del 2 al chocar con el caso base.
 """

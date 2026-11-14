@@ -1,78 +1,37 @@
 """
-TEORÍA DE ALGORITMOS - EJERCICIO 11: Reyes del Ajedrez
 
-1. ESTRATEGIA (Elección Golosa)
-Un Rey en ajedrez ataca a todas las casillas adyacentes (horizontal, vertical y diagonal).
-Para maximizar la cantidad de reyes, debemos minimizar el espacio que desperdician sus zonas de ataque, empacándolos lo más juntos posible.
+EXPLICACIÓN: la estrategia consiste en poner al rey en el primer casillero del tablero y recorrer el tablero para que si hay un casillero libre de ataque poner al siguiente rey. Esta estrategia es Greedy porque realiza una elección:
+    - Localmente óptima porque en cada iteración, pone al rey en un lugar libre de amenazas.
+    - Factible ya que cumple con las restricciones del problema
+    - Irrevocable ya que una vez tomada la decisión, no permite ser removida en posteriores elecciones del algoritmo.
 
-Estrategia greedy:
-1. Recorremos el tablero secuencialmente (fila por fila, de izquierda a derecha). 
-2. Si la casilla actual no está bajo el ataque de ningún Rey colocado anteriormente, tomamos la decisión localmente óptima de colocar un Rey en ella inmediatamente y marcamos las casillas a su alrededor como "atacadas".
+PSEUDOCÓDIGO
 """
 
-import math
+def ubicar_reyes(tablero, filas, columnas):
 
-def ubicar_reyes_simulacion(n, m):
-    # n: filas, m: columnas
-    reyes = []
-    atacados = set()
-    
-    for i in range(n):
-        for j in range(m):
-            if (i, j) not in atacados:
-                # ¡Casilla libre! Ubicamos un Rey (decisión greedy)
-                reyes.append((i, j))
-                
-                # Marcamos la propia casilla y todas sus adyacentes como atacadas
-                for di in [-1, 0, 1]:
-                    for dj in [-1, 0, 1]:
-                        atacados.add((i + di, j + dj))
-                        
-    return len(reyes), reyes
+    reyes = 0
+    for i in range(filas):
+        for j in range(columnas):
+            if zona_liberada(tablero, i, j, filas, columnas):
+                tablero[i][j] = 1
+                reyes += 1
 
-def ubicar_reyes_matematico(n, m):
-    # Dado que el patrón Greedy siempre coloca reyes saltando una celda 
-    # (en coordenadas pares), podemos resolverlo matemáticamente en O(1)
-    return math.ceil(n / 2) * math.ceil(m / 2)
+    return reyes
 
 """
-2. ANÁLISIS DE COMPLEJIDAD
+ANÁLISIS DE COMPLEJIDAD
 
-Sea N la cantidad de filas y M la cantidad de columnas.
+- TEMPORAL: recorrer el tablero toma O(N (filas) * M (columnas)) y chequear si la zona está liberada toma O(1) ya que se evalúan 8 casilleros. Por lo tanto, la complejidad temporal es O(N * M)
 
-Complejidad Temporal: 
-- Simulador Greedy: O(N * M). Iteramos una única vez por cada celda del tablero. Las operaciones dentro del ciclo (verificar y agregar al Set) toman tiempo constante O(1).
-- Fórmula Matemática: O(1). Conociendo el patrón geométrico, se calcula mediante una multiplicación simple.
+- ESPACIAL: O(1) por el contador de reyes 
 
-Complejidad Espacial: 
-- Simulador Greedy: O(N * M). En el peor caso guardamos las N*M celdas en el Set de atacados.
-- Fórmula Matemática: O(1). No requiere almacenar estructuras adicionales.
+ANÁLISIS DE OPTIMALIDAD: se demuestra mediante el argumento de la sustitución, ya que si una solución distribuye diferente a Greedy, significa que en algún momento no se va a colocar a un rey en un aposicion segura y por ende nos va a quedar una zona liberada. Por lo tanto, tendríamos que cambiar la distribución para poder evitar que esto suceda y asi llegar a la mejor solucion posible (es lo que hace Greedy).
 
-
-3. JUSTIFICACIÓN DE OPTIMALIDAD (Cota Superior por Bloques)
-
-Para demostrar que la estrategia Greedy es estrictamente óptima, dividimos el tablero completo de N x M en pequeños sub-bloques lógicos de 2x2 celdas. (Si N o M son impares, los bordes tendrán bloques más chicos de 1x2, 2x1 o 1x1).
-
-La cantidad total de estos sub-bloques en el tablero es exactamente: Cantidad de bloques = ceil(N/2) * ceil(M/2).
-
-Por las reglas de movimiento del ajedrez, en cualquier sub-bloque de 2x2 TODAS las celdas son adyacentes entre sí (se tocan por los lados o en diagonal). Esto significa que es físicamente IMPOSIBLE colocar más de 1 Rey dentro de un mismo bloque sin que se ataquen mutuamente.
-
-Por lo tanto, la cantidad teórica MÁXIMA de reyes que puede soportar el tablero está rígidamente limitada por la cantidad de bloques que existen: Reyes_Maximos <= ceil(N/2) * ceil(M/2).
-
-Nuestro algoritmo Greedy, al ubicar sistemáticamente reyes en las primeras posiciones disponibles, logra asentar exactamente 1 Rey dentro de cada uno de estos bloques sin violar ninguna regla. Como el algoritmo alcanza el límite de la cota superior teórica máxima, queda demostrado matemáticamente que la solución es óptima.
+EJEMPLO
+- Entrada: Tablero vacío de 2x3 (N=2 filas, M=3 columnas).
+- Ejecución:
+    - Fila 0: ubica rey en (0,0), avanza a (0,1) y evalua si es zona liberada, como no lo es, avanza a (0,2) y evalua si es zona liberada, como lo es, coloca un rey en (0,2).
+    - Fila 1: Todas las celdas (1,0), (1,1) y (1,2) quedan amenazadas por los reyes de la fila 0, por ende no coloca ningun rey.
+- Resultado: Retorna 2 reyes ubicados en las coordenadas (0,0) y (0,2).
 """
-
-# Bloque de prueba
-if __name__ == "__main__":
-    n_filas = 5
-    m_columnas = 5
-    
-    total, posiciones = ubicar_reyes_simulacion(n_filas, m_columnas)
-    
-    print("--- Ejercicio 11: Reyes del Ajedrez ---")
-    print(f"Tablero de {n_filas}x{m_columnas}")
-    print(f"Total de reyes ubicados (Simulación Greedy): {total}")
-    print(f"Comprobación con Fórmula O(1): {ubicar_reyes_matematico(n_filas, m_columnas)}")
-    
-    print("\nPosiciones asignadas (fila, columna):")
-    print(posiciones)
