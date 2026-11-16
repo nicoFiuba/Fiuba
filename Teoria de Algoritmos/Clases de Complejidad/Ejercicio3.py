@@ -1,4 +1,5 @@
-""" 
+"""
+
 EXPLICACIÓN: para probar que el problema es un NP-Completo, tenemos que demostrar dos cosas:
 
 1) Pertenece a NP: dado un certificado (un subconjunto de vértices), podemos verificar en tiempo polinomial que su longitud es al menos k y que entre ellos no existen aristas ni caminos de tamaño 2.

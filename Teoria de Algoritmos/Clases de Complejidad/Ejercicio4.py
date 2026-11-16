@@ -1,4 +1,5 @@
 """
+
 EXPLICACIÓN: para probar que el problema de la Publicidad Estratégica es NP-Completo, tenemos que demostrar dos cosas:
 
 1) Pertenece a NP: dado un certificado (un subconjunto de vértices), podemos verificar en tiempo polinomial que su longitud es a lo sumo k y que cada recorrido de usuario pasa por al menos un vértice del conjunto.

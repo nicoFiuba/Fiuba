@@ -1,4 +1,5 @@
 """
+
 EXPLICACIÓN Y MODELADO: estamos ante un problema de actualización de flujo. En lugar de correr Ford-Fulkerson desde cero, vamos a operar directamente sobre el Grafo Residual actual. Pueden ocurrir dos casos si cambia la capacidad de una arista e=(u,v):
 
 - Caso 1 (Aumento de capacidad): Actualizamos la capacidad en el grafo residual. Si esta arista pertenecía al Corte Mínimo (el cuello de botella de la red), es probable que ahora podamos enviar más flujo. Simplemente intentamos buscar nuevos caminos de aumento desde S hasta T en el grafo residual.
